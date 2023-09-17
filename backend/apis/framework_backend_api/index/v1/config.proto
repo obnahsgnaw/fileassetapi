@@ -1,0 +1,59 @@
+syntax = "proto3";
+package framework_backend_api.index.v1;
+option go_package = "framework_backend_api/index/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+//import "validate/validate.proto";
+
+// 配置 服务
+service ConfigService{
+  // 服务swagger描述定义
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "动态配置";
+  };
+  // 配置
+  rpc Detail (ConfigRequest) returns (Config) {
+    option (google.api.http) = {
+      get: "/v1/config"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "配置信息";
+      description: "返回服务当前配置信息";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
+  rpc Update (Config) returns (Config) {
+    option (google.api.http) = {
+      put: "/v1/config"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "更新配置";
+      description: "更新服务当前配置信息";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
+}
+message ConfigRequest{}
+// TODO 8 change  to  project config and controller
+message Config{
+  bool debug = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "调试模式";
+    }
+    //(validate.rules).bool = {}
+  ];
+}

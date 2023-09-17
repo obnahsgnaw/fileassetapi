@@ -1,0 +1,19 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/obnahsgnaw/frameworkapi/gen
+    except:
+      - buf.build/efly/vendors
+plugins:
+  # protoc-gen-go
+  - name: go
+    out: ../gen
+    opt:
+      - paths=source_relative
+  # protoc-gen-validate
+  - name: validate
+    out: ../gen
+    opt:
+      - paths=source_relative
+      - lang=go

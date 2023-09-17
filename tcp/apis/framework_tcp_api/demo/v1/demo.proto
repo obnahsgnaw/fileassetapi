@@ -1,0 +1,28 @@
+syntax = "proto3";
+package framework_tcp_api.demo.v1;
+option go_package = "framework_tcp_api/demo/v1";
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+message DemoConnectRequest {
+  // 设备编号
+  string device_no = 1[
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:100}
+  ];
+}
+
+// 设备连接的响应
+message DemoConnectResponse {
+  option (validate.ignored) = true;
+  // 响应状态码
+  enum Status {
+    Success = 0;      // 连接成功
+    InvalidArgument = 1;  // 参数错误
+    NotRegister = 2;  // 编号未注册
+    Conflict = 3;     // 设备已被其他端连接
+  }
+  // 响应状态码
+  Status status = 1;
+  // 当前服务器时间
+  google.protobuf.Timestamp datetime = 3;
+}

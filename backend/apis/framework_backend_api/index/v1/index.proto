@@ -1,0 +1,198 @@
+syntax = "proto3";
+package framework_backend_api.index.v1;
+option go_package = "framework_backend_api/index/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "framework_backend_api/common/v1/obj.proto";
+import "validate/validate.proto";
+
+// swagger 文档定义 TODO 7 change  to  project doc description
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  // 文档基本信息
+  info: {
+    title: "Backend API";
+    version: "1.0";
+    description: "The backend api";
+    contact: {
+      name: "efly";
+      url: "https://efly-cetc.com";
+      email: "none@example.com";
+    };
+  };
+  //base_path: "/v1/index";
+  // 协议
+  schemes: HTTP;
+  schemes: HTTPS;
+  // 支持输入的mime类型
+  consumes: "application/json"; // json
+  //  consumes: "application/x-www-form-urlencoded"; // form
+  //  consumes: "multipart/form-data"; // file form
+  consumes: "application/octet-stream"; // protobuf
+  // 支持输出的mime类型
+  produces: "application/json";
+  produces: "application/octet-stream";
+  // 安全定义
+  security_definitions: {
+    security: {
+      key:"AppId";
+      value:{
+        type:TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "X-App-Id"
+      }
+    }
+    security: {
+      key: "BearerToken";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "Authorization"
+      }
+    }
+  };
+  // 通用错误码
+  responses: {
+    key: "201";
+    value: {
+      description: "Returned when the resource created success.";
+    },
+  };
+  responses: {
+    key: "204";
+    value: {
+      description: "Returned when the resource deleted success.";
+    },
+  };
+  responses: {
+    key: "400";
+    value: {
+      description: "Returned when the request data validate failed.";
+      schema: {
+        json_schema:{
+          ref: ".framework_backend_api.common.v1.ErrorsObject"
+        }
+      }
+    },
+  };
+  responses: {
+    key: "401";
+    value: {
+      description: "Returned when the user does not authentication.";
+    },
+  };
+  responses: {
+    key: "403";
+    value: {
+      description: "Returned when the user does not have permission to access the resource.";
+    }
+  };
+  responses: {
+    key: "404";
+    value: {
+      description: "Returned when the resource not found.";
+    }
+  };
+  responses: {
+    key: "409";
+    value: {
+      description: "Returned when request update conflict.";
+    }
+  };
+  responses: {
+    key: "423";
+    value: {
+      description: "Returned when resource locked.";
+    }
+  };
+  responses: {
+    key: "429";
+    value: {
+      description: "Returned when request too many in a unit time.";
+    }
+  };
+  responses: {
+    key: "500";
+    value: {
+      description: "Server error.";
+    }
+  };
+  responses: {
+    key: "default";
+    value: {
+      description: "Unexpect error.";
+      schema: {
+        json_schema:{
+          ref: ".framework_backend_api.common.v1.ErrorsObject"
+        }
+      }
+    }
+  };
+};
+
+// index 服务
+service IndexService{
+  // 服务swagger描述定义
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "默认";
+  };
+  // rpc 方法， restful 接口
+  rpc Version (VersionRequest) returns (VersionResponse) {
+    option (google.api.http) = {
+      get: "/v1/version"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "版本号";
+      description: "返回服务当前版本号";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        // 有此则需要登录
+        /*security_requirement:{
+          key:"BearerToken"
+        }*/
+      }
+    };
+  }
+}
+message VersionRequest{}
+message VersionResponse{
+  option (validate.ignored) = true; // 忽略验证
+  string version = 1 // 版本号
+  [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "版本号";
+  }];
+}
+
+// option 服务
+service OptionsService{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "选项管理";
+  };
+  rpc OptionList(OptionListRequest) returns (OptionListResponse){
+    option (google.api.http) = {
+      get: "/v1/options"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "选项"
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+      }
+      extensions:{
+        key: "x-order";
+        value: {
+          number_value: 1
+        }
+      }
+    };
+  }
+}
+message OptionListRequest{}
+message OptionListResponse{
+  option (validate.ignored) = true; // 忽略验证
+  repeated common.v1.IntOption enable_state = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "启禁用状态";
+  }];
+}
