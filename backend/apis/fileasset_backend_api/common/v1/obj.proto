@@ -1,0 +1,304 @@
+syntax = "proto3";
+package fileasset_backend_api.common.v1;
+option go_package = "fileasset_backend_api/common/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+
+// 错误
+message ErrorObject {
+  option (validate.ignored) = true; // 忽略验证
+  uint32 code = 1 // 错误码
+  // 字段swagger描述定义
+  [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Response error code";
+    pattern: "^[0-9]{1,}$";
+    type: INTEGER
+  }];
+  string message = 2 // 错误描述
+  [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Response error message";
+  }];
+}
+// 错误 多个错误
+message ErrorsObject {
+  option (validate.ignored) = true; // 忽略验证
+  uint32 code = 1 // 错误码
+  // 字段swagger描述定义
+  [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Response error code";
+    pattern: "^[0-9]{1,}$";
+    type: INTEGER
+  }];
+  string message = 2 // 错误描述
+  [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Response error message";
+  }];
+  // 错误链
+  repeated ErrorObject errors = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Response errors";
+  }];
+}
+// int id 请求
+message IntIdRequest {
+  uint32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["id"];
+      title: "ID";
+      description: "ID";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0}
+  ];
+}
+// string id 请求
+message StringIdRequest {
+  string id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["id"];
+      title: "ID";
+      description: "ID";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 40}
+  ];
+}
+// int id 请求
+message IntIdOperateRequest {
+  uint32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["id"];
+      title: "ID";
+      description: "ID";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0}
+  ];
+  ConflictData data = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["data"];
+      title: "data";
+      description: "data";
+    },
+    (validate.rules).message = {required:true}
+  ];
+}
+// string id 请求
+message StringIdOperateRequest {
+  string id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["id"];
+      title: "ID";
+      description: "ID";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1}
+  ];
+  ConflictData data = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["data"];
+      title: "data";
+      description: "data";
+    },
+    (validate.rules).message = {required:true}
+  ];
+}
+message ConflictData{
+  Conflict conflict = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["conflict"];
+      title: "Conflict";
+      description: "Conflict";
+    },
+    (validate.rules).message = {required:true}
+  ];
+}
+// 冲突检查值
+message Conflict {
+  string value = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["value"];
+      title:"Value";
+      description: "The conflict value of the resource";
+    },
+    (validate.rules).string = {ignore_empty:false, min_len:1, max_len:100}
+  ];
+}
+// 分页元数据
+message PaginateMeta {
+  option (validate.ignored) = true; // 忽略验证
+  uint32 total = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Resource total nums";
+  }];
+  uint32 page = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Current page id";
+  }];
+  uint32 limit = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Current page size"
+  }];
+}
+// 分页查询请求
+message PaginateRequest{
+  uint32 page = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Page number, default=1";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  uint32 limit = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Page size, default=10";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string keyword = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Keyword search, like:keyword=xx，keyword=id=1|name=xxx";
+  }];
+  string sort = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Sort list, like: sort=+a,-b,+c,-d";
+  }];
+}
+// 分页查询请求
+message PaginateAllRequest{
+  bool all = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "All resource records, no paginate if support";
+  }];
+  uint32 page = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Page number, default=1";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  uint32 limit = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Page size, default=10";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string keyword = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Keyword search, like:keyword=xx，keyword=id=1|name=xxx";
+  }];
+  string sort = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Sort list, like: sort=+a,-b,+c,-d";
+  }];
+}
+// key name 响应
+message StringOption{
+  option (validate.ignored) = true; // 忽略验证
+  string id = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "ID";
+  }];
+  string name = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "名称";
+  }];
+}
+// id name 响应
+message IntOption{
+  option (validate.ignored) = true; // 忽略验证
+  int32 id = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "ID";
+  }];
+  string name = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "名称";
+  }];
+}
+// 启用 禁用
+enum EnableState{
+  Disabled = 0;
+  Enabled = 1;
+  Default = -1;
+}
+// 行政区域
+message Region{
+  string country = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"国家"
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:100}
+  ];
+  string province = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"省份"
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:100}
+  ];
+  string city = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"城市"
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:100}
+  ];
+  string district = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"区县"
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:255}
+  ];
+  string street = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"街道"
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:255}
+  ];
+}
+// 位置
+message Position{
+  float lon = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"经度"
+    },
+    (validate.rules).float = {ignore_empty: false, gte:-180, lte:180}
+  ];
+  float lat = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"纬度"
+    },
+    (validate.rules).float = {ignore_empty: false, gte:-90, lte:90}
+  ];
+  float alt = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"海拔"
+    }
+  ];
+}
+// 操作信息
+message OperateInfo{
+  option (validate.ignored) = true; // 忽略验证
+  google.protobuf.Timestamp created_at = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description:"创建时间";
+  }];
+  google.protobuf.Timestamp updated_at = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description:"最后更新时间";
+  }];
+  google.protobuf.Timestamp deleted_at = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description:"删除时间";
+  }];
+}
+// 操作信息 只要创建和更新的
+message CuOperateInfo{
+  option (validate.ignored) = true; // 忽略验证
+  google.protobuf.Timestamp created_at = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description:"创建时间";
+  }];
+  google.protobuf.Timestamp updated_at = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description:"最后更新时间";
+  }];
+}
+// 通用分页字符串option选项响应
+message PaginateStringOptionResponse{
+  option (validate.ignored) = true; // 忽略验证
+  PaginateMeta meta = 1;
+  repeated StringOption list = 2;
+}
+// 通用分页int option选项响应
+message PaginateIntOptionResponse{
+  option (validate.ignored) = true; // 忽略验证
+  PaginateMeta meta = 1;
+  repeated IntOption list = 2;
+}
+// 通用字符串option选项响应
+message StringOptionResponse{
+  option (validate.ignored) = true; // 忽略验证
+  repeated StringOption list = 1;
+}
+// 通用int option选项响应
+message IntOptionResponse{
+  option (validate.ignored) = true; // 忽略验证
+  repeated IntOption list = 2;
+}

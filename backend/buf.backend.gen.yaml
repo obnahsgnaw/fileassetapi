@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/obnahsgnaw/frameworkapi/gen
+    default: github.com/obnahsgnaw/fileassetapi/gen
     except:
       - buf.build/efly/vendors
 plugins:

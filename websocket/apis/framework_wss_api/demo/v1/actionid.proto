@@ -1,9 +1,0 @@
-syntax = "proto3";
-package framework_wss_api.demo.v1;
-option go_package = "framework_wss_api/demo/v1";
-
-// action id
-
-enum ActionId{
-  Uav_None = 0;
-}

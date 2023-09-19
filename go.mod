@@ -1,4 +1,4 @@
-module github.com/obnahsgnaw/frameworkapi
+module github.com/obnahsgnaw/fileassetapi
 
 go 1.19
 

@@ -1,0 +1,9 @@
+syntax = "proto3";
+package fileasset_wss_api.demo.v1;
+option go_package = "fileasset_wss_api/demo/v1";
+
+// action id
+
+enum ActionId{
+  Uav_None = 0;
+}

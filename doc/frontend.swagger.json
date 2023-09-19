@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Frontend API",
-    "description": "The frontend api",
+    "description": "The file asset frontend api",
     "version": "1.0",
     "contact": {
       "name": "efly",
