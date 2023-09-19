@@ -18,6 +18,9 @@
     {
       "name": "OptionsService",
       "description": "选项管理"
+    },
+    {
+      "name": "UploadService"
     }
   ],
   "schemes": [
@@ -177,6 +180,17 @@
     }
   },
   "definitions": {
+    "v1ConfirmResponse": {
+      "type": "object",
+      "properties": {
+        "idFiles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "v1ErrorObject": {
       "type": "object",
       "properties": {
@@ -218,6 +232,22 @@
       },
       "title": "错误 多个错误"
     },
+    "v1FetchUrlResponse": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "v1HostResponse": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        }
+      }
+    },
     "v1IntOption": {
       "type": "object",
       "properties": {
@@ -245,6 +275,9 @@
           "description": "启禁用状态"
         }
       }
+    },
+    "v1RegisterResponse": {
+      "type": "object"
     },
     "v1VersionResponse": {
       "type": "object",

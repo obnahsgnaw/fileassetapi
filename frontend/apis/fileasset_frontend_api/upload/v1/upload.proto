@@ -1,0 +1,56 @@
+syntax = "proto3";
+package fileasset_frontend_api.upload.v1;
+option go_package = "fileasset_frontend_api/upload/v1";
+
+/*
+  整体说明：
+  1. 业务模块先注册要上传的配置，指定好模块名称、最大文件数量、文件类型、文件后缀、文件最大字节数
+  2. 具体的上传业务接口时，先获取上传文件地址返回给前端，指定模块名称、当前文件上传的对象、链接的有效时长
+  3. 前端将文件上传到指定地址，得到文件标识，表单提交时上传文件标识
+  4. 后端接口通过rpc验证文件标识，然后确认存储文件
+  5. 文件管理服务会定时删除未保存的临时文件
+  6. 文件是上传oss还是本地保存由文件服务管理
+
+*/
+
+// 文件上传服务
+service UploadService{
+  // 获取服务host
+  rpc Host (HostRequest) returns (HostResponse) {}
+  // 注册配置
+  rpc Register (RegisterRequest) returns (RegisterResponse) {}
+  // 获取特定配置的上传地址
+  rpc FetchUrl (FetchUrlRequest) returns (FetchUrlResponse) {}
+  // 确认上传文件
+  rpc Confirm(ConfirmRequest) returns (ConfirmResponse) {}
+}
+
+message HostRequest{}
+message HostResponse{
+  string host = 1;
+}
+
+message RegisterRequest{
+  string module = 1; // 模块标识
+  uint32 max = 2;    // 最大数量
+  uint32 size = 3;   // 文件最大字节
+  repeated string types = 4; // 支持的类型
+  repeated string extensions = 5; // 支持的后缀
+}
+message RegisterResponse{}
+
+message FetchUrlRequest{
+  string module = 1;   // 模块标识
+  string target = 2;   // 此次上传的标识，相关图片存储在该标识下
+  uint32 ttl = 3;      // url过期时间
+}
+message FetchUrlResponse{
+  string url = 1;
+}
+
+message ConfirmRequest{
+  repeated string file_id = 1;
+}
+message ConfirmResponse{
+  map<string,string>id_files = 1;
+}
