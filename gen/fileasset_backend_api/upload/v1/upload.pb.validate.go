@@ -35,226 +35,22 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on ClearCacheRequest with the rules defined
+// Validate checks the field values on FetchKeyRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *ClearCacheRequest) Validate() error {
+func (m *FetchKeyRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ClearCacheRequest with the rules
+// ValidateAll checks the field values on FetchKeyRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ClearCacheRequestMultiError, or nil if none found.
-func (m *ClearCacheRequest) ValidateAll() error {
+// FetchKeyRequestMultiError, or nil if none found.
+func (m *FetchKeyRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ClearCacheRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return ClearCacheRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// ClearCacheRequestMultiError is an error wrapping multiple validation errors
-// returned by ClearCacheRequest.ValidateAll() if the designated constraints
-// aren't met.
-type ClearCacheRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ClearCacheRequestMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ClearCacheRequestMultiError) AllErrors() []error { return m }
-
-// ClearCacheRequestValidationError is the validation error returned by
-// ClearCacheRequest.Validate if the designated constraints aren't met.
-type ClearCacheRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ClearCacheRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ClearCacheRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ClearCacheRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ClearCacheRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ClearCacheRequestValidationError) ErrorName() string {
-	return "ClearCacheRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ClearCacheRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sClearCacheRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ClearCacheRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ClearCacheRequestValidationError{}
-
-// Validate checks the field values on ClearCacheResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ClearCacheResponse) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ClearCacheResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ClearCacheResponseMultiError, or nil if none found.
-func (m *ClearCacheResponse) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ClearCacheResponse) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return ClearCacheResponseMultiError(errors)
-	}
-
-	return nil
-}
-
-// ClearCacheResponseMultiError is an error wrapping multiple validation errors
-// returned by ClearCacheResponse.ValidateAll() if the designated constraints
-// aren't met.
-type ClearCacheResponseMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ClearCacheResponseMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ClearCacheResponseMultiError) AllErrors() []error { return m }
-
-// ClearCacheResponseValidationError is the validation error returned by
-// ClearCacheResponse.Validate if the designated constraints aren't met.
-type ClearCacheResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ClearCacheResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ClearCacheResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ClearCacheResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ClearCacheResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ClearCacheResponseValidationError) ErrorName() string {
-	return "ClearCacheResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ClearCacheResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sClearCacheResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ClearCacheResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ClearCacheResponseValidationError{}
-
-// Validate checks the field values on PaginateData with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *PaginateData) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on PaginateData with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in PaginateDataMultiError, or
-// nil if none found.
-func (m *PaginateData) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *PaginateData) validate(all bool) error {
+func (m *FetchKeyRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -263,21 +59,28 @@ func (m *PaginateData) validate(all bool) error {
 
 	// no validation rules for Module
 
-	// no validation rules for Url
+	// no validation rules for Max
+
+	// no validation rules for Size
+
+	// no validation rules for Target
+
+	// no validation rules for Ttl
 
 	if len(errors) > 0 {
-		return PaginateDataMultiError(errors)
+		return FetchKeyRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// PaginateDataMultiError is an error wrapping multiple validation errors
-// returned by PaginateData.ValidateAll() if the designated constraints aren't met.
-type PaginateDataMultiError []error
+// FetchKeyRequestMultiError is an error wrapping multiple validation errors
+// returned by FetchKeyRequest.ValidateAll() if the designated constraints
+// aren't met.
+type FetchKeyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m PaginateDataMultiError) Error() string {
+func (m FetchKeyRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -286,11 +89,11 @@ func (m PaginateDataMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m PaginateDataMultiError) AllErrors() []error { return m }
+func (m FetchKeyRequestMultiError) AllErrors() []error { return m }
 
-// PaginateDataValidationError is the validation error returned by
-// PaginateData.Validate if the designated constraints aren't met.
-type PaginateDataValidationError struct {
+// FetchKeyRequestValidationError is the validation error returned by
+// FetchKeyRequest.Validate if the designated constraints aren't met.
+type FetchKeyRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -298,22 +101,22 @@ type PaginateDataValidationError struct {
 }
 
 // Field function returns field value.
-func (e PaginateDataValidationError) Field() string { return e.field }
+func (e FetchKeyRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e PaginateDataValidationError) Reason() string { return e.reason }
+func (e FetchKeyRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e PaginateDataValidationError) Cause() error { return e.cause }
+func (e FetchKeyRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e PaginateDataValidationError) Key() bool { return e.key }
+func (e FetchKeyRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e PaginateDataValidationError) ErrorName() string { return "PaginateDataValidationError" }
+func (e FetchKeyRequestValidationError) ErrorName() string { return "FetchKeyRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e PaginateDataValidationError) Error() string {
+func (e FetchKeyRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -325,14 +128,14 @@ func (e PaginateDataValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sPaginateData.%s: %s%s",
+		"invalid %sFetchKeyRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = PaginateDataValidationError{}
+var _ error = FetchKeyRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -340,4 +143,308 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = PaginateDataValidationError{}
+} = FetchKeyRequestValidationError{}
+
+// Validate checks the field values on FetchKeyResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *FetchKeyResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FetchKeyResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// FetchKeyResponseMultiError, or nil if none found.
+func (m *FetchKeyResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FetchKeyResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Key
+
+	if len(errors) > 0 {
+		return FetchKeyResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// FetchKeyResponseMultiError is an error wrapping multiple validation errors
+// returned by FetchKeyResponse.ValidateAll() if the designated constraints
+// aren't met.
+type FetchKeyResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FetchKeyResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FetchKeyResponseMultiError) AllErrors() []error { return m }
+
+// FetchKeyResponseValidationError is the validation error returned by
+// FetchKeyResponse.Validate if the designated constraints aren't met.
+type FetchKeyResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FetchKeyResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FetchKeyResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FetchKeyResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FetchKeyResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FetchKeyResponseValidationError) ErrorName() string { return "FetchKeyResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FetchKeyResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFetchKeyResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FetchKeyResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FetchKeyResponseValidationError{}
+
+// Validate checks the field values on ConfirmRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ConfirmRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConfirmRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ConfirmRequestMultiError,
+// or nil if none found.
+func (m *ConfirmRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConfirmRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ConfirmRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConfirmRequestMultiError is an error wrapping multiple validation errors
+// returned by ConfirmRequest.ValidateAll() if the designated constraints
+// aren't met.
+type ConfirmRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConfirmRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConfirmRequestMultiError) AllErrors() []error { return m }
+
+// ConfirmRequestValidationError is the validation error returned by
+// ConfirmRequest.Validate if the designated constraints aren't met.
+type ConfirmRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConfirmRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConfirmRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConfirmRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConfirmRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConfirmRequestValidationError) ErrorName() string { return "ConfirmRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ConfirmRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConfirmRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConfirmRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConfirmRequestValidationError{}
+
+// Validate checks the field values on ConfirmResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ConfirmResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConfirmResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConfirmResponseMultiError, or nil if none found.
+func (m *ConfirmResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConfirmResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Success
+
+	if len(errors) > 0 {
+		return ConfirmResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConfirmResponseMultiError is an error wrapping multiple validation errors
+// returned by ConfirmResponse.ValidateAll() if the designated constraints
+// aren't met.
+type ConfirmResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConfirmResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConfirmResponseMultiError) AllErrors() []error { return m }
+
+// ConfirmResponseValidationError is the validation error returned by
+// ConfirmResponse.Validate if the designated constraints aren't met.
+type ConfirmResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConfirmResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConfirmResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConfirmResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConfirmResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConfirmResponseValidationError) ErrorName() string { return "ConfirmResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ConfirmResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConfirmResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConfirmResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConfirmResponseValidationError{}

@@ -20,7 +20,8 @@
       "description": "选项管理"
     },
     {
-      "name": "UploadService"
+      "name": "AssetService",
+      "description": "文件资源"
     }
   ],
   "schemes": [
@@ -107,6 +108,176 @@
         "x-order": 1
       }
     },
+    "/v1/upload-files/{id}": {
+      "get": {
+        "summary": "预览",
+        "description": "预览上传文件",
+        "operationId": "AssetService_View",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "description": "key",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AssetService"
+        ]
+      }
+    },
+    "/v1/upload-files/{key}": {
+      "post": {
+        "summary": "上传",
+        "description": "上传文件",
+        "operationId": "AssetService_Upload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadResponse"
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "key",
+            "description": "key",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UploadData",
+              "description": "data",
+              "required": [
+                "data"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "AssetService"
+        ]
+      }
+    },
     "/v1/version": {
       "get": {
         "summary": "版本号",
@@ -180,17 +351,6 @@
     }
   },
   "definitions": {
-    "v1ConfirmResponse": {
-      "type": "object",
-      "properties": {
-        "idFiles": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "v1ErrorObject": {
       "type": "object",
       "properties": {
@@ -232,22 +392,6 @@
       },
       "title": "错误 多个错误"
     },
-    "v1FetchUrlResponse": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string"
-        }
-      }
-    },
-    "v1HostResponse": {
-      "type": "object",
-      "properties": {
-        "host": {
-          "type": "string"
-        }
-      }
-    },
     "v1IntOption": {
       "type": "object",
       "properties": {
@@ -276,7 +420,37 @@
         }
       }
     },
-    "v1RegisterResponse": {
+    "v1UploadData": {
+      "type": "object",
+      "properties": {
+        "chunkTotal": {
+          "type": "integer",
+          "format": "int64",
+          "description": "分块总数"
+        },
+        "chunkIndex": {
+          "type": "integer",
+          "format": "int64",
+          "description": "分块当前索引号"
+        },
+        "ext": {
+          "type": "string",
+          "description": "文件后缀"
+        },
+        "content": {
+          "type": "string",
+          "format": "byte",
+          "description": "分块数据"
+        }
+      },
+      "required": [
+        "chunkTotal",
+        "chunkIndex",
+        "ext",
+        "content"
+      ]
+    },
+    "v1UploadResponse": {
       "type": "object"
     },
     "v1VersionResponse": {

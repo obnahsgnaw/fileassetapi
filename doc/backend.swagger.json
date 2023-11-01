@@ -24,8 +24,11 @@
       "description": "动态配置"
     },
     {
-      "name": "UploadService",
+      "name": "AssetService",
       "description": "文件上传"
+    },
+    {
+      "name": "UploadService"
     }
   ],
   "schemes": [
@@ -267,7 +270,7 @@
       "delete": {
         "summary": "清除缓存",
         "description": "清除缓存的上传文件",
-        "operationId": "UploadService_ClearCache",
+        "operationId": "AssetService_ClearCache",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -325,7 +328,7 @@
           }
         },
         "tags": [
-          "UploadService"
+          "AssetService"
         ],
         "security": [
           {
@@ -339,7 +342,7 @@
       "get": {
         "summary": "列表",
         "description": "上传文件列表",
-        "operationId": "UploadService_Paginate",
+        "operationId": "AssetService_Paginate",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -429,7 +432,89 @@
           }
         ],
         "tags": [
-          "UploadService"
+          "AssetService"
+        ],
+        "security": [
+          {
+            "AppId": [],
+            "BearerToken": []
+          }
+        ]
+      }
+    },
+    "/v1/upload-files/{id}": {
+      "delete": {
+        "summary": "删除",
+        "description": "删除上传的文件",
+        "operationId": "AssetService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AssetService"
         ],
         "security": [
           {
@@ -525,6 +610,14 @@
       },
       "title": "TODO 8 change  to  project config and controller"
     },
+    "v1ConfirmResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1ErrorObject": {
       "type": "object",
       "properties": {
@@ -565,6 +658,14 @@
         }
       },
       "title": "错误 多个错误"
+    },
+    "v1FetchKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
     },
     "v1IntOption": {
       "type": "object",
