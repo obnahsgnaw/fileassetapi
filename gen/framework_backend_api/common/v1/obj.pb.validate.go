@@ -1342,3 +1342,219 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PositionValidationError{}
+
+// Validate checks the field values on AttrConfig with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *AttrConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AttrConfig with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in AttrConfigMultiError, or
+// nil if none found.
+func (m *AttrConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AttrConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetAttr()) > 100 {
+		err := AttrConfigValidationError{
+			field:  "Attr",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetTitle()) > 100 {
+		err := AttrConfigValidationError{
+			field:  "Title",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := _AttrConfig_Kind_NotInLookup[m.GetKind()]; ok {
+		err := AttrConfigValidationError{
+			field:  "Kind",
+			reason: "value must not be in list [ExtAttrKindNone]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := AttrConfig_Kind_name[int32(m.GetKind())]; !ok {
+		err := AttrConfigValidationError{
+			field:  "Kind",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetValue() != "" {
+
+		if utf8.RuneCountInString(m.GetValue()) > 100 {
+			err := AttrConfigValidationError{
+				field:  "Value",
+				reason: "value length must be at most 100 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if len(m.GetOptions()) > 0 {
+
+		_AttrConfig_Options_Unique := make(map[string]struct{}, len(m.GetOptions()))
+
+		for idx, item := range m.GetOptions() {
+			_, _ = idx, item
+
+			if _, exists := _AttrConfig_Options_Unique[item]; exists {
+				err := AttrConfigValidationError{
+					field:  fmt.Sprintf("Options[%v]", idx),
+					reason: "repeated value must contain unique items",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			} else {
+				_AttrConfig_Options_Unique[item] = struct{}{}
+			}
+
+			// no validation rules for Options[idx]
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetConflict()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AttrConfigValidationError{
+					field:  "Conflict",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AttrConfigValidationError{
+					field:  "Conflict",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConflict()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AttrConfigValidationError{
+				field:  "Conflict",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return AttrConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// AttrConfigMultiError is an error wrapping multiple validation errors
+// returned by AttrConfig.ValidateAll() if the designated constraints aren't met.
+type AttrConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AttrConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AttrConfigMultiError) AllErrors() []error { return m }
+
+// AttrConfigValidationError is the validation error returned by
+// AttrConfig.Validate if the designated constraints aren't met.
+type AttrConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AttrConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AttrConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AttrConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AttrConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AttrConfigValidationError) ErrorName() string { return "AttrConfigValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AttrConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAttrConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AttrConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AttrConfigValidationError{}
+
+var _AttrConfig_Kind_NotInLookup = map[AttrConfig_Kind]struct{}{
+	0: {},
+}

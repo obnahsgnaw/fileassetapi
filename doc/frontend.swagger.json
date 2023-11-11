@@ -18,6 +18,10 @@
     {
       "name": "OptionsService",
       "description": "选项管理"
+    },
+    {
+      "name": "AttrConfigService",
+      "description": "属性服务"
     }
   ],
   "schemes": [
@@ -33,6 +37,78 @@
     "application/octet-stream"
   ],
   "paths": {
+    "/v1/attr-configs": {
+      "get": {
+        "summary": "属性配置",
+        "operationId": "AttrConfigService_AttrConfigs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AttrConfigsResponse"
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "tags": [
+          "AttrConfigService"
+        ],
+        "security": [
+          {
+            "AppId": [],
+            "BearerToken": []
+          }
+        ],
+        "x-order": 1
+      }
+    },
     "/v1/options": {
       "get": {
         "summary": "选项",
@@ -177,6 +253,63 @@
     }
   },
   "definitions": {
+    "AttrConfigKind": {
+      "type": "string",
+      "enum": [
+        "ExtAttrKindNone",
+        "ExtAttrKindText",
+        "ExtAttrKindInt",
+        "ExtAttrKindFloat",
+        "ExtAttrKindBool",
+        "ExtAttrKindOption",
+        "ExtAttrKindDatetime",
+        "ExtAttrKindDate",
+        "ExtAttrKindTime"
+      ],
+      "default": "ExtAttrKindNone"
+    },
+    "v1AttrConfig": {
+      "type": "object",
+      "properties": {
+        "attr": {
+          "type": "string",
+          "description": "属性key"
+        },
+        "title": {
+          "type": "string",
+          "description": "标题"
+        },
+        "kind": {
+          "$ref": "#/definitions/AttrConfigKind",
+          "description": "数据类型"
+        },
+        "value": {
+          "type": "string",
+          "description": "默认值"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Kind=option时的可选项"
+        }
+      }
+    },
+    "v1AttrConfigsResponse": {
+      "type": "object",
+      "properties": {
+        "attrs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AttrConfig"
+          },
+          "description": "属性配置"
+        }
+      },
+      "title": "属性配置数据"
+    },
     "v1ErrorObject": {
       "type": "object",
       "properties": {

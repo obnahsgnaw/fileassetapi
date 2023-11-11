@@ -302,3 +302,68 @@ message IntOptionResponse{
   option (validate.ignored) = true; // 忽略验证
   repeated IntOption list = 2;
 }
+// 属性配置响应
+message AttrConfigPaginateResponse{
+  option (validate.ignored) = true;
+  common.v1.PaginateMeta meta = 1;
+  repeated AttrConfigData list = 2;
+}
+// 属性配置数据
+message AttrConfigData{
+  option (validate.ignored) = true;
+  AttrConfig config = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"属性配置"
+    }
+  ];
+  common.v1.EnableState enabled = 2;
+  common.v1.OperateInfo operate_info = 3;
+}
+// 属性配置
+message AttrConfig{
+  string attr = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"attr"
+    },
+    (validate.rules).string = {ignore_empty:false, max_len:100}
+  ];
+  string title = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"标题"
+    },
+    (validate.rules).string = {ignore_empty:false, max_len:100}
+  ];
+  enum Kind{
+    ExtAttrKindNone = 0;
+    ExtAttrKindText = 1;
+    ExtAttrKindInt = 2;
+    ExtAttrKindFloat = 3;
+    ExtAttrKindBool = 4;
+    ExtAttrKindOption = 5;
+    ExtAttrKindDatetime = 6;
+    ExtAttrKindDate = 7;
+    ExtAttrKindTime = 8;
+  }
+  Kind kind = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"数据类型"
+    },
+    (validate.rules).enum = {defined_only:true, not_in:0}
+  ];
+  string value = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"默认值"
+    },
+    (validate.rules).string = {ignore_empty:true, max_len:100}
+  ];
+  repeated string options = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"Kind=option时的可选项"
+    },
+    (validate.rules).repeated = {ignore_empty:true, unique:true}
+  ];
+  common.v1.Conflict conflict = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    required:["conflict"]
+    description: "更新冲突检测数据 更新数据时必须";
+  }];
+}
