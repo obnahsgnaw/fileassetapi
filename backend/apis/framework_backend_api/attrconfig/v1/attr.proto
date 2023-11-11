@@ -111,9 +111,9 @@ service AttrConfigService{
     };
   }
   // 删除
-  rpc Delete(common.v1.StringIdRequest) returns (google.protobuf.Empty){
+  rpc Delete(common.v1.AttrConfigIdRequest) returns (google.protobuf.Empty){
     option(google.api.http) = {
-      delete: "/v1/attr-configs/{id}";
+      delete: "/v1/attr-configs/{target_id}/{attr}";
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "删除";

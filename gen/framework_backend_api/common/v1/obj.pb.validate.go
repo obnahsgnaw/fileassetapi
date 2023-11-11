@@ -1638,6 +1638,130 @@ var _ interface {
 	ErrorName() string
 } = AttrConfigRequestValidationError{}
 
+// Validate checks the field values on AttrConfigIdRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AttrConfigIdRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AttrConfigIdRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AttrConfigIdRequestMultiError, or nil if none found.
+func (m *AttrConfigIdRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AttrConfigIdRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetTargetId() < 0 {
+		err := AttrConfigIdRequestValidationError{
+			field:  "TargetId",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetAttr()); l < 1 || l > 40 {
+		err := AttrConfigIdRequestValidationError{
+			field:  "Attr",
+			reason: "value length must be between 1 and 40 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return AttrConfigIdRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AttrConfigIdRequestMultiError is an error wrapping multiple validation
+// errors returned by AttrConfigIdRequest.ValidateAll() if the designated
+// constraints aren't met.
+type AttrConfigIdRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AttrConfigIdRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AttrConfigIdRequestMultiError) AllErrors() []error { return m }
+
+// AttrConfigIdRequestValidationError is the validation error returned by
+// AttrConfigIdRequest.Validate if the designated constraints aren't met.
+type AttrConfigIdRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AttrConfigIdRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AttrConfigIdRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AttrConfigIdRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AttrConfigIdRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AttrConfigIdRequestValidationError) ErrorName() string {
+	return "AttrConfigIdRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AttrConfigIdRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAttrConfigIdRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AttrConfigIdRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AttrConfigIdRequestValidationError{}
+
 // Validate checks the field values on AttrConfig with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

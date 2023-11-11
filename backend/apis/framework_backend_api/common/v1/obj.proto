@@ -342,6 +342,7 @@ message AttrConfigPaginateResponse{
 message AttrConfigRequest{
   uint32 target_id = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["target_id"];
       description: "target id";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0}
@@ -351,6 +352,22 @@ message AttrConfigRequest{
       description: "config item";
     },
     (validate.rules).message = {required: true}
+  ];
+}
+message AttrConfigIdRequest{
+  uint32 target_id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["target_id"];
+      description: "target id";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string attr = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["key"];
+      title: "attr";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 40}
   ];
 }
 // 属性配置数据
