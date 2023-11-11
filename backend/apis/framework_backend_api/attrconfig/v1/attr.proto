@@ -14,7 +14,7 @@ service AttrConfigService{
   // 列表 展示所有配置的属性
   rpc Paginate(common.v1.AttrConfigPaginateAllRequest) returns (common.v1.AttrConfigPaginateResponse){
     option(google.api.http) = {
-      get: "/v1/attr-configs";
+      get: "/v1/attr-configs/{target_id}";
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "列表";
@@ -38,8 +38,8 @@ service AttrConfigService{
   // 刷新
   rpc Refresh(common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData){
     option(google.api.http) = {
-      post: "/v1/attr-configs";
-      body:"*"
+      post: "/v1/attr-configs/{target_id}";
+      body:"config"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "刷新";
@@ -63,8 +63,8 @@ service AttrConfigService{
   // 启用
   rpc Enable (common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData) {
     option (google.api.http) = {
-      put: "/v1/attr-configs/enable-state"
-      body:"*"
+      put: "/v1/attr-configs/{target_id}/enable-state"
+      body:"config"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "启用";
@@ -88,8 +88,8 @@ service AttrConfigService{
   // 禁用
   rpc Disable (common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData) {
     option (google.api.http) = {
-      put: "/v1/attr-configs/disable-state"
-      body:"*"
+      put: "/v1/attr-configs/{target_id}/disable-state"
+      body:"config"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "禁用";
@@ -111,9 +111,9 @@ service AttrConfigService{
     };
   }
   // 删除
-  rpc Delete(common.v1.AttrConfigRequest) returns (google.protobuf.Empty){
+  rpc Delete(common.v1.StringIdRequest) returns (google.protobuf.Empty){
     option(google.api.http) = {
-      delete: "/v1/attr-configs";
+      delete: "/v1/attr-configs/{id}";
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "删除";

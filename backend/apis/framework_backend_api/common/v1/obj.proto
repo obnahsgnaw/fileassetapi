@@ -346,12 +346,12 @@ message AttrConfigRequest{
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0}
   ];
-    AttrConfig config =2[
-      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-        description: "config item";
-      },
-      (validate.rules).message = {required: true}
-    ];
+  AttrConfig config = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "config item";
+    },
+    (validate.rules).message = {required: true}
+  ];
 }
 // 属性配置数据
 message AttrConfigData{

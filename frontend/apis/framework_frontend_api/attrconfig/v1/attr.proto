@@ -4,15 +4,14 @@ option go_package = "framework_frontend_api/attrconfig/v1";
 import "framework_frontend_api/common/v1/obj.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 
 service AttrConfigService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
     description: "属性服务";
   };
-  rpc AttrConfigs(google.protobuf.Empty) returns (common.v1.AttrConfigsResponse){
+  rpc AttrConfigs(common.v1.AttrConfigRequest) returns (common.v1.AttrConfigsResponse){
     option(google.api.http) = {
-      get: "/v1/attr-configs";
+      get: "/v1/attr-configs/{target_id}";
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "属性配置";

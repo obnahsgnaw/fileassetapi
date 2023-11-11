@@ -41,7 +41,7 @@ type AttrConfigServiceClient interface {
 	// 禁用
 	Disable(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
 	// 删除
-	Delete(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Delete(ctx context.Context, in *v1.StringIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type attrConfigServiceClient struct {
@@ -88,7 +88,7 @@ func (c *attrConfigServiceClient) Disable(ctx context.Context, in *v1.AttrConfig
 	return out, nil
 }
 
-func (c *attrConfigServiceClient) Delete(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *attrConfigServiceClient) Delete(ctx context.Context, in *v1.StringIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, AttrConfigService_Delete_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -110,7 +110,7 @@ type AttrConfigServiceServer interface {
 	// 禁用
 	Disable(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error)
 	// 删除
-	Delete(context.Context, *v1.AttrConfigRequest) (*emptypb.Empty, error)
+	Delete(context.Context, *v1.StringIdRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedAttrConfigServiceServer should be embedded to have forward compatible implementations.
@@ -129,7 +129,7 @@ func (UnimplementedAttrConfigServiceServer) Enable(context.Context, *v1.AttrConf
 func (UnimplementedAttrConfigServiceServer) Disable(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Disable not implemented")
 }
-func (UnimplementedAttrConfigServiceServer) Delete(context.Context, *v1.AttrConfigRequest) (*emptypb.Empty, error) {
+func (UnimplementedAttrConfigServiceServer) Delete(context.Context, *v1.StringIdRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
@@ -217,7 +217,7 @@ func _AttrConfigService_Disable_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _AttrConfigService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.AttrConfigRequest)
+	in := new(v1.StringIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func _AttrConfigService_Delete_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: AttrConfigService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).Delete(ctx, req.(*v1.AttrConfigRequest))
+		return srv.(AttrConfigServiceServer).Delete(ctx, req.(*v1.StringIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

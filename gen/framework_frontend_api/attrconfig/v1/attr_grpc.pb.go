@@ -12,7 +12,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -28,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AttrConfigServiceClient interface {
-	AttrConfigs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*v1.AttrConfigsResponse, error)
+	AttrConfigs(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigsResponse, error)
 }
 
 type attrConfigServiceClient struct {
@@ -39,7 +38,7 @@ func NewAttrConfigServiceClient(cc grpc.ClientConnInterface) AttrConfigServiceCl
 	return &attrConfigServiceClient{cc}
 }
 
-func (c *attrConfigServiceClient) AttrConfigs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*v1.AttrConfigsResponse, error) {
+func (c *attrConfigServiceClient) AttrConfigs(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigsResponse, error) {
 	out := new(v1.AttrConfigsResponse)
 	err := c.cc.Invoke(ctx, AttrConfigService_AttrConfigs_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -52,14 +51,14 @@ func (c *attrConfigServiceClient) AttrConfigs(ctx context.Context, in *emptypb.E
 // All implementations should embed UnimplementedAttrConfigServiceServer
 // for forward compatibility
 type AttrConfigServiceServer interface {
-	AttrConfigs(context.Context, *emptypb.Empty) (*v1.AttrConfigsResponse, error)
+	AttrConfigs(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigsResponse, error)
 }
 
 // UnimplementedAttrConfigServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedAttrConfigServiceServer struct {
 }
 
-func (UnimplementedAttrConfigServiceServer) AttrConfigs(context.Context, *emptypb.Empty) (*v1.AttrConfigsResponse, error) {
+func (UnimplementedAttrConfigServiceServer) AttrConfigs(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AttrConfigs not implemented")
 }
 
@@ -75,7 +74,7 @@ func RegisterAttrConfigServiceServer(s grpc.ServiceRegistrar, srv AttrConfigServ
 }
 
 func _AttrConfigService_AttrConfigs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(v1.AttrConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -87,7 +86,7 @@ func _AttrConfigService_AttrConfigs_Handler(srv interface{}, ctx context.Context
 		FullMethod: AttrConfigService_AttrConfigs_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).AttrConfigs(ctx, req.(*emptypb.Empty))
+		return srv.(AttrConfigServiceServer).AttrConfigs(ctx, req.(*v1.AttrConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

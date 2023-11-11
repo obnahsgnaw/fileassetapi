@@ -303,6 +303,14 @@ message IntOptionResponse{
   repeated IntOption list = 2;
 }
 // 属性配置数据
+message AttrConfigRequest{
+  uint32 target_id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "target id";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+}
 message AttrConfigsResponse{
   option (validate.ignored) = true;
   repeated AttrConfig attrs = 1[

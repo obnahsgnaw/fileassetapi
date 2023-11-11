@@ -37,7 +37,7 @@
     "application/octet-stream"
   ],
   "paths": {
-    "/v1/attr-configs": {
+    "/v1/attr-configs/{targetId}": {
       "get": {
         "summary": "属性配置",
         "operationId": "AttrConfigService_AttrConfigs",
@@ -97,6 +97,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "targetId",
+            "description": "target id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
         "tags": [
           "AttrConfigService"
         ],
@@ -307,8 +317,7 @@
           },
           "description": "属性配置"
         }
-      },
-      "title": "属性配置数据"
+      }
     },
     "v1ErrorObject": {
       "type": "object",
