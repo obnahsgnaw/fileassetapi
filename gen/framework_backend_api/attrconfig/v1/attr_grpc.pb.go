@@ -33,15 +33,15 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AttrConfigServiceClient interface {
 	// 列表 展示所有配置的属性
-	Paginate(ctx context.Context, in *v1.PaginateAllRequest, opts ...grpc.CallOption) (*v1.AttrConfigPaginateResponse, error)
+	Paginate(ctx context.Context, in *v1.AttrConfigPaginateAllRequest, opts ...grpc.CallOption) (*v1.AttrConfigPaginateResponse, error)
 	// 刷新
-	Refresh(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
+	Refresh(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
 	// 启用
-	Enable(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
+	Enable(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
 	// 禁用
-	Disable(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
+	Disable(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error)
 	// 删除
-	Delete(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Delete(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type attrConfigServiceClient struct {
@@ -52,7 +52,7 @@ func NewAttrConfigServiceClient(cc grpc.ClientConnInterface) AttrConfigServiceCl
 	return &attrConfigServiceClient{cc}
 }
 
-func (c *attrConfigServiceClient) Paginate(ctx context.Context, in *v1.PaginateAllRequest, opts ...grpc.CallOption) (*v1.AttrConfigPaginateResponse, error) {
+func (c *attrConfigServiceClient) Paginate(ctx context.Context, in *v1.AttrConfigPaginateAllRequest, opts ...grpc.CallOption) (*v1.AttrConfigPaginateResponse, error) {
 	out := new(v1.AttrConfigPaginateResponse)
 	err := c.cc.Invoke(ctx, AttrConfigService_Paginate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *attrConfigServiceClient) Paginate(ctx context.Context, in *v1.PaginateA
 	return out, nil
 }
 
-func (c *attrConfigServiceClient) Refresh(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*v1.AttrConfigData, error) {
+func (c *attrConfigServiceClient) Refresh(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error) {
 	out := new(v1.AttrConfigData)
 	err := c.cc.Invoke(ctx, AttrConfigService_Refresh_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -70,7 +70,7 @@ func (c *attrConfigServiceClient) Refresh(ctx context.Context, in *v1.AttrConfig
 	return out, nil
 }
 
-func (c *attrConfigServiceClient) Enable(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*v1.AttrConfigData, error) {
+func (c *attrConfigServiceClient) Enable(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error) {
 	out := new(v1.AttrConfigData)
 	err := c.cc.Invoke(ctx, AttrConfigService_Enable_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -79,7 +79,7 @@ func (c *attrConfigServiceClient) Enable(ctx context.Context, in *v1.AttrConfig,
 	return out, nil
 }
 
-func (c *attrConfigServiceClient) Disable(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*v1.AttrConfigData, error) {
+func (c *attrConfigServiceClient) Disable(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*v1.AttrConfigData, error) {
 	out := new(v1.AttrConfigData)
 	err := c.cc.Invoke(ctx, AttrConfigService_Disable_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -88,7 +88,7 @@ func (c *attrConfigServiceClient) Disable(ctx context.Context, in *v1.AttrConfig
 	return out, nil
 }
 
-func (c *attrConfigServiceClient) Delete(ctx context.Context, in *v1.AttrConfig, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *attrConfigServiceClient) Delete(ctx context.Context, in *v1.AttrConfigRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, AttrConfigService_Delete_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -102,34 +102,34 @@ func (c *attrConfigServiceClient) Delete(ctx context.Context, in *v1.AttrConfig,
 // for forward compatibility
 type AttrConfigServiceServer interface {
 	// 列表 展示所有配置的属性
-	Paginate(context.Context, *v1.PaginateAllRequest) (*v1.AttrConfigPaginateResponse, error)
+	Paginate(context.Context, *v1.AttrConfigPaginateAllRequest) (*v1.AttrConfigPaginateResponse, error)
 	// 刷新
-	Refresh(context.Context, *v1.AttrConfig) (*v1.AttrConfigData, error)
+	Refresh(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error)
 	// 启用
-	Enable(context.Context, *v1.AttrConfig) (*v1.AttrConfigData, error)
+	Enable(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error)
 	// 禁用
-	Disable(context.Context, *v1.AttrConfig) (*v1.AttrConfigData, error)
+	Disable(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error)
 	// 删除
-	Delete(context.Context, *v1.AttrConfig) (*emptypb.Empty, error)
+	Delete(context.Context, *v1.AttrConfigRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedAttrConfigServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedAttrConfigServiceServer struct {
 }
 
-func (UnimplementedAttrConfigServiceServer) Paginate(context.Context, *v1.PaginateAllRequest) (*v1.AttrConfigPaginateResponse, error) {
+func (UnimplementedAttrConfigServiceServer) Paginate(context.Context, *v1.AttrConfigPaginateAllRequest) (*v1.AttrConfigPaginateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Paginate not implemented")
 }
-func (UnimplementedAttrConfigServiceServer) Refresh(context.Context, *v1.AttrConfig) (*v1.AttrConfigData, error) {
+func (UnimplementedAttrConfigServiceServer) Refresh(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
 }
-func (UnimplementedAttrConfigServiceServer) Enable(context.Context, *v1.AttrConfig) (*v1.AttrConfigData, error) {
+func (UnimplementedAttrConfigServiceServer) Enable(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Enable not implemented")
 }
-func (UnimplementedAttrConfigServiceServer) Disable(context.Context, *v1.AttrConfig) (*v1.AttrConfigData, error) {
+func (UnimplementedAttrConfigServiceServer) Disable(context.Context, *v1.AttrConfigRequest) (*v1.AttrConfigData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Disable not implemented")
 }
-func (UnimplementedAttrConfigServiceServer) Delete(context.Context, *v1.AttrConfig) (*emptypb.Empty, error) {
+func (UnimplementedAttrConfigServiceServer) Delete(context.Context, *v1.AttrConfigRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
@@ -145,7 +145,7 @@ func RegisterAttrConfigServiceServer(s grpc.ServiceRegistrar, srv AttrConfigServ
 }
 
 func _AttrConfigService_Paginate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.PaginateAllRequest)
+	in := new(v1.AttrConfigPaginateAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -157,13 +157,13 @@ func _AttrConfigService_Paginate_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: AttrConfigService_Paginate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).Paginate(ctx, req.(*v1.PaginateAllRequest))
+		return srv.(AttrConfigServiceServer).Paginate(ctx, req.(*v1.AttrConfigPaginateAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AttrConfigService_Refresh_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.AttrConfig)
+	in := new(v1.AttrConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -175,13 +175,13 @@ func _AttrConfigService_Refresh_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: AttrConfigService_Refresh_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).Refresh(ctx, req.(*v1.AttrConfig))
+		return srv.(AttrConfigServiceServer).Refresh(ctx, req.(*v1.AttrConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AttrConfigService_Enable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.AttrConfig)
+	in := new(v1.AttrConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -193,13 +193,13 @@ func _AttrConfigService_Enable_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: AttrConfigService_Enable_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).Enable(ctx, req.(*v1.AttrConfig))
+		return srv.(AttrConfigServiceServer).Enable(ctx, req.(*v1.AttrConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AttrConfigService_Disable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.AttrConfig)
+	in := new(v1.AttrConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -211,13 +211,13 @@ func _AttrConfigService_Disable_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: AttrConfigService_Disable_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).Disable(ctx, req.(*v1.AttrConfig))
+		return srv.(AttrConfigServiceServer).Disable(ctx, req.(*v1.AttrConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AttrConfigService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.AttrConfig)
+	in := new(v1.AttrConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func _AttrConfigService_Delete_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: AttrConfigService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AttrConfigServiceServer).Delete(ctx, req.(*v1.AttrConfig))
+		return srv.(AttrConfigServiceServer).Delete(ctx, req.(*v1.AttrConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

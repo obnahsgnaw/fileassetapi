@@ -37,7 +37,7 @@ var (
 )
 
 func request_AttrConfigService_Paginate_0(ctx context.Context, marshaler runtime.Marshaler, client AttrConfigServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.PaginateAllRequest
+	var protoReq commonv1.AttrConfigPaginateAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -53,7 +53,7 @@ func request_AttrConfigService_Paginate_0(ctx context.Context, marshaler runtime
 }
 
 func local_request_AttrConfigService_Paginate_0(ctx context.Context, marshaler runtime.Marshaler, server AttrConfigServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.PaginateAllRequest
+	var protoReq commonv1.AttrConfigPaginateAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -69,7 +69,7 @@ func local_request_AttrConfigService_Paginate_0(ctx context.Context, marshaler r
 }
 
 func request_AttrConfigService_Refresh_0(ctx context.Context, marshaler runtime.Marshaler, client AttrConfigServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -86,7 +86,7 @@ func request_AttrConfigService_Refresh_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_AttrConfigService_Refresh_0(ctx context.Context, marshaler runtime.Marshaler, server AttrConfigServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -103,7 +103,7 @@ func local_request_AttrConfigService_Refresh_0(ctx context.Context, marshaler ru
 }
 
 func request_AttrConfigService_Enable_0(ctx context.Context, marshaler runtime.Marshaler, client AttrConfigServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -120,7 +120,7 @@ func request_AttrConfigService_Enable_0(ctx context.Context, marshaler runtime.M
 }
 
 func local_request_AttrConfigService_Enable_0(ctx context.Context, marshaler runtime.Marshaler, server AttrConfigServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -137,7 +137,7 @@ func local_request_AttrConfigService_Enable_0(ctx context.Context, marshaler run
 }
 
 func request_AttrConfigService_Disable_0(ctx context.Context, marshaler runtime.Marshaler, client AttrConfigServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -154,7 +154,7 @@ func request_AttrConfigService_Disable_0(ctx context.Context, marshaler runtime.
 }
 
 func local_request_AttrConfigService_Disable_0(ctx context.Context, marshaler runtime.Marshaler, server AttrConfigServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -175,7 +175,7 @@ var (
 )
 
 func request_AttrConfigService_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client AttrConfigServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -191,7 +191,7 @@ func request_AttrConfigService_Delete_0(ctx context.Context, marshaler runtime.M
 }
 
 func local_request_AttrConfigService_Delete_0(ctx context.Context, marshaler runtime.Marshaler, server AttrConfigServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.AttrConfig
+	var protoReq commonv1.AttrConfigRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

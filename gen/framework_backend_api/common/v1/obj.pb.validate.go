@@ -1343,6 +1343,301 @@ var _ interface {
 	ErrorName() string
 } = PositionValidationError{}
 
+// Validate checks the field values on AttrConfigPaginateAllRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AttrConfigPaginateAllRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AttrConfigPaginateAllRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AttrConfigPaginateAllRequestMultiError, or nil if none found.
+func (m *AttrConfigPaginateAllRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AttrConfigPaginateAllRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetTargetId() < 0 {
+		err := AttrConfigPaginateAllRequestValidationError{
+			field:  "TargetId",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for All
+
+	if m.GetPage() < 0 {
+		err := AttrConfigPaginateAllRequestValidationError{
+			field:  "Page",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetLimit() < 0 {
+		err := AttrConfigPaginateAllRequestValidationError{
+			field:  "Limit",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Keyword
+
+	// no validation rules for Sort
+
+	if len(errors) > 0 {
+		return AttrConfigPaginateAllRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AttrConfigPaginateAllRequestMultiError is an error wrapping multiple
+// validation errors returned by AttrConfigPaginateAllRequest.ValidateAll() if
+// the designated constraints aren't met.
+type AttrConfigPaginateAllRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AttrConfigPaginateAllRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AttrConfigPaginateAllRequestMultiError) AllErrors() []error { return m }
+
+// AttrConfigPaginateAllRequestValidationError is the validation error returned
+// by AttrConfigPaginateAllRequest.Validate if the designated constraints
+// aren't met.
+type AttrConfigPaginateAllRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AttrConfigPaginateAllRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AttrConfigPaginateAllRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AttrConfigPaginateAllRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AttrConfigPaginateAllRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AttrConfigPaginateAllRequestValidationError) ErrorName() string {
+	return "AttrConfigPaginateAllRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AttrConfigPaginateAllRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAttrConfigPaginateAllRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AttrConfigPaginateAllRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AttrConfigPaginateAllRequestValidationError{}
+
+// Validate checks the field values on AttrConfigRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *AttrConfigRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AttrConfigRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AttrConfigRequestMultiError, or nil if none found.
+func (m *AttrConfigRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AttrConfigRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetTargetId() < 0 {
+		err := AttrConfigRequestValidationError{
+			field:  "TargetId",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetConfig() == nil {
+		err := AttrConfigRequestValidationError{
+			field:  "Config",
+			reason: "value is required",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if all {
+		switch v := interface{}(m.GetConfig()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AttrConfigRequestValidationError{
+					field:  "Config",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AttrConfigRequestValidationError{
+					field:  "Config",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetConfig()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AttrConfigRequestValidationError{
+				field:  "Config",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return AttrConfigRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AttrConfigRequestMultiError is an error wrapping multiple validation errors
+// returned by AttrConfigRequest.ValidateAll() if the designated constraints
+// aren't met.
+type AttrConfigRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AttrConfigRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AttrConfigRequestMultiError) AllErrors() []error { return m }
+
+// AttrConfigRequestValidationError is the validation error returned by
+// AttrConfigRequest.Validate if the designated constraints aren't met.
+type AttrConfigRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AttrConfigRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AttrConfigRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AttrConfigRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AttrConfigRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AttrConfigRequestValidationError) ErrorName() string {
+	return "AttrConfigRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AttrConfigRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAttrConfigRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AttrConfigRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AttrConfigRequestValidationError{}
+
 // Validate checks the field values on AttrConfig with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

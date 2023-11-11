@@ -12,7 +12,7 @@ service AttrConfigService{
     description: "属性配置管理";
   };
   // 列表 展示所有配置的属性
-  rpc Paginate(common.v1.PaginateAllRequest) returns (common.v1.AttrConfigPaginateResponse){
+  rpc Paginate(common.v1.AttrConfigPaginateAllRequest) returns (common.v1.AttrConfigPaginateResponse){
     option(google.api.http) = {
       get: "/v1/attr-configs";
     };
@@ -36,7 +36,7 @@ service AttrConfigService{
     };
   }
   // 刷新
-  rpc Refresh(common.v1.AttrConfig) returns (common.v1.AttrConfigData){
+  rpc Refresh(common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData){
     option(google.api.http) = {
       post: "/v1/attr-configs";
       body:"*"
@@ -61,7 +61,7 @@ service AttrConfigService{
     };
   }
   // 启用
-  rpc Enable (common.v1.AttrConfig) returns (common.v1.AttrConfigData) {
+  rpc Enable (common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData) {
     option (google.api.http) = {
       put: "/v1/attr-configs/enable-state"
       body:"*"
@@ -86,7 +86,7 @@ service AttrConfigService{
     };
   }
   // 禁用
-  rpc Disable (common.v1.AttrConfig) returns (common.v1.AttrConfigData) {
+  rpc Disable (common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData) {
     option (google.api.http) = {
       put: "/v1/attr-configs/disable-state"
       body:"*"
@@ -111,7 +111,7 @@ service AttrConfigService{
     };
   }
   // 删除
-  rpc Delete(common.v1.AttrConfig) returns (google.protobuf.Empty){
+  rpc Delete(common.v1.AttrConfigRequest) returns (google.protobuf.Empty){
     option(google.api.http) = {
       delete: "/v1/attr-configs";
     };

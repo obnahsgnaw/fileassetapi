@@ -104,6 +104,14 @@
         },
         "parameters": [
           {
+            "name": "targetId",
+            "description": "target id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
             "name": "all",
             "description": "All resource records, no paginate if support",
             "in": "query",
@@ -214,21 +222,29 @@
         },
         "parameters": [
           {
-            "name": "attr",
+            "name": "targetId",
+            "description": "target id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "config.attr",
             "description": "attr",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "title",
+            "name": "config.title",
             "description": "标题",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "kind",
+            "name": "config.kind",
             "description": "数据类型",
             "in": "query",
             "required": false,
@@ -247,14 +263,14 @@
             "default": "ExtAttrKindNone"
           },
           {
-            "name": "value",
+            "name": "config.value",
             "description": "默认值",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "options",
+            "name": "config.options",
             "description": "Kind=option时的可选项",
             "in": "query",
             "required": false,
@@ -265,7 +281,7 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "conflict.value",
+            "name": "config.conflict.value",
             "description": "Value\n\nThe conflict value of the resource",
             "in": "query",
             "required": true,
@@ -349,7 +365,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1AttrConfig"
+              "$ref": "#/definitions/v1AttrConfigRequest"
             }
           }
         ],
@@ -432,7 +448,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1AttrConfig"
+              "$ref": "#/definitions/v1AttrConfigRequest"
             }
           }
         ],
@@ -515,7 +531,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1AttrConfig"
+              "$ref": "#/definitions/v1AttrConfigRequest"
             }
           }
         ],
@@ -908,6 +924,21 @@
         }
       },
       "title": "属性配置响应"
+    },
+    "v1AttrConfigRequest": {
+      "type": "object",
+      "properties": {
+        "targetId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "target id"
+        },
+        "config": {
+          "$ref": "#/definitions/v1AttrConfig",
+          "description": "config item"
+        }
+      },
+      "title": "属性配置数据"
     },
     "v1Config": {
       "type": "object",

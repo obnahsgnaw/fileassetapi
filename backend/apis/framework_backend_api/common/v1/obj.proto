@@ -302,11 +302,56 @@ message IntOptionResponse{
   option (validate.ignored) = true; // 忽略验证
   repeated IntOption list = 2;
 }
+// 属性配置请求
+message AttrConfigPaginateAllRequest{
+  uint32 target_id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "target id";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  bool all = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "All resource records, no paginate if support";
+  }];
+  uint32 page = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Page number, default=1";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  uint32 limit = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Page size, default=10";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string keyword = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Keyword search, like:keyword=xx，keyword=id=1|name=xxx";
+  }];
+  string sort = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Sort list, like: sort=+a,-b,+c,-d";
+  }];
+}
 // 属性配置响应
 message AttrConfigPaginateResponse{
   option (validate.ignored) = true;
   common.v1.PaginateMeta meta = 1;
   repeated AttrConfigData list = 2;
+}
+// 属性配置数据
+message AttrConfigRequest{
+  uint32 target_id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "target id";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+    AttrConfig config =2[
+      (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+        description: "config item";
+      },
+      (validate.rules).message = {required: true}
+    ];
 }
 // 属性配置数据
 message AttrConfigData{
