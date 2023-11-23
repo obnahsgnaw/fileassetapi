@@ -35,8 +35,7 @@
 2. 设置远程 frameworkapi 仓库地址 `git remote add github git@github.com:obnahsgnaw/frameworkapi.git`
 3. 拉取 framework 分支 `git fetch github framework:framework`
 4. 创建本地main分支 `git checkout -b main framework` 如果已存在可以 rebase framework 分支 `git rebase framework`
-5. 替换项目包名，全局搜索 `github.com/obnahsgnaw/frameworkapi` 替换为自己的项目的包名，⚠️别修改本README.md的内容
-6. 修改 backend/apis/framework_backend_api, 更改目录名称为自己项目关系的名称 xxx_backend_api, 并调整里面proto的packange和go_package, proto文件搜索 framework_ 替换为 xxx_
-7. 同理还有 `frontend` `tcp` `websocket`
-8. 删除gen目录下内容，`make all` 重新生成文件，并全局替换 `framework_` 为 自定义的 `xxx_`
-9. 添加自定义的相关proto
+5. 执行 `make package`, 报名根据目录名生成
+6. 执行 `make all` 重新生成pb文件
+7. git 保存
+8. 添加自定义的相关proto
