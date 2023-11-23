@@ -33,8 +33,8 @@
 ### 使用步骤
 1. 初始化控的git项目 `git init`
 2. 设置远程 frameworkapi 仓库地址 `git remote add github git@github.com:obnahsgnaw/frameworkapi.git`
-3. 拉取 framework 分支 `git fetch github framework:framework`
-4. 创建本地main分支 `git checkout -b main framework` 如果已存在可以 rebase framework 分支 `git rebase framework`
+3. 拉取 framework 分支 `git fetch github framework-v1:framework-v1`
+4. 创建本地main分支 `git checkout -b main framework-v1` 如果已存在可以 rebase framework 分支 `git rebase framework-v1`
 5. 执行 `make package`, 报名根据目录名生成
 6. 执行 `make all` 重新生成pb文件
 7. git 保存
