@@ -101,12 +101,13 @@ func initProto(protoPkgFrom, protoPkgTo, dir string) error {
 		return err
 	}
 	for _, de := range sub {
+		file := filepath.Join(dir, de.Name())
 		if de.IsDir() {
-			if err = initProto(protoPkgFrom, protoPkgTo, dir+"/"+de.Name()); err != nil {
+			if err = initProto(file, protoPkgFrom, protoPkgTo); err != nil {
 				return err
 			}
 		} else {
-			if err = renameProtoPackage(dir+"/"+de.Name(), protoPkgFrom, protoPkgTo); err != nil {
+			if err = renameProtoPackage(file, protoPkgFrom, protoPkgTo); err != nil {
 				return err
 			}
 		}
