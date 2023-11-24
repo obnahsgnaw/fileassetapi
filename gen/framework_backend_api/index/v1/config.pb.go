@@ -60,7 +60,6 @@ func (*ConfigRequest) Descriptor() ([]byte, []int) {
 	return file_framework_backend_api_index_v1_config_proto_rawDescGZIP(), []int{0}
 }
 
-// TODO 8 change  to  project config and controller
 type Config struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

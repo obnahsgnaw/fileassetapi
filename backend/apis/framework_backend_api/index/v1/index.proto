@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 import "framework_backend_api/common/v1/obj.proto";
 import "validate/validate.proto";
 
-// swagger 文档定义 TODO 7 change  to  project doc description
+// swagger 文档定义
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   // 文档基本信息
   info: {

@@ -339,8 +339,7 @@
           "type": "boolean",
           "description": "调试模式"
         }
-      },
-      "title": "TODO 8 change  to  project config and controller"
+      }
     },
     "v1ErrorObject": {
       "type": "object",
