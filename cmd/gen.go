@@ -25,32 +25,31 @@ func main() {
 		os.Exit(2)
 	}
 	if err = renameGoMod(currentDir, pkg); err != nil {
-		println(err.Error())
+		println("rename go.mod failed,", err.Error())
 		os.Exit(3)
 	}
 	if err = renameDoc(currentDir, pkg); err != nil {
-		println(err.Error())
+		println("rename doc failed,", err.Error())
 		os.Exit(3)
 	}
 	if err = renameApi(currentDir, pkg, project, "backend", "backend"); err != nil {
-		println(err.Error())
+		println("rename backend api failed,", err.Error())
 		os.Exit(4)
 	}
 	if err = renameApi(currentDir, pkg, project, "frontend", "frontend"); err != nil {
-		println(err.Error())
+		println("rename frontend api failed,", err.Error())
 		os.Exit(5)
 	}
 	if err = renameApi(currentDir, pkg, project, "tcp", "tcp"); err != nil {
-		println(err.Error())
+		println("rename tcp api failed,", err.Error())
 		os.Exit(6)
 	}
 	if err = renameApi(currentDir, pkg, project, "websocket", "wss"); err != nil {
-		println(err.Error())
+		println("rename websocket api failed,", err.Error())
 		os.Exit(7)
 	}
-	err = os.RemoveAll(filepath.Join(currentDir, "gen"))
-	if err != nil {
-		println(err.Error())
+	if err = os.RemoveAll(filepath.Join(currentDir, "gen")); err != nil {
+		println("remove gen dir failed,", err.Error())
 		os.Exit(8)
 	}
 }
