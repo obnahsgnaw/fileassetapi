@@ -95,7 +95,7 @@ func docBackendSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "doc/backend.swagger.json", size: 11465, mode: os.FileMode(420), modTime: time.Unix(1701093013, 0)}
+	info := bindataFileInfo{name: "doc/backend.swagger.json", size: 11465, mode: os.FileMode(420), modTime: time.Unix(1701093571, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -115,7 +115,7 @@ func docFrontendSwaggerJson() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "doc/frontend.swagger.json", size: 6833, mode: os.FileMode(420), modTime: time.Unix(1701093013, 0)}
+	info := bindataFileInfo{name: "doc/frontend.swagger.json", size: 6833, mode: os.FileMode(420), modTime: time.Unix(1701093571, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -135,7 +135,7 @@ func docTcpHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "doc/tcp.html", size: 15168, mode: os.FileMode(420), modTime: time.Unix(1701093014, 0)}
+	info := bindataFileInfo{name: "doc/tcp.html", size: 15168, mode: os.FileMode(420), modTime: time.Unix(1701093571, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -155,7 +155,7 @@ func docWssHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "doc/wss.html", size: 10447, mode: os.FileMode(420), modTime: time.Unix(1701093014, 0)}
+	info := bindataFileInfo{name: "doc/wss.html", size: 10447, mode: os.FileMode(420), modTime: time.Unix(1701093571, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
