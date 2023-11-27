@@ -132,6 +132,20 @@ message PaginateMeta {
   uint32 limit = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Current page size"
   }];
+  PaginateConfig config = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "列表配置, page=1时有配置，也可能为nil"
+  }];
+}
+message PaginateConfig{
+  repeated StringOption keyword_options = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "关键字类型选项，如果为空则只有关键字搜索"
+  }];
+  map<string,bool> sort_columns = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "可排序列"
+  }];
+  map<string,string> option_columns = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "可过滤选项列, key=列，value=option选项列表的key"
+  }];
 }
 // 分页查询请求
 message PaginateRequest{

@@ -811,6 +811,144 @@ var _ interface {
 	ErrorName() string
 } = ConflictValidationError{}
 
+// Validate checks the field values on PaginateConfig with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PaginateConfig) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PaginateConfig with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PaginateConfigMultiError,
+// or nil if none found.
+func (m *PaginateConfig) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PaginateConfig) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetKeywordOptions() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, PaginateConfigValidationError{
+						field:  fmt.Sprintf("KeywordOptions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, PaginateConfigValidationError{
+						field:  fmt.Sprintf("KeywordOptions[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PaginateConfigValidationError{
+					field:  fmt.Sprintf("KeywordOptions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for SortColumns
+
+	// no validation rules for OptionColumns
+
+	if len(errors) > 0 {
+		return PaginateConfigMultiError(errors)
+	}
+
+	return nil
+}
+
+// PaginateConfigMultiError is an error wrapping multiple validation errors
+// returned by PaginateConfig.ValidateAll() if the designated constraints
+// aren't met.
+type PaginateConfigMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PaginateConfigMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PaginateConfigMultiError) AllErrors() []error { return m }
+
+// PaginateConfigValidationError is the validation error returned by
+// PaginateConfig.Validate if the designated constraints aren't met.
+type PaginateConfigValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PaginateConfigValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PaginateConfigValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PaginateConfigValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PaginateConfigValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PaginateConfigValidationError) ErrorName() string { return "PaginateConfigValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PaginateConfigValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPaginateConfig.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PaginateConfigValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PaginateConfigValidationError{}
+
 // Validate checks the field values on PaginateRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
