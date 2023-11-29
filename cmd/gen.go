@@ -48,9 +48,18 @@ func main() {
 		println("rename websocket api failed,", err.Error())
 		os.Exit(7)
 	}
-	if err = os.RemoveAll(filepath.Join(currentDir, "gen")); err != nil {
-		println("remove gen dir failed,", err.Error())
+	if dirEt, err1 := os.ReadDir(filepath.Join(currentDir, "gen")); err1 != nil {
+		println("read gen dir failed,", err1.Error())
 		os.Exit(8)
+	} else {
+		for _, dd := range dirEt {
+			if strings.HasPrefix(dd.Name(), "framework") {
+				if err = os.RemoveAll(filepath.Join(currentDir, "gen", dd.Name())); err != nil {
+					println("remove gen framework dir failed,", err.Error())
+					os.Exit(9)
+				}
+			}
+		}
 	}
 }
 func renameGoMod(currentDir, pkg string) error {
@@ -88,8 +97,27 @@ func renameApi(currentDir, projectPackage, projectName, dirName, kind string) er
 	protoPkgTo := projectName + "_" + kind + "_api"
 	apiDir := filepath.Join(currentDir, dirName, "apis", protoPkgFrom)
 	toDir := filepath.Join(currentDir, dirName, "apis", protoPkgTo)
-	if err := os.Rename(apiDir, toDir); err != nil {
-		return err
+
+	if _, err := os.Stat(toDir); err != nil && os.IsNotExist(err) {
+		if err = os.Rename(apiDir, toDir); err != nil {
+			return err
+		}
+	} else {
+		// 存在则移动
+		if _, err = os.Stat(apiDir); err == nil {
+			if dirEt, err1 := os.ReadDir(apiDir); err1 != nil {
+				return err1
+			} else {
+				for _, dd := range dirEt {
+					if err = os.Rename(filepath.Join(apiDir, dd.Name()), filepath.Join(toDir, dd.Name())); err != nil {
+						return err
+					}
+				}
+				if err = os.Remove(apiDir); err != nil {
+					return err
+				}
+			}
+		}
 	}
 	// init proto
 	return initProto(protoPkgFrom, protoPkgTo, toDir)
