@@ -1,0 +1,136 @@
+syntax = "proto3";
+package fileasset_backend_api.attrconfig.v1;
+option go_package = "fileasset_backend_api/attrconfig/v1";
+//import "fileasset_backend_api/common/v1/obj.proto";
+//import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/api/annotations.proto";
+//import "google/protobuf/empty.proto";
+
+// 账户属性配置管理
+//service AttrConfigService{
+//  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+//    description: "属性配置管理";
+//  };
+//  // 列表 展示所有配置的属性
+//  rpc Paginate(common.v1.AttrConfigPaginateAllRequest) returns (common.v1.AttrConfigPaginateResponse){
+//    option(google.api.http) = {
+//      get: "/v1/attr-configs/{target_id}";
+//    };
+//    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+//      summary: "列表";
+//      description: "展示所有或分页的属性配置";
+//      security:{
+//        security_requirement:{
+//          key:"AppId"
+//        }
+//        security_requirement:{
+//          key:"BearerToken"
+//        }
+//      }
+//      extensions:{
+//        key: "x-order";
+//        value: {
+//          number_value: 1
+//        }
+//      }
+//    };
+//  }
+//  // 刷新
+//  rpc Refresh(common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData){
+//    option(google.api.http) = {
+//      post: "/v1/attr-configs/{target_id}";
+//      body:"config"
+//    };
+//    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+//      summary: "刷新";
+//      description: "有则更新无则创建";
+//      security:{
+//        security_requirement:{
+//          key:"AppId"
+//        }
+//        security_requirement:{
+//          key:"BearerToken"
+//        }
+//      }
+//      extensions:{
+//        key: "x-order";
+//        value: {
+//          number_value: 2
+//        }
+//      }
+//    };
+//  }
+//  // 启用
+//  rpc Enable (common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData) {
+//    option (google.api.http) = {
+//      put: "/v1/attr-configs/{target_id}/enable-state"
+//      body:"config"
+//    };
+//    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+//      summary: "启用";
+//      description: "启用";
+//      security:{
+//        security_requirement:{
+//          key:"AppId"
+//        }
+//        security_requirement:{
+//          key:"BearerToken"
+//        }
+//      }
+//      extensions:{
+//        key: "x-order";
+//        value: {
+//          number_value: 3
+//        }
+//      }
+//    };
+//  }
+//  // 禁用
+//  rpc Disable (common.v1.AttrConfigRequest) returns (common.v1.AttrConfigData) {
+//    option (google.api.http) = {
+//      put: "/v1/attr-configs/{target_id}/disable-state"
+//      body:"config"
+//    };
+//    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+//      summary: "禁用";
+//      description: "禁用";
+//      security:{
+//        security_requirement:{
+//          key:"AppId"
+//        }
+//        security_requirement:{
+//          key:"BearerToken"
+//        }
+//      }
+//      extensions:{
+//        key: "x-order";
+//        value: {
+//          number_value: 4
+//        }
+//      }
+//    };
+//  }
+//  // 删除
+//  rpc Delete(common.v1.AttrConfigIdRequest) returns (google.protobuf.Empty){
+//    option(google.api.http) = {
+//      delete: "/v1/attr-configs/{target_id}/{attr}";
+//    };
+//    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+//      summary: "删除";
+//      security:{
+//        security_requirement:{
+//          key:"AppId"
+//        }
+//        security_requirement:{
+//          key:"BearerToken"
+//        }
+//      }
+//      extensions:{
+//        key: "x-order";
+//        value: {
+//          number_value: 1
+//        }
+//      }
+//    };
+//  }
+//}

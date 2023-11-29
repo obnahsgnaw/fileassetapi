@@ -13,7 +13,6 @@ service AssetService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
     description: "文件上传";
   };
-  // rpc 方法， restful 接口
   rpc ClearCache (ClearCacheRequest) returns (ClearCacheResponse) {
     option (google.api.http) = {
       delete: "/v1/upload-caches"

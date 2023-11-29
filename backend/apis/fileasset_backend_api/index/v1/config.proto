@@ -48,7 +48,6 @@ service ConfigService{
   }
 }
 message ConfigRequest{}
-// TODO 8 change  to  project config and controller
 message Config{
   bool debug = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {

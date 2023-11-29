@@ -302,3 +302,64 @@ message IntOptionResponse{
   option (validate.ignored) = true; // 忽略验证
   repeated IntOption list = 2;
 }
+// 属性配置数据
+message AttrConfigRequest{
+  uint32 target_id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "target id";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+}
+message AttrConfigsResponse{
+  option (validate.ignored) = true;
+  repeated AttrConfig attrs = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"属性配置"
+    }
+  ];
+}
+message AttrConfig{
+  option (validate.ignored) = true;
+  string attr = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"属性key"
+    },
+    (validate.rules).string = {ignore_empty:false, max_len:100}
+  ];
+  string title = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"标题"
+    },
+    (validate.rules).string = {ignore_empty:false, max_len:100}
+  ];
+  enum Kind{
+    ExtAttrKindNone = 0;
+    ExtAttrKindText = 1;
+    ExtAttrKindInt = 2;
+    ExtAttrKindFloat = 3;
+    ExtAttrKindBool = 4;
+    ExtAttrKindOption = 5;
+    ExtAttrKindDatetime = 6;
+    ExtAttrKindDate = 7;
+    ExtAttrKindTime = 8;
+  }
+  Kind kind = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"数据类型"
+    },
+    (validate.rules).enum = {defined_only:true, not_in:0}
+  ];
+  string value = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"默认值"
+    },
+    (validate.rules).string = {ignore_empty:false, max_len:100}
+  ];
+  repeated string options = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description:"Kind=option时的可选项"
+    },
+    (validate.rules).repeated = {ignore_empty:true, unique:true}
+  ];
+}

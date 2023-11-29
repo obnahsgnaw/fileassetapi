@@ -11,6 +11,17 @@ service AssetService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
     description: "文件资源";
   };
+  // 上传
+  rpc Upload(UploadRequest) returns (UploadResponse) {
+    option (google.api.http) = {
+      post: "/v1/upload-files/{key}"
+      body:"data"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "上传";
+      description: "上传文件";
+    };
+  }
   // 预览
   rpc View (AssetViewRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
@@ -21,15 +32,14 @@ service AssetService{
       description: "预览上传文件";
     };
   }
-  // 上传
-  rpc Upload(UploadRequest) returns (UploadResponse) {
+  // 下载
+  rpc Download (AssetViewRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v1/upload-files/{key}"
-      body:"data"
+      get: "/v1/download-files/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "上传";
-      description: "上传文件";
+      summary: "下载";
+      description: "下载文件";
     };
   }
 }

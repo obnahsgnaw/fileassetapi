@@ -20,18 +20,21 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AssetService_View_FullMethodName   = "/fileasset_frontend_api.asset.v1.AssetService/View"
-	AssetService_Upload_FullMethodName = "/fileasset_frontend_api.asset.v1.AssetService/Upload"
+	AssetService_Upload_FullMethodName   = "/fileasset_frontend_api.asset.v1.AssetService/Upload"
+	AssetService_View_FullMethodName     = "/fileasset_frontend_api.asset.v1.AssetService/View"
+	AssetService_Download_FullMethodName = "/fileasset_frontend_api.asset.v1.AssetService/Download"
 )
 
 // AssetServiceClient is the client API for AssetService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AssetServiceClient interface {
-	// 预览
-	View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 上传
 	Upload(ctx context.Context, in *UploadRequest, opts ...grpc.CallOption) (*UploadResponse, error)
+	// 预览
+	View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// 下载
+	Download(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type assetServiceClient struct {
@@ -40,15 +43,6 @@ type assetServiceClient struct {
 
 func NewAssetServiceClient(cc grpc.ClientConnInterface) AssetServiceClient {
 	return &assetServiceClient{cc}
-}
-
-func (c *assetServiceClient) View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, AssetService_View_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *assetServiceClient) Upload(ctx context.Context, in *UploadRequest, opts ...grpc.CallOption) (*UploadResponse, error) {
@@ -60,25 +54,48 @@ func (c *assetServiceClient) Upload(ctx context.Context, in *UploadRequest, opts
 	return out, nil
 }
 
+func (c *assetServiceClient) View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AssetService_View_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *assetServiceClient) Download(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AssetService_Download_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AssetServiceServer is the server API for AssetService service.
 // All implementations should embed UnimplementedAssetServiceServer
 // for forward compatibility
 type AssetServiceServer interface {
-	// 预览
-	View(context.Context, *AssetViewRequest) (*emptypb.Empty, error)
 	// 上传
 	Upload(context.Context, *UploadRequest) (*UploadResponse, error)
+	// 预览
+	View(context.Context, *AssetViewRequest) (*emptypb.Empty, error)
+	// 下载
+	Download(context.Context, *AssetViewRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedAssetServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedAssetServiceServer struct {
 }
 
+func (UnimplementedAssetServiceServer) Upload(context.Context, *UploadRequest) (*UploadResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Upload not implemented")
+}
 func (UnimplementedAssetServiceServer) View(context.Context, *AssetViewRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method View not implemented")
 }
-func (UnimplementedAssetServiceServer) Upload(context.Context, *UploadRequest) (*UploadResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Upload not implemented")
+func (UnimplementedAssetServiceServer) Download(context.Context, *AssetViewRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Download not implemented")
 }
 
 // UnsafeAssetServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -90,24 +107,6 @@ type UnsafeAssetServiceServer interface {
 
 func RegisterAssetServiceServer(s grpc.ServiceRegistrar, srv AssetServiceServer) {
 	s.RegisterService(&AssetService_ServiceDesc, srv)
-}
-
-func _AssetService_View_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AssetViewRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AssetServiceServer).View(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AssetService_View_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AssetServiceServer).View(ctx, req.(*AssetViewRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _AssetService_Upload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -128,6 +127,42 @@ func _AssetService_Upload_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AssetService_View_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssetViewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AssetServiceServer).View(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AssetService_View_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AssetServiceServer).View(ctx, req.(*AssetViewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AssetService_Download_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssetViewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AssetServiceServer).Download(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AssetService_Download_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AssetServiceServer).Download(ctx, req.(*AssetViewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AssetService_ServiceDesc is the grpc.ServiceDesc for AssetService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -136,12 +171,16 @@ var AssetService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AssetServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "Upload",
+			Handler:    _AssetService_Upload_Handler,
+		},
+		{
 			MethodName: "View",
 			Handler:    _AssetService_View_Handler,
 		},
 		{
-			MethodName: "Upload",
-			Handler:    _AssetService_Upload_Handler,
+			MethodName: "Download",
+			Handler:    _AssetService_Download_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

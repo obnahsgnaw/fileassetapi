@@ -1,0 +1,19 @@
+syntax = "proto3";
+package fileasset_backend_api.download.v1;
+option go_package = "fileasset_backend_api/download/v1";
+
+// 文件下载
+service DownloadService{
+  // 获取特定配置的下载key
+  rpc FetchKey (FetchKeyRequest) returns (FetchKeyResponse) {}
+}
+message FetchKeyRequest{
+  string module = 1; // 模块标识
+  string target = 2; // 文件标识
+  uint32 ttl = 3;    // url过期时间
+  uint32 count = 4;  // 下载次数
+}
+
+message FetchKeyResponse{
+  string key = 1;
+}

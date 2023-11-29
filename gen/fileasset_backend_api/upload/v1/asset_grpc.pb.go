@@ -30,7 +30,6 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AssetServiceClient interface {
-	// rpc 方法， restful 接口
 	ClearCache(ctx context.Context, in *ClearCacheRequest, opts ...grpc.CallOption) (*ClearCacheResponse, error)
 	Paginate(ctx context.Context, in *v1.PaginateRequest, opts ...grpc.CallOption) (*PaginateResponse, error)
 	Delete(ctx context.Context, in *v1.StringIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -75,7 +74,6 @@ func (c *assetServiceClient) Delete(ctx context.Context, in *v1.StringIdRequest,
 // All implementations should embed UnimplementedAssetServiceServer
 // for forward compatibility
 type AssetServiceServer interface {
-	// rpc 方法， restful 接口
 	ClearCache(context.Context, *ClearCacheRequest) (*ClearCacheResponse, error)
 	Paginate(context.Context, *v1.PaginateRequest) (*PaginateResponse, error)
 	Delete(context.Context, *v1.StringIdRequest) (*emptypb.Empty, error)

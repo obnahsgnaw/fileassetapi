@@ -65,7 +65,7 @@ changelog:
 .PHONY: backend-api
 backend-api:
 	@echo "Generate backend pb file..."
-	@cd backend && buf lint apis --error-format=json && buf generate apis --template buf.backend.gen.yaml
+	@cd backend && buf lint apis --error-format=json && buf generate apis --template buf.gen.yaml
 	@protoc -I ./backend/apis \
     -I ./backend/vendors \
     --openapiv2_out=logtostderr=true,allow_merge=true,disable_default_errors=true,merge_file_name=backend:./doc \
@@ -75,7 +75,7 @@ backend-api:
 .PHONY: frontend-api
 frontend-api:
 	@echo "Generate frontend pb file..."
-	@cd frontend && buf lint apis --error-format=json && buf generate apis --template buf.frontend.gen.yaml
+	@cd frontend && buf lint apis --error-format=json && buf generate apis --template buf.gen.yaml
 	@protoc -I ./frontend/apis \
     -I ./frontend/vendors \
     --openapiv2_out=logtostderr=true,allow_merge=true,disable_default_errors=true,merge_file_name=frontend:./doc \
@@ -115,3 +115,7 @@ wss-socket:
     --doc_out=./doc --doc_opt=html,wss.html \
     ./websocket/apis/*/*/v*/*.proto
 	@echo "Done"
+
+.PHONY: package
+package:
+	@go run cmd/gen.go

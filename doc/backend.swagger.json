@@ -20,6 +20,9 @@
       "description": "选项管理"
     },
     {
+      "name": "DownloadService"
+    },
+    {
       "name": "ConfigService",
       "description": "动态配置"
     },
@@ -597,6 +600,22 @@
     }
   },
   "definitions": {
+    "fileasset_backend_apidownloadv1FetchKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "fileasset_backend_apiuploadv1FetchKeyResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
+    },
     "v1ClearCacheResponse": {
       "type": "object"
     },
@@ -607,8 +626,7 @@
           "type": "boolean",
           "description": "调试模式"
         }
-      },
-      "title": "TODO 8 change  to  project config and controller"
+      }
     },
     "v1ConfirmResponse": {
       "type": "object",
@@ -659,14 +677,6 @@
       },
       "title": "错误 多个错误"
     },
-    "v1FetchKeyResponse": {
-      "type": "object",
-      "properties": {
-        "key": {
-          "type": "string"
-        }
-      }
-    },
     "v1IntOption": {
       "type": "object",
       "properties": {
@@ -692,6 +702,33 @@
             "$ref": "#/definitions/v1IntOption"
           },
           "description": "启禁用状态"
+        }
+      }
+    },
+    "v1PaginateConfig": {
+      "type": "object",
+      "properties": {
+        "keywordOptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1StringOption"
+          },
+          "description": "关键字类型选项，如果为空则只有关键字搜索"
+        },
+        "sortColumns": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "可排序列,key=列，value=参数key"
+        },
+        "optionColumns": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "可过滤选项列, key=列，value=option选项列表的key"
         }
       }
     },
@@ -723,6 +760,10 @@
           "type": "integer",
           "format": "int64",
           "description": "Current page size"
+        },
+        "config": {
+          "$ref": "#/definitions/v1PaginateConfig",
+          "description": "列表配置, page=1时有配置，也可能为nil"
         }
       },
       "title": "分页元数据"
@@ -741,6 +782,20 @@
           }
         }
       }
+    },
+    "v1StringOption": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "名称"
+        }
+      },
+      "title": "key name 响应"
     },
     "v1VersionResponse": {
       "type": "object",
