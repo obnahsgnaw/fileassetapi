@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -99,7 +98,7 @@ func renameApi(currentDir, projectPackage, projectName, dirName, kind string) er
 	apiDir := filepath.Join(currentDir, dirName, "apis", protoPkgFrom)
 	toDir := filepath.Join(currentDir, dirName, "apis", protoPkgTo)
 
-	if _, err := os.Stat(toDir); err != nil && errors.Is(os.ErrNotExist, err) {
+	if _, err := os.Stat(toDir); err != nil && os.IsNotExist(err) {
 		if err = os.Rename(apiDir, toDir); err != nil {
 			return err
 		}
