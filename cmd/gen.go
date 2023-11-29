@@ -49,9 +49,18 @@ func main() {
 		println("rename websocket api failed,", err.Error())
 		os.Exit(7)
 	}
-	if err = os.RemoveAll(filepath.Join(currentDir, "gen")); err != nil {
-		println("remove gen dir failed,", err.Error())
+	if dirEt, err1 := os.ReadDir(filepath.Join(currentDir, "gen")); err1 != nil {
+		println("read gen dir failed,", err1.Error())
 		os.Exit(8)
+	} else {
+		for _, dd := range dirEt {
+			if strings.HasPrefix(dd.Name(), "framework") {
+				if err = os.RemoveAll(filepath.Join(currentDir, "gen", dd.Name())); err != nil {
+					println("remove gen framework dir failed,", err.Error())
+					os.Exit(9)
+				}
+			}
+		}
 	}
 }
 func renameGoMod(currentDir, pkg string) error {
