@@ -114,6 +114,9 @@ func renameApi(currentDir, projectPackage, projectName, dirName, kind string) er
 						return err
 					}
 				}
+				if err = os.Remove(apiDir); err != nil {
+					return err
+				}
 			}
 		}
 	}
