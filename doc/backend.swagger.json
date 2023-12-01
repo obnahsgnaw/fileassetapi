@@ -20,15 +20,15 @@
       "description": "选项管理"
     },
     {
+      "name": "AssetService",
+      "description": "文件管理"
+    },
+    {
       "name": "DownloadService"
     },
     {
       "name": "ConfigService",
       "description": "动态配置"
-    },
-    {
-      "name": "AssetService",
-      "description": "文件上传"
     },
     {
       "name": "UploadService"
@@ -198,153 +198,10 @@
         ]
       }
     },
-    "/v1/options": {
-      "get": {
-        "summary": "选项",
-        "operationId": "OptionsService_OptionList",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1OptionListResponse"
-            }
-          },
-          "201": {
-            "description": "Returned when the resource created success.",
-            "schema": {}
-          },
-          "204": {
-            "description": "Returned when the resource deleted success.",
-            "schema": {}
-          },
-          "400": {
-            "description": "Returned when the request data validate failed.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorsObject"
-            }
-          },
-          "401": {
-            "description": "Returned when the user does not authentication.",
-            "schema": {}
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource not found.",
-            "schema": {}
-          },
-          "409": {
-            "description": "Returned when request update conflict.",
-            "schema": {}
-          },
-          "423": {
-            "description": "Returned when resource locked.",
-            "schema": {}
-          },
-          "429": {
-            "description": "Returned when request too many in a unit time.",
-            "schema": {}
-          },
-          "500": {
-            "description": "Server error.",
-            "schema": {}
-          },
-          "default": {
-            "description": "Unexpect error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorsObject"
-            }
-          }
-        },
-        "tags": [
-          "OptionsService"
-        ],
-        "security": [
-          {
-            "AppId": []
-          }
-        ],
-        "x-order": 1
-      }
-    },
-    "/v1/upload-caches": {
-      "delete": {
-        "summary": "清除缓存",
-        "description": "清除缓存的上传文件",
-        "operationId": "AssetService_ClearCache",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ClearCacheResponse"
-            }
-          },
-          "201": {
-            "description": "Returned when the resource created success.",
-            "schema": {}
-          },
-          "204": {
-            "description": "Returned when the resource deleted success.",
-            "schema": {}
-          },
-          "400": {
-            "description": "Returned when the request data validate failed.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorsObject"
-            }
-          },
-          "401": {
-            "description": "Returned when the user does not authentication.",
-            "schema": {}
-          },
-          "403": {
-            "description": "Returned when the user does not have permission to access the resource.",
-            "schema": {}
-          },
-          "404": {
-            "description": "Returned when the resource not found.",
-            "schema": {}
-          },
-          "409": {
-            "description": "Returned when request update conflict.",
-            "schema": {}
-          },
-          "423": {
-            "description": "Returned when resource locked.",
-            "schema": {}
-          },
-          "429": {
-            "description": "Returned when request too many in a unit time.",
-            "schema": {}
-          },
-          "500": {
-            "description": "Server error.",
-            "schema": {}
-          },
-          "default": {
-            "description": "Unexpect error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorsObject"
-            }
-          }
-        },
-        "tags": [
-          "AssetService"
-        ],
-        "security": [
-          {
-            "AppId": [],
-            "BearerToken": []
-          }
-        ]
-      }
-    },
-    "/v1/upload-files": {
+    "/v1/files": {
       "get": {
         "summary": "列表",
-        "description": "上传文件列表",
+        "description": "文件列表",
         "operationId": "AssetService_Paginate",
         "responses": {
           "200": {
@@ -445,10 +302,10 @@
         ]
       }
     },
-    "/v1/upload-files/{id}": {
+    "/v1/files/{id}": {
       "delete": {
         "summary": "删除",
-        "description": "删除上传的文件",
+        "description": "删除文件",
         "operationId": "AssetService_Delete",
         "responses": {
           "200": {
@@ -525,6 +382,77 @@
             "BearerToken": []
           }
         ]
+      }
+    },
+    "/v1/options": {
+      "get": {
+        "summary": "选项",
+        "operationId": "OptionsService_OptionList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1OptionListResponse"
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "tags": [
+          "OptionsService"
+        ],
+        "security": [
+          {
+            "AppId": []
+          }
+        ],
+        "x-order": 1
       }
     },
     "/v1/version": {
@@ -615,9 +543,6 @@
           "type": "string"
         }
       }
-    },
-    "v1ClearCacheResponse": {
-      "type": "object"
     },
     "v1Config": {
       "type": "object",
@@ -735,11 +660,26 @@
     "v1PaginateData": {
       "type": "object",
       "properties": {
-        "module": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "description": "id"
         },
-        "url": {
-          "type": "string"
+        "module": {
+          "type": "string",
+          "description": "模块"
+        },
+        "target": {
+          "type": "string",
+          "description": "对象"
+        },
+        "path": {
+          "type": "string",
+          "description": "路径"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "创建时间"
         }
       }
     },

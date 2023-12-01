@@ -1,42 +1,25 @@
 syntax = "proto3";
-package fileasset_backend_api.upload.v1;
-option go_package = "fileasset_backend_api/upload/v1";
+package fileasset_backend_api.asset.v1;
+option go_package = "fileasset_backend_api/asset/v1";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 import "fileasset_backend_api/common/v1/obj.proto";
 import "validate/validate.proto";
 
 // 文件资源服务
 service AssetService{
-  // 服务swagger描述定义
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
-    description: "文件上传";
+    description: "文件管理";
   };
-  rpc ClearCache (ClearCacheRequest) returns (ClearCacheResponse) {
-    option (google.api.http) = {
-      delete: "/v1/upload-caches"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "清除缓存";
-      description: "清除缓存的上传文件";
-      security:{
-        security_requirement:{
-          key:"AppId"
-        }
-        security_requirement:{
-          key:"BearerToken"
-        }
-      }
-    };
-  }
   rpc Paginate (common.v1.PaginateRequest) returns (PaginateResponse) {
     option (google.api.http) = {
-      get: "/v1/upload-files"
+      get: "/v1/files"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "列表";
-      description: "上传文件列表";
+      description: "文件列表";
       security:{
         security_requirement:{
           key:"AppId"
@@ -49,11 +32,11 @@ service AssetService{
   }
   rpc Delete (common.v1.StringIdRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/v1/upload-files/{id}"
+      delete: "/v1/files/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "删除";
-      description: "删除上传的文件";
+      description: "删除文件";
       security:{
         security_requirement:{
           key:"AppId"
@@ -66,7 +49,6 @@ service AssetService{
   }
 }
 
-message ClearCacheRequest{}
 message ClearCacheResponse{}
 message PaginateResponse{
   option (validate.ignored) = true; // 忽略验证
@@ -74,6 +56,29 @@ message PaginateResponse{
   repeated PaginateData list = 2;
 }
 message PaginateData{
-  string module = 1;
-  string url = 2;
+  string id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "id";
+    }
+  ];
+  string module = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "模块";
+    }
+  ];
+  string target = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "对象";
+    }
+  ];
+  string path = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "路径";
+    }
+  ];
+  google.protobuf.Timestamp created_at = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "创建时间";
+    }
+  ];
 }
