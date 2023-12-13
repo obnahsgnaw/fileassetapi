@@ -57,17 +57,6 @@ func (m *AssetViewRequest) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetId()); l < 1 || l > 40 {
-		err := AssetViewRequestValidationError{
-			field:  "Id",
-			reason: "value length must be between 1 and 40 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if utf8.RuneCountInString(m.GetKey()) != 100 {
 		err := AssetViewRequestValidationError{
 			field:  "Key",
@@ -78,6 +67,17 @@ func (m *AssetViewRequest) validate(all bool) error {
 		}
 		errors = append(errors, err)
 
+	}
+
+	if l := utf8.RuneCountInString(m.GetId()); l < 1 || l > 40 {
+		err := AssetViewRequestValidationError{
+			field:  "Id",
+			reason: "value length must be between 1 and 40 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -331,6 +331,18 @@ func (m *UploadData) validate(all bool) error {
 
 	var errors []error
 
+	if utf8.RuneCountInString(m.GetMd5()) != 32 {
+		err := UploadDataValidationError{
+			field:  "Md5",
+			reason: "value length must be 32 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
 	if val := m.GetChunkTotal(); val <= 0 || val > 10000 {
 		err := UploadDataValidationError{
 			field:  "ChunkTotal",
@@ -364,10 +376,10 @@ func (m *UploadData) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if len(m.GetContent()) > 102400 {
+	if len(m.GetContent()) > 524288 {
 		err := UploadDataValidationError{
 			field:  "Content",
-			reason: "value length must be at most 102400 bytes",
+			reason: "value length must be at most 524288 bytes",
 		}
 		if !all {
 			return err
@@ -452,6 +464,352 @@ var _ interface {
 	ErrorName() string
 } = UploadDataValidationError{}
 
+// Validate checks the field values on DeleteRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DeleteRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DeleteRequestMultiError, or
+// nil if none found.
+func (m *DeleteRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetKey()); l < 1 || l > 100 {
+		err := DeleteRequestValidationError{
+			field:  "Key",
+			reason: "value length must be between 1 and 100 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetId()) != 24 {
+		err := DeleteRequestValidationError{
+			field:  "Id",
+			reason: "value length must be 24 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
+	if len(errors) > 0 {
+		return DeleteRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteRequestMultiError is an error wrapping multiple validation errors
+// returned by DeleteRequest.ValidateAll() if the designated constraints
+// aren't met.
+type DeleteRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteRequestMultiError) AllErrors() []error { return m }
+
+// DeleteRequestValidationError is the validation error returned by
+// DeleteRequest.Validate if the designated constraints aren't met.
+type DeleteRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteRequestValidationError) ErrorName() string { return "DeleteRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DeleteRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteRequestValidationError{}
+
+// Validate checks the field values on StatRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *StatRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on StatRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in StatRequestMultiError, or
+// nil if none found.
+func (m *StatRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *StatRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if l := utf8.RuneCountInString(m.GetKey()); l < 1 || l > 100 {
+		err := StatRequestValidationError{
+			field:  "Key",
+			reason: "value length must be between 1 and 100 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetMd5()) != 32 {
+		err := StatRequestValidationError{
+			field:  "Md5",
+			reason: "value length must be 32 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+
+	}
+
+	if len(errors) > 0 {
+		return StatRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// StatRequestMultiError is an error wrapping multiple validation errors
+// returned by StatRequest.ValidateAll() if the designated constraints aren't met.
+type StatRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m StatRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m StatRequestMultiError) AllErrors() []error { return m }
+
+// StatRequestValidationError is the validation error returned by
+// StatRequest.Validate if the designated constraints aren't met.
+type StatRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e StatRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e StatRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e StatRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e StatRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e StatRequestValidationError) ErrorName() string { return "StatRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e StatRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sStatRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = StatRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = StatRequestValidationError{}
+
+// Validate checks the field values on StatResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *StatResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on StatResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in StatResponseMultiError, or
+// nil if none found.
+func (m *StatResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *StatResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for FileId
+
+	if len(errors) > 0 {
+		return StatResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// StatResponseMultiError is an error wrapping multiple validation errors
+// returned by StatResponse.ValidateAll() if the designated constraints aren't met.
+type StatResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m StatResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m StatResponseMultiError) AllErrors() []error { return m }
+
+// StatResponseValidationError is the validation error returned by
+// StatResponse.Validate if the designated constraints aren't met.
+type StatResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e StatResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e StatResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e StatResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e StatResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e StatResponseValidationError) ErrorName() string { return "StatResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e StatResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sStatResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = StatResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = StatResponseValidationError{}
+
 // Validate checks the field values on UploadResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -473,6 +831,8 @@ func (m *UploadResponse) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for FileId
 
 	if len(errors) > 0 {
 		return UploadResponseMultiError(errors)

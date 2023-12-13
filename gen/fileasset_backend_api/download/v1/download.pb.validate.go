@@ -61,6 +61,8 @@ func (m *FetchKeyRequest) validate(all bool) error {
 
 	// no validation rules for Target
 
+	// no validation rules for Id
+
 	// no validation rules for Ttl
 
 	// no validation rules for Count

@@ -1,6 +1,9 @@
 syntax = "proto3";
 package fileasset_backend_api.upload.v1;
 option go_package = "fileasset_backend_api/upload/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "validate/validate.proto";
 
 /*
   整体说明：
@@ -15,27 +18,118 @@ option go_package = "fileasset_backend_api/upload/v1";
 // 文件上传服务
 service UploadService{
   // 获取特定配置的上传key
-  rpc FetchKey (FetchKeyRequest) returns (FetchKeyResponse) {}
+  rpc FetchKey (FetchKeyRequest) returns (FetchKeyResponse) {
+    option (google.api.http) = {
+      post: "/v1/upload-keys"
+      body:"*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取上传key";
+      description: "其他服务获取key对外给出，这里也可以手动获取";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
   // 确认上传文件
-  rpc Confirm(ConfirmRequest) returns (ConfirmResponse) {}
+  rpc Confirm(ConfirmRequest) returns (ConfirmResponse) {
+    option (google.api.http) = {
+      post: "/v1/upload-confirm"
+      body:"*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "确认上传的文件";
+      description: "其他服务获取key对外给出，这里也可以手动获取";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
 }
 
 message FetchKeyRequest{
-  string module = 1; // 模块标识
-  uint32 max = 2;    // 最大数量
-  uint32 size = 3;   // 文件最大字节
-  repeated string types = 4; // 支持的类型
-  repeated string extensions = 5; // 支持的后缀
-  string target = 6;   // 此次上传的标识，相关图片存储在该标识下
-  uint32 ttl = 7;      // url过期时间
+  string module = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "module";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];              // 模块标识
+  string target = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "target";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];              // 此次上传的标识，相关图片存储在该标识下
+  uint32 max = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "max";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0}
+  ];                 // 最大数量
+  uint32 size = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "size";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0}
+  ];                // 文件最大字节
+  repeated string types = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "types";
+    },
+    (validate.rules).repeated = {ignore_empty: false, unique:true}
+  ];      // 支持的类型
+  repeated string extensions = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "extensions";
+    },
+    (validate.rules).repeated = {ignore_empty: false, unique:true}
+  ]; // 支持的后缀
+  uint32 ttl = 7[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "ttl";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];                 // url过期时间
 }
 message FetchKeyResponse{
-  string key = 1;
+  string key = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "key";
+    }
+  ];
 }
 
 message ConfirmRequest{
-  repeated string file_id = 1;
+  string module = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "module";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];              // 模块标识
+  string target = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "target";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];              // 此次上传的标识，相关图片存储在该标识下
+  repeated string file_ids = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "file_ids";
+    },
+    (validate.rules).repeated = {ignore_empty: false, unique:true}
+  ];
 }
 message ConfirmResponse{
   bool success = 1;
+  string error = 2;
 }

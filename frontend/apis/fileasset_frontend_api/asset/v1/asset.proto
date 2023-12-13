@@ -4,6 +4,7 @@ option go_package = "fileasset_frontend_api/asset/v1";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "google/api/httpbody.proto";
 import "validate/validate.proto";
 
 service AssetService{
@@ -11,6 +12,16 @@ service AssetService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
     description: "文件资源";
   };
+  // 续传状态
+  rpc Stat(StatRequest) returns (StatResponse) {
+    option (google.api.http) = {
+      get: "/v1/upload-files/{key}/stats/{md5}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "续传状态";
+      description: "续传状态";
+    };
+  }
   // 上传
   rpc Upload(UploadRequest) returns (UploadResponse) {
     option (google.api.http) = {
@@ -22,10 +33,20 @@ service AssetService{
       description: "上传文件";
     };
   }
-  // 预览
-  rpc View (AssetViewRequest) returns (google.protobuf.Empty) {
+  // 删除
+  rpc Delete(DeleteRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      get: "/v1/upload-files/{id}"
+      delete: "/v1/upload-files/{key}/files/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "删除";
+      description: "删除，需要confirm";
+    };
+  }
+  // 预览
+  rpc View (AssetViewRequest) returns (google.api.HttpBody) {
+    option (google.api.http) = {
+      get: "/v1/upload-files/{key}/files/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "预览";
@@ -33,9 +54,9 @@ service AssetService{
     };
   }
   // 下载
-  rpc Download (AssetViewRequest) returns (google.protobuf.Empty) {
+  rpc Download (AssetViewRequest) returns (google.api.HttpBody) {
     option (google.api.http) = {
-      get: "/v1/download-files/{id}"
+      get: "/v1/download-files/{key}/files/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "下载";
@@ -45,22 +66,21 @@ service AssetService{
 }
 
 message AssetViewRequest{
-  string id = 1[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required: ["id"];
-      description: "id";
-    },
-    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 40}
-  ];
-  string key = 2[
+  string key = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required: ["key"];
       description: "key";
     },
     (validate.rules).string = {ignore_empty: false, len: 100}
   ];
+  string id = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["id"];
+      description: "id";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 40}
+  ];
 }
-
 message UploadRequest{
   string key = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
@@ -78,33 +98,91 @@ message UploadRequest{
   ];
 }
 message UploadData{
-  uint32 chunk_total = 1[
+  string md5 = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["md5"];
+      description: "文件md5";
+    },
+    (validate.rules).string = {ignore_empty: false, len:32}
+  ];
+  uint32 chunk_total = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required: ["chunk_total"];
       description: "分块总数";
     },
     (validate.rules).uint32 = {ignore_empty: false, gt: 0, lte: 10000}
   ];
-  uint32 chunk_index = 2[
+  uint32 chunk_index = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required: ["chunk_index"];
       description: "分块当前索引号";
     },
     (validate.rules).uint32 = {ignore_empty: false, gt: 0, lte: 10000}
   ];
-  string ext = 3[
+  string ext = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required: ["ext"];
       description: "文件后缀";
     },
     (validate.rules).string = {ignore_empty: false,max_len:100}
   ];
-  bytes content = 4[
+  bytes content = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required: ["content"];
       description: "分块数据";
     },
-    (validate.rules).bytes = {ignore_empty: false, max_len: 102400}
+    (validate.rules).bytes = {ignore_empty: false, max_len: 524288}
   ];
 }
-message UploadResponse{}
+message DeleteRequest{
+  string key = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["key"];
+      description: "key";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 100}
+  ];
+  string id = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["id"];
+      description: "id";
+    },
+    (validate.rules).string = {ignore_empty: false, len:24}
+  ];
+}
+message StatRequest{
+  string key = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["key"];
+      description: "key";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 100}
+  ];
+  string md5 = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["md5"];
+      description: "md5";
+    },
+    (validate.rules).string = {ignore_empty: false, len:32}
+  ];
+}
+message StatResponse{
+  repeated uint32 chunks = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required: ["chunks"];
+      description: "已上传的分块数据";
+    }
+  ];
+  string file_id = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "有文件id标识文件已存在，可跳过上传直接使用";
+    }
+  ];
+}
+message UploadResponse{
+  string file_id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "上传完成后的文件id，在文件都上传完成合并后给出";
+    }
+  ];
+}

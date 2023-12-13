@@ -8,6 +8,7 @@ package assetv1
 
 import (
 	context "context"
+	httpbody "google.golang.org/genproto/googleapis/api/httpbody"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,7 +21,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	AssetService_Stat_FullMethodName     = "/fileasset_frontend_api.asset.v1.AssetService/Stat"
 	AssetService_Upload_FullMethodName   = "/fileasset_frontend_api.asset.v1.AssetService/Upload"
+	AssetService_Delete_FullMethodName   = "/fileasset_frontend_api.asset.v1.AssetService/Delete"
 	AssetService_View_FullMethodName     = "/fileasset_frontend_api.asset.v1.AssetService/View"
 	AssetService_Download_FullMethodName = "/fileasset_frontend_api.asset.v1.AssetService/Download"
 )
@@ -29,12 +32,16 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AssetServiceClient interface {
+	// 续传状态
+	Stat(ctx context.Context, in *StatRequest, opts ...grpc.CallOption) (*StatResponse, error)
 	// 上传
 	Upload(ctx context.Context, in *UploadRequest, opts ...grpc.CallOption) (*UploadResponse, error)
+	// 删除
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// 预览
-	View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*httpbody.HttpBody, error)
 	// 下载
-	Download(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Download(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*httpbody.HttpBody, error)
 }
 
 type assetServiceClient struct {
@@ -43,6 +50,15 @@ type assetServiceClient struct {
 
 func NewAssetServiceClient(cc grpc.ClientConnInterface) AssetServiceClient {
 	return &assetServiceClient{cc}
+}
+
+func (c *assetServiceClient) Stat(ctx context.Context, in *StatRequest, opts ...grpc.CallOption) (*StatResponse, error) {
+	out := new(StatResponse)
+	err := c.cc.Invoke(ctx, AssetService_Stat_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *assetServiceClient) Upload(ctx context.Context, in *UploadRequest, opts ...grpc.CallOption) (*UploadResponse, error) {
@@ -54,8 +70,17 @@ func (c *assetServiceClient) Upload(ctx context.Context, in *UploadRequest, opts
 	return out, nil
 }
 
-func (c *assetServiceClient) View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *assetServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AssetService_Delete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *assetServiceClient) View(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*httpbody.HttpBody, error) {
+	out := new(httpbody.HttpBody)
 	err := c.cc.Invoke(ctx, AssetService_View_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -63,8 +88,8 @@ func (c *assetServiceClient) View(ctx context.Context, in *AssetViewRequest, opt
 	return out, nil
 }
 
-func (c *assetServiceClient) Download(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *assetServiceClient) Download(ctx context.Context, in *AssetViewRequest, opts ...grpc.CallOption) (*httpbody.HttpBody, error) {
+	out := new(httpbody.HttpBody)
 	err := c.cc.Invoke(ctx, AssetService_Download_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -76,25 +101,35 @@ func (c *assetServiceClient) Download(ctx context.Context, in *AssetViewRequest,
 // All implementations should embed UnimplementedAssetServiceServer
 // for forward compatibility
 type AssetServiceServer interface {
+	// 续传状态
+	Stat(context.Context, *StatRequest) (*StatResponse, error)
 	// 上传
 	Upload(context.Context, *UploadRequest) (*UploadResponse, error)
+	// 删除
+	Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error)
 	// 预览
-	View(context.Context, *AssetViewRequest) (*emptypb.Empty, error)
+	View(context.Context, *AssetViewRequest) (*httpbody.HttpBody, error)
 	// 下载
-	Download(context.Context, *AssetViewRequest) (*emptypb.Empty, error)
+	Download(context.Context, *AssetViewRequest) (*httpbody.HttpBody, error)
 }
 
 // UnimplementedAssetServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedAssetServiceServer struct {
 }
 
+func (UnimplementedAssetServiceServer) Stat(context.Context, *StatRequest) (*StatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Stat not implemented")
+}
 func (UnimplementedAssetServiceServer) Upload(context.Context, *UploadRequest) (*UploadResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Upload not implemented")
 }
-func (UnimplementedAssetServiceServer) View(context.Context, *AssetViewRequest) (*emptypb.Empty, error) {
+func (UnimplementedAssetServiceServer) Delete(context.Context, *DeleteRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedAssetServiceServer) View(context.Context, *AssetViewRequest) (*httpbody.HttpBody, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method View not implemented")
 }
-func (UnimplementedAssetServiceServer) Download(context.Context, *AssetViewRequest) (*emptypb.Empty, error) {
+func (UnimplementedAssetServiceServer) Download(context.Context, *AssetViewRequest) (*httpbody.HttpBody, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Download not implemented")
 }
 
@@ -107,6 +142,24 @@ type UnsafeAssetServiceServer interface {
 
 func RegisterAssetServiceServer(s grpc.ServiceRegistrar, srv AssetServiceServer) {
 	s.RegisterService(&AssetService_ServiceDesc, srv)
+}
+
+func _AssetService_Stat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AssetServiceServer).Stat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AssetService_Stat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AssetServiceServer).Stat(ctx, req.(*StatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _AssetService_Upload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -123,6 +176,24 @@ func _AssetService_Upload_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AssetServiceServer).Upload(ctx, req.(*UploadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AssetService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AssetServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AssetService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AssetServiceServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -171,8 +242,16 @@ var AssetService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AssetServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "Stat",
+			Handler:    _AssetService_Stat_Handler,
+		},
+		{
 			MethodName: "Upload",
 			Handler:    _AssetService_Upload_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _AssetService_Delete_Handler,
 		},
 		{
 			MethodName: "View",

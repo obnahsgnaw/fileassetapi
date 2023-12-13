@@ -10,8 +10,9 @@ service DownloadService{
 message FetchKeyRequest{
   string module = 1; // 模块标识
   string target = 2; // 文件标识
-  uint32 ttl = 3;    // url过期时间
-  uint32 count = 4;  // 下载次数
+  string id = 3; // 文件标识
+  uint32 ttl = 4;    // url过期时间
+  uint32 count = 5;  // 下载次数
 }
 
 message FetchKeyResponse{

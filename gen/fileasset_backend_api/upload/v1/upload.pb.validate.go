@@ -57,15 +57,102 @@ func (m *FetchKeyRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Module
+	if utf8.RuneCountInString(m.GetModule()) > 100 {
+		err := FetchKeyRequestValidationError{
+			field:  "Module",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Max
+	if utf8.RuneCountInString(m.GetTarget()) > 100 {
+		err := FetchKeyRequestValidationError{
+			field:  "Target",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Size
+	if m.GetMax() <= 0 {
+		err := FetchKeyRequestValidationError{
+			field:  "Max",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Target
+	if m.GetSize() <= 0 {
+		err := FetchKeyRequestValidationError{
+			field:  "Size",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Ttl
+	_FetchKeyRequest_Types_Unique := make(map[string]struct{}, len(m.GetTypes()))
+
+	for idx, item := range m.GetTypes() {
+		_, _ = idx, item
+
+		if _, exists := _FetchKeyRequest_Types_Unique[item]; exists {
+			err := FetchKeyRequestValidationError{
+				field:  fmt.Sprintf("Types[%v]", idx),
+				reason: "repeated value must contain unique items",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+			_FetchKeyRequest_Types_Unique[item] = struct{}{}
+		}
+
+		// no validation rules for Types[idx]
+	}
+
+	_FetchKeyRequest_Extensions_Unique := make(map[string]struct{}, len(m.GetExtensions()))
+
+	for idx, item := range m.GetExtensions() {
+		_, _ = idx, item
+
+		if _, exists := _FetchKeyRequest_Extensions_Unique[item]; exists {
+			err := FetchKeyRequestValidationError{
+				field:  fmt.Sprintf("Extensions[%v]", idx),
+				reason: "repeated value must contain unique items",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+			_FetchKeyRequest_Extensions_Unique[item] = struct{}{}
+		}
+
+		// no validation rules for Extensions[idx]
+	}
+
+	if m.GetTtl() < 0 {
+		err := FetchKeyRequestValidationError{
+			field:  "Ttl",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return FetchKeyRequestMultiError(errors)
@@ -269,6 +356,49 @@ func (m *ConfirmRequest) validate(all bool) error {
 
 	var errors []error
 
+	if utf8.RuneCountInString(m.GetModule()) > 100 {
+		err := ConfirmRequestValidationError{
+			field:  "Module",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetTarget()) > 100 {
+		err := ConfirmRequestValidationError{
+			field:  "Target",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	_ConfirmRequest_FileIds_Unique := make(map[string]struct{}, len(m.GetFileIds()))
+
+	for idx, item := range m.GetFileIds() {
+		_, _ = idx, item
+
+		if _, exists := _ConfirmRequest_FileIds_Unique[item]; exists {
+			err := ConfirmRequestValidationError{
+				field:  fmt.Sprintf("FileIds[%v]", idx),
+				reason: "repeated value must contain unique items",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		} else {
+			_ConfirmRequest_FileIds_Unique[item] = struct{}{}
+		}
+
+		// no validation rules for FileIds[idx]
+	}
+
 	if len(errors) > 0 {
 		return ConfirmRequestMultiError(errors)
 	}
@@ -370,6 +500,8 @@ func (m *ConfirmResponse) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Success
+
+	// no validation rules for Error
 
 	if len(errors) > 0 {
 		return ConfirmResponseMultiError(errors)

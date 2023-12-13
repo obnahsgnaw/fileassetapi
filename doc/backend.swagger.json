@@ -455,6 +455,170 @@
         "x-order": 1
       }
     },
+    "/v1/upload-confirm": {
+      "post": {
+        "summary": "确认上传的文件",
+        "description": "其他服务获取key对外给出，这里也可以手动获取",
+        "operationId": "UploadService_Confirm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ConfirmResponse"
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ConfirmRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UploadService"
+        ],
+        "security": [
+          {
+            "AppId": [],
+            "BearerToken": []
+          }
+        ]
+      }
+    },
+    "/v1/upload-keys": {
+      "post": {
+        "summary": "获取上传key",
+        "description": "其他服务获取key对外给出，这里也可以手动获取",
+        "operationId": "UploadService_FetchKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/fileasset_backend_apiuploadv1FetchKeyResponse"
+            }
+          },
+          "201": {
+            "description": "Returned when the resource created success.",
+            "schema": {}
+          },
+          "204": {
+            "description": "Returned when the resource deleted success.",
+            "schema": {}
+          },
+          "400": {
+            "description": "Returned when the request data validate failed.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          },
+          "401": {
+            "description": "Returned when the user does not authentication.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {}
+          },
+          "404": {
+            "description": "Returned when the resource not found.",
+            "schema": {}
+          },
+          "409": {
+            "description": "Returned when request update conflict.",
+            "schema": {}
+          },
+          "423": {
+            "description": "Returned when resource locked.",
+            "schema": {}
+          },
+          "429": {
+            "description": "Returned when request too many in a unit time.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Server error.",
+            "schema": {}
+          },
+          "default": {
+            "description": "Unexpect error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorsObject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/fileasset_backend_apiuploadv1FetchKeyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UploadService"
+        ],
+        "security": [
+          {
+            "AppId": [],
+            "BearerToken": []
+          }
+        ]
+      }
+    },
     "/v1/version": {
       "get": {
         "summary": "版本号",
@@ -536,11 +700,61 @@
         }
       }
     },
+    "fileasset_backend_apiuploadv1FetchKeyRequest": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "type": "string",
+          "description": "module",
+          "title": "模块标识"
+        },
+        "target": {
+          "type": "string",
+          "description": "target",
+          "title": "此次上传的标识，相关图片存储在该标识下"
+        },
+        "max": {
+          "type": "integer",
+          "format": "int64",
+          "description": "max",
+          "title": "最大数量"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": "size",
+          "title": "文件最大字节"
+        },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "types",
+          "title": "支持的类型"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "extensions",
+          "title": "支持的后缀"
+        },
+        "ttl": {
+          "type": "integer",
+          "format": "int64",
+          "description": "ttl",
+          "title": "url过期时间"
+        }
+      }
+    },
     "fileasset_backend_apiuploadv1FetchKeyResponse": {
       "type": "object",
       "properties": {
         "key": {
-          "type": "string"
+          "type": "string",
+          "description": "key"
         }
       }
     },
@@ -553,11 +767,36 @@
         }
       }
     },
+    "v1ConfirmRequest": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "type": "string",
+          "description": "module",
+          "title": "模块标识"
+        },
+        "target": {
+          "type": "string",
+          "description": "target",
+          "title": "此次上传的标识，相关图片存储在该标识下"
+        },
+        "fileIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "file_ids"
+        }
+      }
+    },
     "v1ConfirmResponse": {
       "type": "object",
       "properties": {
         "success": {
           "type": "boolean"
+        },
+        "error": {
+          "type": "string"
         }
       }
     },
@@ -627,6 +866,14 @@
             "$ref": "#/definitions/v1IntOption"
           },
           "description": "启禁用状态"
+        },
+        "fileState": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IntOption"
+          },
+          "description": "文件状态"
         }
       }
     },
