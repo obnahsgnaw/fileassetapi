@@ -11,7 +11,7 @@ import "validate/validate.proto";
 // 文件资源服务
 service AssetService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
-    description: "文件管理";
+    description: "4.文件管理";
   };
   rpc Paginate (common.v1.PaginateRequest) returns (PaginateResponse) {
     option (google.api.http) = {

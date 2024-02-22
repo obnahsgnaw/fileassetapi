@@ -8,7 +8,7 @@ import "validate/validate.proto";
 // 文件下载
 service DownloadService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
-    description: "下载服务";
+    description: "3.下载服务";
   };
   // 获取特定配置的下载url
   rpc FetchUrl (FetchUrlRequest) returns (FetchUrlResponse) {

@@ -10,7 +10,7 @@ import "validate/validate.proto";
 // 文件上传服务
 service UploadService{
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
-    description: "上传服务";
+    description: "1.上传服务";
   };
   rpc FetchUrl (FetchUrlRequest) returns (FetchUrlResponse) {
     option (google.api.http) = {

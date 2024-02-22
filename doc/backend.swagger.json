@@ -21,11 +21,11 @@
     },
     {
       "name": "AssetService",
-      "description": "文件管理"
+      "description": "4.文件管理"
     },
     {
       "name": "DownloadService",
-      "description": "下载服务"
+      "description": "3.下载服务"
     },
     {
       "name": "ConfigService",
@@ -33,11 +33,11 @@
     },
     {
       "name": "UploadService",
-      "description": "上传服务"
+      "description": "1.上传服务"
     },
     {
       "name": "ViewService",
-      "description": "预览服务"
+      "description": "2.预览服务"
     }
   ],
   "schemes": [
