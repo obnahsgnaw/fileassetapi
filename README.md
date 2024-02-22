@@ -39,3 +39,34 @@
 6. 执行 `make all` 重新生成pb文件
 7. git 保存
 8. 添加自定义的相关proto
+
+### minio
+1. linux
+```shell
+wget https://dl.min.io/server/minio/release/linux-amd64/minio
+chmod +x minio
+./minio server /data
+```
+2. mac
+```shell
+brew install minio/stable/minio
+minio server /data
+
+```
+3. windows
+```shell
+download: https://dl.min.io/server/minio/release/windows-amd64/minio.exe
+minio.exe server D:\
+```
+4. view: `http://127.0.0.1:9000`
+5.  public port:
+```shell
+# firewall-cmd:
+firewall-cmd --zone=public --add-port=9000/tcp --permanent
+firewall-cmd --reload
+```
+```shell
+#iptables
+iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
+service iptables restart
+```

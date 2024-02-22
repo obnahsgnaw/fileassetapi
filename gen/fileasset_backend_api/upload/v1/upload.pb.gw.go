@@ -31,36 +31,38 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_UploadService_FetchKey_0(ctx context.Context, marshaler runtime.Marshaler, client UploadServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq FetchKeyRequest
+var (
+	filter_UploadService_FetchUrl_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_UploadService_FetchUrl_0(ctx context.Context, marshaler runtime.Marshaler, client UploadServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq FetchUrlRequest
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_UploadService_FetchUrl_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.FetchKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.FetchUrl(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_UploadService_FetchKey_0(ctx context.Context, marshaler runtime.Marshaler, server UploadServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq FetchKeyRequest
+func local_request_UploadService_FetchUrl_0(ctx context.Context, marshaler runtime.Marshaler, server UploadServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq FetchUrlRequest
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_UploadService_FetchUrl_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.FetchKey(ctx, &protoReq)
+	msg, err := server.FetchUrl(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -105,7 +107,7 @@ func local_request_UploadService_Confirm_0(ctx context.Context, marshaler runtim
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUploadServiceHandlerFromEndpoint instead.
 func RegisterUploadServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UploadServiceServer) error {
 
-	mux.Handle("POST", pattern_UploadService_FetchKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UploadService_FetchUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -113,12 +115,12 @@ func RegisterUploadServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/fileasset_backend_api.upload.v1.UploadService/FetchKey", runtime.WithHTTPPathPattern("/v1/upload-keys"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/fileasset_backend_api.upload.v1.UploadService/FetchUrl", runtime.WithHTTPPathPattern("/v1/upload-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UploadService_FetchKey_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UploadService_FetchUrl_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
@@ -126,7 +128,7 @@ func RegisterUploadServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 
-		forward_UploadService_FetchKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UploadService_FetchUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -196,25 +198,25 @@ func RegisterUploadServiceHandler(ctx context.Context, mux *runtime.ServeMux, co
 // "UploadServiceClient" to call the correct interceptors.
 func RegisterUploadServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UploadServiceClient) error {
 
-	mux.Handle("POST", pattern_UploadService_FetchKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UploadService_FetchUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/fileasset_backend_api.upload.v1.UploadService/FetchKey", runtime.WithHTTPPathPattern("/v1/upload-keys"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/fileasset_backend_api.upload.v1.UploadService/FetchUrl", runtime.WithHTTPPathPattern("/v1/upload-url"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UploadService_FetchKey_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UploadService_FetchUrl_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UploadService_FetchKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UploadService_FetchUrl_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -244,13 +246,13 @@ func RegisterUploadServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_UploadService_FetchKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "upload-keys"}, ""))
+	pattern_UploadService_FetchUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "upload-url"}, ""))
 
 	pattern_UploadService_Confirm_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "upload-confirm"}, ""))
 )
 
 var (
-	forward_UploadService_FetchKey_0 = runtime.ForwardResponseMessage
+	forward_UploadService_FetchUrl_0 = runtime.ForwardResponseMessage
 
 	forward_UploadService_Confirm_0 = runtime.ForwardResponseMessage
 )

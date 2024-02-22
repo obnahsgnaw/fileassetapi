@@ -85,7 +85,7 @@ frontend-api:
 .PHONY: asset
 asset:
 	@echo "Generate document asset file..."
-	@go-bindata -o=asset/asset.go -pkg=asset doc/backend.swagger.json doc/frontend.swagger.json doc/tcp.html doc/wss.html
+	@go-bindata -o=asset/asset.go -pkg=asset doc/backend.swagger.json doc/frontend.swagger.json #doc/tcp.html doc/wss.html
 	@echo "Done"
 
 .PHONY: api
@@ -95,7 +95,7 @@ api: backend-api frontend-api asset
 socket:tcp-socket wss-socket asset
 
 .PHONY: all
-all: backend-api frontend-api tcp-socket wss-socket asset
+all: backend-api frontend-api asset
 
 .PHONY: tcp-socket
 tcp-socket:

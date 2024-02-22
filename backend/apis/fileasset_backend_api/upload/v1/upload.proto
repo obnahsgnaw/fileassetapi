@@ -5,27 +5,20 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-/*
-  整体说明：
-  1. 具体的上传业务接口时，先获取上传文件地址返回给前端，指定模块名称、最大文件数量、文件类型、文件后缀、文件最大字节数、当前文件上传的对象、链接的有效时长
-  2. 前端将文件上传到文件服务，得到文件标识，表单提交时上传文件标识
-  3. 后端接口通过rpc验证文件标识，然后确认存储文件
-  4. 文件管理服务会定时删除未确认的临时文件
-  5. 文件是上传oss还是本地保存由文件服务管理
-
-*/
+// 获取上传地址，前端上传oss， 前端提交， 验证上传， 完成
 
 // 文件上传服务
 service UploadService{
-  // 获取特定配置的上传key
-  rpc FetchKey (FetchKeyRequest) returns (FetchKeyResponse) {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "上传服务";
+  };
+  rpc FetchUrl (FetchUrlRequest) returns (FetchUrlResponse) {
     option (google.api.http) = {
-      post: "/v1/upload-keys"
-      body:"*"
+      get: "/v1/upload-url"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "获取上传key";
-      description: "其他服务获取key对外给出，这里也可以手动获取";
+      summary: "获取上传地址";
+      description: "其他服务获取上传地址对外给出，这里也可以手动获取";
       security:{
         security_requirement:{
           key:"AppId"
@@ -36,7 +29,6 @@ service UploadService{
       }
     };
   }
-  // 确认上传文件
   rpc Confirm(ConfirmRequest) returns (ConfirmResponse) {
     option (google.api.http) = {
       post: "/v1/upload-confirm"
@@ -44,7 +36,7 @@ service UploadService{
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "确认上传的文件";
-      description: "其他服务获取key对外给出，这里也可以手动获取";
+      description: "确认上传的文件，否则会被自动情况";
       security:{
         security_requirement:{
           key:"AppId"
@@ -57,77 +49,101 @@ service UploadService{
   }
 }
 
-message FetchKeyRequest{
-  string module = 1[
+message FetchUrlRequest{
+  string project = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["project"];
+      description: "project";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];      // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
+  string module = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["module"];
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];              // 模块标识
-  string target = 2[
+  ];      // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
+  uint32 max_size = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "target";
-    },
-    (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];              // 此次上传的标识，相关图片存储在该标识下
-  uint32 max = 3[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "max";
-    },
-    (validate.rules).uint32 = {ignore_empty: false, gt:0}
-  ];                 // 最大数量
-  uint32 size = 4[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["size"];
       description: "size";
     },
     (validate.rules).uint32 = {ignore_empty: false, gt:0}
-  ];                // 文件最大字节
-  repeated string types = 5[
+  ];    // 文件最大字节
+  string content_type = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "types";
+      required:["content_type"];
+      description: "content_type";
     },
-    (validate.rules).repeated = {ignore_empty: false, unique:true}
-  ];      // 支持的类型
-  repeated string extensions = 6[
+    (validate.rules).string = {ignore_empty: false, min_len:1,max_len:50}
+  ];// 支持的类型
+  string extension = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "extensions";
+      required:["extension"];
+      description: "extension";
     },
-    (validate.rules).repeated = {ignore_empty: false, unique:true}
-  ]; // 支持的后缀
-  uint32 ttl = 7[
+    (validate.rules).string = {ignore_empty: false, max_len:50}
+  ];   // 支持的后缀
+  uint32 ttl = 6[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["ttl"];
       description: "ttl";
     },
-    (validate.rules).uint32 = {ignore_empty: false, gte:0}
-  ];                 // url过期时间
-}
-message FetchKeyResponse{
-  string key = 1[
+    (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:604800}
+  ];         // 过期时间
+  uint32 part = 7[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "key";
+      description: "part num";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:9999}
+  ];        // 分片数量 0=不分
+}
+message FetchUrlResponse{
+  string module = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["module"];
+      description: "module";
     }
   ];
+  string name = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["name"];
+      description: "name";
+    }
+  ];
+  repeated string url = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "url";
+    }
+  ]; // 如果分片会返回多个 所以是多个
 }
-
 message ConfirmRequest{
-  string module = 1[
+  string project = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["project"]
+      description: "project";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];
+  string module = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];              // 模块标识
-  string target = 2[
+  ];
+  string target = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "target";
     },
-    (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];              // 此次上传的标识，相关图片存储在该标识下
-  repeated string file_ids = 3[
+    (validate.rules).string = {ignore_empty: false, max_len:50}
+  ];
+  repeated string names = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "file_ids";
+      description: "names";
     },
     (validate.rules).repeated = {ignore_empty: false, unique:true}
-  ];
+  ]; // 多个文件可以同时确认，会进行增删更新
 }
 message ConfirmResponse{
   bool success = 1;

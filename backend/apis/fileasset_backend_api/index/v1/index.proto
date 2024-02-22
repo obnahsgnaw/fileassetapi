@@ -195,7 +195,4 @@ message OptionListResponse{
   repeated common.v1.IntOption enable_state = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "启禁用状态";
   }];
-  repeated common.v1.IntOption file_state = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "文件状态";
-  }];
 }

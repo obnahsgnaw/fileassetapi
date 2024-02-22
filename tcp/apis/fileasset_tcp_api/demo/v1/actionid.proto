@@ -6,6 +6,4 @@ option go_package = "fileasset_tcp_api/demo/v1";
 
 enum ActionId{
   DemoNone = 0;
-  DemoConnectReq = 101;
-  DemoConnectResp = 102;
 }

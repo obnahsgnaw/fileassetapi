@@ -1,0 +1,121 @@
+syntax = "proto3";
+package fileasset_backend_api.view.v1;
+option go_package = "fileasset_backend_api/view/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+service ViewService{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "预览服务";
+  };
+  rpc ViewUrl (ViewUrlRequest) returns (ViewUrlResponse) {
+    option (google.api.http) = {
+      get: "/v1/view-url"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取预览地址";
+      description: "其他服务获取预览地址对外给出，这里也可以手动获取";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
+  rpc ViewUrls (ViewUrlsRequest) returns (ViewUrlsResponse) {
+    option (google.api.http) = {
+      get: "/v1/view-urls"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取预览地址";
+      description: "其他服务获取预览地址对外给出，这里也可以手动获取";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
+}
+
+message ViewUrlRequest{
+  string project = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["project"];
+      description: "project";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];
+  string module = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["module"];
+      description: "module";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];
+  string name = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["name"];
+      description: "name";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:30, max_len:50}
+  ];
+  uint32 ttl = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["ttl"];
+      description: "ttl";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0, lt:604800}
+  ];
+}
+message ViewUrlResponse{
+  string url = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "url";
+    }
+  ];
+}
+message ViewUrlsRequest{
+  string project = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["project"];
+      description: "project";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];
+  string module = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["module"];
+      description: "module";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ];
+  repeated string names = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["names"];
+      description: "names";
+    },
+    (validate.rules).repeated = {ignore_empty: false, unique:true}
+  ];
+  uint32 ttl = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["ttl"];
+      description: "ttl";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0, lt:604800}
+  ];
+}
+message ViewUrlsResponse{
+  map<string,string> urls = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "url";
+    }
+  ]; // name => url
+}

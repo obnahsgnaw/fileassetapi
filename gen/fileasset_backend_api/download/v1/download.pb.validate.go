@@ -35,52 +35,97 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on FetchKeyRequest with the rules defined
+// Validate checks the field values on FetchUrlRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *FetchKeyRequest) Validate() error {
+func (m *FetchUrlRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on FetchKeyRequest with the rules
+// ValidateAll checks the field values on FetchUrlRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// FetchKeyRequestMultiError, or nil if none found.
-func (m *FetchKeyRequest) ValidateAll() error {
+// FetchUrlRequestMultiError, or nil if none found.
+func (m *FetchUrlRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *FetchKeyRequest) validate(all bool) error {
+func (m *FetchUrlRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Module
+	if utf8.RuneCountInString(m.GetProject()) > 100 {
+		err := FetchUrlRequestValidationError{
+			field:  "Project",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Target
+	if utf8.RuneCountInString(m.GetModule()) > 100 {
+		err := FetchUrlRequestValidationError{
+			field:  "Module",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Id
+	if l := utf8.RuneCountInString(m.GetName()); l < 30 || l > 50 {
+		err := FetchUrlRequestValidationError{
+			field:  "Name",
+			reason: "value length must be between 30 and 50 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Ttl
+	if val := m.GetTtl(); val <= 0 || val >= 604800 {
+		err := FetchUrlRequestValidationError{
+			field:  "Ttl",
+			reason: "value must be inside range (0, 604800)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Count
+	if m.GetCount() < 0 {
+		err := FetchUrlRequestValidationError{
+			field:  "Count",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
-		return FetchKeyRequestMultiError(errors)
+		return FetchUrlRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// FetchKeyRequestMultiError is an error wrapping multiple validation errors
-// returned by FetchKeyRequest.ValidateAll() if the designated constraints
+// FetchUrlRequestMultiError is an error wrapping multiple validation errors
+// returned by FetchUrlRequest.ValidateAll() if the designated constraints
 // aren't met.
-type FetchKeyRequestMultiError []error
+type FetchUrlRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m FetchKeyRequestMultiError) Error() string {
+func (m FetchUrlRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -89,11 +134,11 @@ func (m FetchKeyRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m FetchKeyRequestMultiError) AllErrors() []error { return m }
+func (m FetchUrlRequestMultiError) AllErrors() []error { return m }
 
-// FetchKeyRequestValidationError is the validation error returned by
-// FetchKeyRequest.Validate if the designated constraints aren't met.
-type FetchKeyRequestValidationError struct {
+// FetchUrlRequestValidationError is the validation error returned by
+// FetchUrlRequest.Validate if the designated constraints aren't met.
+type FetchUrlRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -101,22 +146,22 @@ type FetchKeyRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e FetchKeyRequestValidationError) Field() string { return e.field }
+func (e FetchUrlRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e FetchKeyRequestValidationError) Reason() string { return e.reason }
+func (e FetchUrlRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e FetchKeyRequestValidationError) Cause() error { return e.cause }
+func (e FetchUrlRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e FetchKeyRequestValidationError) Key() bool { return e.key }
+func (e FetchUrlRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e FetchKeyRequestValidationError) ErrorName() string { return "FetchKeyRequestValidationError" }
+func (e FetchUrlRequestValidationError) ErrorName() string { return "FetchUrlRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e FetchKeyRequestValidationError) Error() string {
+func (e FetchUrlRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -128,14 +173,14 @@ func (e FetchKeyRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sFetchKeyRequest.%s: %s%s",
+		"invalid %sFetchUrlRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = FetchKeyRequestValidationError{}
+var _ error = FetchUrlRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -143,46 +188,46 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = FetchKeyRequestValidationError{}
+} = FetchUrlRequestValidationError{}
 
-// Validate checks the field values on FetchKeyResponse with the rules defined
+// Validate checks the field values on FetchUrlResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *FetchKeyResponse) Validate() error {
+func (m *FetchUrlResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on FetchKeyResponse with the rules
+// ValidateAll checks the field values on FetchUrlResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// FetchKeyResponseMultiError, or nil if none found.
-func (m *FetchKeyResponse) ValidateAll() error {
+// FetchUrlResponseMultiError, or nil if none found.
+func (m *FetchUrlResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *FetchKeyResponse) validate(all bool) error {
+func (m *FetchUrlResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Key
+	// no validation rules for Url
 
 	if len(errors) > 0 {
-		return FetchKeyResponseMultiError(errors)
+		return FetchUrlResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// FetchKeyResponseMultiError is an error wrapping multiple validation errors
-// returned by FetchKeyResponse.ValidateAll() if the designated constraints
+// FetchUrlResponseMultiError is an error wrapping multiple validation errors
+// returned by FetchUrlResponse.ValidateAll() if the designated constraints
 // aren't met.
-type FetchKeyResponseMultiError []error
+type FetchUrlResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m FetchKeyResponseMultiError) Error() string {
+func (m FetchUrlResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -191,11 +236,11 @@ func (m FetchKeyResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m FetchKeyResponseMultiError) AllErrors() []error { return m }
+func (m FetchUrlResponseMultiError) AllErrors() []error { return m }
 
-// FetchKeyResponseValidationError is the validation error returned by
-// FetchKeyResponse.Validate if the designated constraints aren't met.
-type FetchKeyResponseValidationError struct {
+// FetchUrlResponseValidationError is the validation error returned by
+// FetchUrlResponse.Validate if the designated constraints aren't met.
+type FetchUrlResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -203,22 +248,22 @@ type FetchKeyResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e FetchKeyResponseValidationError) Field() string { return e.field }
+func (e FetchUrlResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e FetchKeyResponseValidationError) Reason() string { return e.reason }
+func (e FetchUrlResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e FetchKeyResponseValidationError) Cause() error { return e.cause }
+func (e FetchUrlResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e FetchKeyResponseValidationError) Key() bool { return e.key }
+func (e FetchUrlResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e FetchKeyResponseValidationError) ErrorName() string { return "FetchKeyResponseValidationError" }
+func (e FetchUrlResponseValidationError) ErrorName() string { return "FetchUrlResponseValidationError" }
 
 // Error satisfies the builtin error interface
-func (e FetchKeyResponseValidationError) Error() string {
+func (e FetchUrlResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -230,14 +275,14 @@ func (e FetchKeyResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sFetchKeyResponse.%s: %s%s",
+		"invalid %sFetchUrlResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = FetchKeyResponseValidationError{}
+var _ error = FetchUrlResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -245,4 +290,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = FetchKeyResponseValidationError{}
+} = FetchUrlResponseValidationError{}

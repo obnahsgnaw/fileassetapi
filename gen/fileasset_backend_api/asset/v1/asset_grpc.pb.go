@@ -30,7 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AssetServiceClient interface {
 	Paginate(ctx context.Context, in *v1.PaginateRequest, opts ...grpc.CallOption) (*PaginateResponse, error)
-	Delete(ctx context.Context, in *v1.StringIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	Delete(ctx context.Context, in *v1.IntIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type assetServiceClient struct {
@@ -50,7 +50,7 @@ func (c *assetServiceClient) Paginate(ctx context.Context, in *v1.PaginateReques
 	return out, nil
 }
 
-func (c *assetServiceClient) Delete(ctx context.Context, in *v1.StringIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *assetServiceClient) Delete(ctx context.Context, in *v1.IntIdRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, AssetService_Delete_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -64,7 +64,7 @@ func (c *assetServiceClient) Delete(ctx context.Context, in *v1.StringIdRequest,
 // for forward compatibility
 type AssetServiceServer interface {
 	Paginate(context.Context, *v1.PaginateRequest) (*PaginateResponse, error)
-	Delete(context.Context, *v1.StringIdRequest) (*emptypb.Empty, error)
+	Delete(context.Context, *v1.IntIdRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedAssetServiceServer should be embedded to have forward compatible implementations.
@@ -74,7 +74,7 @@ type UnimplementedAssetServiceServer struct {
 func (UnimplementedAssetServiceServer) Paginate(context.Context, *v1.PaginateRequest) (*PaginateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Paginate not implemented")
 }
-func (UnimplementedAssetServiceServer) Delete(context.Context, *v1.StringIdRequest) (*emptypb.Empty, error) {
+func (UnimplementedAssetServiceServer) Delete(context.Context, *v1.IntIdRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 
@@ -108,7 +108,7 @@ func _AssetService_Paginate_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _AssetService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.StringIdRequest)
+	in := new(v1.IntIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func _AssetService_Delete_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: AssetService_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AssetServiceServer).Delete(ctx, req.(*v1.StringIdRequest))
+		return srv.(AssetServiceServer).Delete(ctx, req.(*v1.IntIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

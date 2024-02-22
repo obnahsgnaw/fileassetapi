@@ -1,0 +1,48 @@
+syntax = "proto3";
+package fileasset_backend_api.asset.v1;
+option go_package = "fileasset_backend_api/asset/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "fileasset_backend_api/common/v1/obj.proto";
+
+// 文件资源
+message FileAsset{
+  uint32 id = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "id";
+    }
+  ];
+  string project = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "服务项目";
+    }
+  ];
+  string module = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "模块";
+    }
+  ];
+  string name = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "文件";
+    }
+  ];
+  string target = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "管理对象";
+    }
+  ];
+  string url = 6[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "预览地址";
+    }
+  ];
+  common.v1.EnableState enabled = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description:"启用状态";
+  }];
+  google.protobuf.Timestamp created_at = 8[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "创建时间";
+    }
+  ];
+}

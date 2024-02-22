@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UploadService_FetchKey_FullMethodName = "/fileasset_backend_api.upload.v1.UploadService/FetchKey"
+	UploadService_FetchUrl_FullMethodName = "/fileasset_backend_api.upload.v1.UploadService/FetchUrl"
 	UploadService_Confirm_FullMethodName  = "/fileasset_backend_api.upload.v1.UploadService/Confirm"
 )
 
@@ -27,9 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UploadServiceClient interface {
-	// 获取特定配置的上传key
-	FetchKey(ctx context.Context, in *FetchKeyRequest, opts ...grpc.CallOption) (*FetchKeyResponse, error)
-	// 确认上传文件
+	FetchUrl(ctx context.Context, in *FetchUrlRequest, opts ...grpc.CallOption) (*FetchUrlResponse, error)
 	Confirm(ctx context.Context, in *ConfirmRequest, opts ...grpc.CallOption) (*ConfirmResponse, error)
 }
 
@@ -41,9 +39,9 @@ func NewUploadServiceClient(cc grpc.ClientConnInterface) UploadServiceClient {
 	return &uploadServiceClient{cc}
 }
 
-func (c *uploadServiceClient) FetchKey(ctx context.Context, in *FetchKeyRequest, opts ...grpc.CallOption) (*FetchKeyResponse, error) {
-	out := new(FetchKeyResponse)
-	err := c.cc.Invoke(ctx, UploadService_FetchKey_FullMethodName, in, out, opts...)
+func (c *uploadServiceClient) FetchUrl(ctx context.Context, in *FetchUrlRequest, opts ...grpc.CallOption) (*FetchUrlResponse, error) {
+	out := new(FetchUrlResponse)
+	err := c.cc.Invoke(ctx, UploadService_FetchUrl_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,9 +61,7 @@ func (c *uploadServiceClient) Confirm(ctx context.Context, in *ConfirmRequest, o
 // All implementations should embed UnimplementedUploadServiceServer
 // for forward compatibility
 type UploadServiceServer interface {
-	// 获取特定配置的上传key
-	FetchKey(context.Context, *FetchKeyRequest) (*FetchKeyResponse, error)
-	// 确认上传文件
+	FetchUrl(context.Context, *FetchUrlRequest) (*FetchUrlResponse, error)
 	Confirm(context.Context, *ConfirmRequest) (*ConfirmResponse, error)
 }
 
@@ -73,8 +69,8 @@ type UploadServiceServer interface {
 type UnimplementedUploadServiceServer struct {
 }
 
-func (UnimplementedUploadServiceServer) FetchKey(context.Context, *FetchKeyRequest) (*FetchKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FetchKey not implemented")
+func (UnimplementedUploadServiceServer) FetchUrl(context.Context, *FetchUrlRequest) (*FetchUrlResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchUrl not implemented")
 }
 func (UnimplementedUploadServiceServer) Confirm(context.Context, *ConfirmRequest) (*ConfirmResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Confirm not implemented")
@@ -91,20 +87,20 @@ func RegisterUploadServiceServer(s grpc.ServiceRegistrar, srv UploadServiceServe
 	s.RegisterService(&UploadService_ServiceDesc, srv)
 }
 
-func _UploadService_FetchKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FetchKeyRequest)
+func _UploadService_FetchUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchUrlRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UploadServiceServer).FetchKey(ctx, in)
+		return srv.(UploadServiceServer).FetchUrl(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UploadService_FetchKey_FullMethodName,
+		FullMethod: UploadService_FetchUrl_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UploadServiceServer).FetchKey(ctx, req.(*FetchKeyRequest))
+		return srv.(UploadServiceServer).FetchUrl(ctx, req.(*FetchUrlRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -135,8 +131,8 @@ var UploadService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UploadServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "FetchKey",
-			Handler:    _UploadService_FetchKey_Handler,
+			MethodName: "FetchUrl",
+			Handler:    _UploadService_FetchUrl_Handler,
 		},
 		{
 			MethodName: "Confirm",

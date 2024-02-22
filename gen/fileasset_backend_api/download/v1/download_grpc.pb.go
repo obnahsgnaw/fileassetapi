@@ -19,15 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	DownloadService_FetchKey_FullMethodName = "/fileasset_backend_api.download.v1.DownloadService/FetchKey"
+	DownloadService_FetchUrl_FullMethodName = "/fileasset_backend_api.download.v1.DownloadService/FetchUrl"
 )
 
 // DownloadServiceClient is the client API for DownloadService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DownloadServiceClient interface {
-	// 获取特定配置的下载key
-	FetchKey(ctx context.Context, in *FetchKeyRequest, opts ...grpc.CallOption) (*FetchKeyResponse, error)
+	// 获取特定配置的下载url
+	FetchUrl(ctx context.Context, in *FetchUrlRequest, opts ...grpc.CallOption) (*FetchUrlResponse, error)
 }
 
 type downloadServiceClient struct {
@@ -38,9 +38,9 @@ func NewDownloadServiceClient(cc grpc.ClientConnInterface) DownloadServiceClient
 	return &downloadServiceClient{cc}
 }
 
-func (c *downloadServiceClient) FetchKey(ctx context.Context, in *FetchKeyRequest, opts ...grpc.CallOption) (*FetchKeyResponse, error) {
-	out := new(FetchKeyResponse)
-	err := c.cc.Invoke(ctx, DownloadService_FetchKey_FullMethodName, in, out, opts...)
+func (c *downloadServiceClient) FetchUrl(ctx context.Context, in *FetchUrlRequest, opts ...grpc.CallOption) (*FetchUrlResponse, error) {
+	out := new(FetchUrlResponse)
+	err := c.cc.Invoke(ctx, DownloadService_FetchUrl_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,16 +51,16 @@ func (c *downloadServiceClient) FetchKey(ctx context.Context, in *FetchKeyReques
 // All implementations should embed UnimplementedDownloadServiceServer
 // for forward compatibility
 type DownloadServiceServer interface {
-	// 获取特定配置的下载key
-	FetchKey(context.Context, *FetchKeyRequest) (*FetchKeyResponse, error)
+	// 获取特定配置的下载url
+	FetchUrl(context.Context, *FetchUrlRequest) (*FetchUrlResponse, error)
 }
 
 // UnimplementedDownloadServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedDownloadServiceServer struct {
 }
 
-func (UnimplementedDownloadServiceServer) FetchKey(context.Context, *FetchKeyRequest) (*FetchKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FetchKey not implemented")
+func (UnimplementedDownloadServiceServer) FetchUrl(context.Context, *FetchUrlRequest) (*FetchUrlResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchUrl not implemented")
 }
 
 // UnsafeDownloadServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -74,20 +74,20 @@ func RegisterDownloadServiceServer(s grpc.ServiceRegistrar, srv DownloadServiceS
 	s.RegisterService(&DownloadService_ServiceDesc, srv)
 }
 
-func _DownloadService_FetchKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FetchKeyRequest)
+func _DownloadService_FetchUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchUrlRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DownloadServiceServer).FetchKey(ctx, in)
+		return srv.(DownloadServiceServer).FetchUrl(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DownloadService_FetchKey_FullMethodName,
+		FullMethod: DownloadService_FetchUrl_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DownloadServiceServer).FetchKey(ctx, req.(*FetchKeyRequest))
+		return srv.(DownloadServiceServer).FetchUrl(ctx, req.(*FetchUrlRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,8 +100,8 @@ var DownloadService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*DownloadServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "FetchKey",
-			Handler:    _DownloadService_FetchKey_Handler,
+			MethodName: "FetchUrl",
+			Handler:    _DownloadService_FetchUrl_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

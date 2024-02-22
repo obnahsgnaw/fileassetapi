@@ -1,20 +1,77 @@
 syntax = "proto3";
 package fileasset_backend_api.download.v1;
 option go_package = "fileasset_backend_api/download/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "validate/validate.proto";
 
 // 文件下载
 service DownloadService{
-  // 获取特定配置的下载key
-  rpc FetchKey (FetchKeyRequest) returns (FetchKeyResponse) {}
-}
-message FetchKeyRequest{
-  string module = 1; // 模块标识
-  string target = 2; // 文件标识
-  string id = 3; // 文件标识
-  uint32 ttl = 4;    // url过期时间
-  uint32 count = 5;  // 下载次数
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "下载服务";
+  };
+  // 获取特定配置的下载url
+  rpc FetchUrl (FetchUrlRequest) returns (FetchUrlResponse) {
+    option (google.api.http) = {
+      post: "/v1/download-url"
+      body:"*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取下载地址";
+      description: "其他服务获取下载地址对外给出，这里也可以手动获取";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+    };
+  }
 }
 
-message FetchKeyResponse{
-  string key = 1;
+message FetchUrlRequest{
+  string project = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["project"];
+      description: "project";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ]; // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
+  string module = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["module"];
+      description: "module";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:100}
+  ]; // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
+  string name = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["name"];
+      description: "name";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:30,max_len:50}
+  ];
+  uint32 ttl = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["ttl"];
+      description: "ttl";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gt:0, lt:604800}
+  ];    // 过期时间
+  uint32 count = 5[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["count"];
+      description: "count";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];  // 下载次数
+}
+message FetchUrlResponse{
+  string url = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "url";
+    }
+  ];
 }

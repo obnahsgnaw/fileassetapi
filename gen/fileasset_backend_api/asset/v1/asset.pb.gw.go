@@ -69,7 +69,7 @@ func local_request_AssetService_Paginate_0(ctx context.Context, marshaler runtim
 }
 
 func request_AssetService_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client AssetServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.StringIdRequest
+	var protoReq commonv1.IntIdRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -84,7 +84,7 @@ func request_AssetService_Delete_0(ctx context.Context, marshaler runtime.Marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Id, err = runtime.String(val)
+	protoReq.Id, err = runtime.Uint32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -95,7 +95,7 @@ func request_AssetService_Delete_0(ctx context.Context, marshaler runtime.Marsha
 }
 
 func local_request_AssetService_Delete_0(ctx context.Context, marshaler runtime.Marshaler, server AssetServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq commonv1.StringIdRequest
+	var protoReq commonv1.IntIdRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -110,7 +110,7 @@ func local_request_AssetService_Delete_0(ctx context.Context, marshaler runtime.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Id, err = runtime.String(val)
+	protoReq.Id, err = runtime.Uint32(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
