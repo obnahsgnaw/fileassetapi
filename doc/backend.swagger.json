@@ -704,6 +704,13 @@
             "format": "int64"
           },
           {
+            "name": "sessionId",
+            "description": "session_id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "module",
             "description": "module",
             "in": "query",
@@ -747,6 +754,21 @@
             "required": false,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "maxCount",
+            "description": "part num",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "update",
+            "description": "update upload",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1144,6 +1166,10 @@
           "format": "int64",
           "description": "uid"
         },
+        "sessionId": {
+          "type": "string",
+          "description": "session_id"
+        },
         "module": {
           "type": "string",
           "description": "module"
@@ -1162,7 +1188,8 @@
       },
       "required": [
         "project",
-        "uid"
+        "uid",
+        "sessionId"
       ]
     },
     "v1ConfirmResponse": {

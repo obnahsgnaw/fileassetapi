@@ -65,46 +65,64 @@ message FetchUrlRequest{
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0}
   ];
-  string module = 3[// 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
+  string session_id = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["session_id"];
+      description: "session_id";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:30}
+  ];
+  string module = 4[// 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["module"];
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
   ];
-  uint32 max_size = 4[// 文件最大字节
+  uint32 max_size = 5[// 文件最大字节
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["size"];
       description: "size";
     },
     (validate.rules).uint32 = {ignore_empty: false, gt:0}
   ];
-  string content_type = 5[// 文件类型
+  string content_type = 6[// 文件类型
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["content_type"];
       description: "content_type";
     },
     (validate.rules).string = {ignore_empty: false, min_len:1,max_len:50}
   ];
-  string extension = 6[// 文件后缀
+  string extension = 7[// 文件后缀
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["extension"];
       description: "extension";
     },
     (validate.rules).string = {ignore_empty: false, max_len:50}
   ];
-  uint32 ttl = 7[// 过期时间
+  uint32 ttl = 8[// 过期时间
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["ttl"];
       description: "ttl";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:604800}
   ];
-  uint32 part = 8[// 分片数量 0=不分
+  uint32 part = 9[// 分片数量 0=不分
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "part num";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:9999}
+  ];
+  uint32 max_count = 10[// 最大数量
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "part num";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:9999}
+  ];
+  bool update = 11[// 是否是更新
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "update upload";
+    }
   ];
 }
 message FetchUrlResponse{
@@ -145,19 +163,26 @@ message ConfirmRequest{
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0}
   ];
-  string module = 3[
+  string session_id = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["session_id"];
+      description: "session_id";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:30}
+  ];
+  string module = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
   ];
-  string target = 4[
+  string target = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "target";
     },
     (validate.rules).string = {ignore_empty: false, max_len:50}
   ];
-  repeated string names = 5[// 多个文件可以同时确认，会进行增删更新
+  repeated string names = 6[// 多个文件可以同时确认，会进行增删更新
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "names";
     },

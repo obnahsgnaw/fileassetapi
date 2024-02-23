@@ -79,6 +79,17 @@ func (m *FetchUrlRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if utf8.RuneCountInString(m.GetSessionId()) > 30 {
+		err := FetchUrlRequestValidationError{
+			field:  "SessionId",
+			reason: "value length must be at most 30 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if utf8.RuneCountInString(m.GetModule()) > 100 {
 		err := FetchUrlRequestValidationError{
 			field:  "Module",
@@ -144,6 +155,19 @@ func (m *FetchUrlRequest) validate(all bool) error {
 		}
 		errors = append(errors, err)
 	}
+
+	if val := m.GetMaxCount(); val < 0 || val > 9999 {
+		err := FetchUrlRequestValidationError{
+			field:  "MaxCount",
+			reason: "value must be inside range [0, 9999]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Update
 
 	if len(errors) > 0 {
 		return FetchUrlRequestMultiError(errors)
@@ -366,6 +390,17 @@ func (m *ConfirmRequest) validate(all bool) error {
 		err := ConfirmRequestValidationError{
 			field:  "Uid",
 			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetSessionId()) > 30 {
+		err := ConfirmRequestValidationError{
+			field:  "SessionId",
+			reason: "value length must be at most 30 runes",
 		}
 		if !all {
 			return err
