@@ -22,25 +22,30 @@ message FileAsset{
       description: "模块";
     }
   ];
-  string name = 4[
+  string uid = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "user id";
+    }
+  ];
+  string name = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "文件";
     }
   ];
-  string target = 5[
+  string target = 6[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "管理对象";
     }
   ];
-  string url = 6[
+  string url = 7[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "预览地址";
     }
   ];
-  common.v1.EnableState enabled = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  common.v1.EnableState enabled = 8[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description:"启用状态";
   }];
-  google.protobuf.Timestamp created_at = 8[
+  google.protobuf.Timestamp created_at = 9[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "创建时间";
     }

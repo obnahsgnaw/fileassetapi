@@ -68,6 +68,17 @@ func (m *FetchUrlRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetUid() < 0 {
+		err := FetchUrlRequestValidationError{
+			field:  "Uid",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if utf8.RuneCountInString(m.GetModule()) > 100 {
 		err := FetchUrlRequestValidationError{
 			field:  "Module",

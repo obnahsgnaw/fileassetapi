@@ -67,6 +67,8 @@ func (m *FileAsset) validate(all bool) error {
 
 	// no validation rules for Module
 
+	// no validation rules for Uid
+
 	// no validation rules for Name
 
 	// no validation rules for Target

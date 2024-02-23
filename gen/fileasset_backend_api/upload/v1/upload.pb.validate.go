@@ -68,6 +68,17 @@ func (m *FetchUrlRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if m.GetUid() < 0 {
+		err := FetchUrlRequestValidationError{
+			field:  "Uid",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if utf8.RuneCountInString(m.GetModule()) > 100 {
 		err := FetchUrlRequestValidationError{
 			field:  "Module",
@@ -236,6 +247,8 @@ func (m *FetchUrlResponse) validate(all bool) error {
 
 	// no validation rules for Module
 
+	// no validation rules for UploadId
+
 	// no validation rules for Name
 
 	if len(errors) > 0 {
@@ -342,6 +355,17 @@ func (m *ConfirmRequest) validate(all bool) error {
 		err := ConfirmRequestValidationError{
 			field:  "Project",
 			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetUid() < 0 {
+		err := ConfirmRequestValidationError{
+			field:  "Uid",
+			reason: "value must be greater than or equal to 0",
 		}
 		if !all {
 			return err

@@ -49,72 +49,84 @@ service UploadService{
   }
 }
 
+// 某个服务，某个用户，某个模块 需要文件上传
 message FetchUrlRequest{
-  string project = 1[
+  string project = 1[// 服务项目  比如 uav，user,company...
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["project"];
       description: "project";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];      // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
-  string module = 2[
+  ];
+  uint32 uid = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["uid"];
+      description: "uid";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string module = 3[// 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["module"];
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];      // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
-  uint32 max_size = 3[
+  ];
+  uint32 max_size = 4[// 文件最大字节
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["size"];
       description: "size";
     },
     (validate.rules).uint32 = {ignore_empty: false, gt:0}
-  ];    // 文件最大字节
-  string content_type = 4[
+  ];
+  string content_type = 5[// 文件类型
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["content_type"];
       description: "content_type";
     },
     (validate.rules).string = {ignore_empty: false, min_len:1,max_len:50}
-  ];// 支持的类型
-  string extension = 5[
+  ];
+  string extension = 6[// 文件后缀
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["extension"];
       description: "extension";
     },
     (validate.rules).string = {ignore_empty: false, max_len:50}
-  ];   // 支持的后缀
-  uint32 ttl = 6[
+  ];
+  uint32 ttl = 7[// 过期时间
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["ttl"];
       description: "ttl";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:604800}
-  ];         // 过期时间
-  uint32 part = 7[
+  ];
+  uint32 part = 8[// 分片数量 0=不分
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "part num";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:9999}
-  ];        // 分片数量 0=不分
+  ];
 }
 message FetchUrlResponse{
   string module = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required:["module"];
       description: "module";
     }
   ];
-  string name = 2[
+  string upload_id = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required:["name"];
-      description: "name";
+      description: "multipart upload id";
     }
   ];
-  repeated string url = 3[
+  string name = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "url";
+      required:["name"];
+      description: "file name";
+    }
+  ];
+  repeated string url = 4[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "upload url";
     }
   ]; // 如果分片会返回多个 所以是多个
 }
@@ -126,26 +138,41 @@ message ConfirmRequest{
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
   ];
-  string module = 2[
+  uint32 uid = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["uid"];
+      description: "uid";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string module = 3[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
   ];
-  string target = 3[
+  string target = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "target";
     },
     (validate.rules).string = {ignore_empty: false, max_len:50}
   ];
-  repeated string names = 4[
+  repeated string names = 5[// 多个文件可以同时确认，会进行增删更新
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "names";
     },
     (validate.rules).repeated = {ignore_empty: false, unique:true}
-  ]; // 多个文件可以同时确认，会进行增删更新
+  ];
 }
 message ConfirmResponse{
-  bool success = 1;
-  string error = 2;
+  bool success = 1[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "success or failed";
+    }
+  ];
+  string error = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "failed message";
+    }
+  ];
 }

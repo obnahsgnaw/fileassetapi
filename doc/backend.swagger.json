@@ -696,6 +696,14 @@
             "type": "string"
           },
           {
+            "name": "uid",
+            "description": "uid",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
             "name": "module",
             "description": "module",
             "in": "query",
@@ -704,7 +712,7 @@
           },
           {
             "name": "maxSize",
-            "description": "文件最大字节\n\nsize",
+            "description": "size",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -712,21 +720,21 @@
           },
           {
             "name": "contentType",
-            "description": "支持的类型\n\ncontent_type",
+            "description": "content_type",
             "in": "query",
             "required": true,
             "type": "string"
           },
           {
             "name": "extension",
-            "description": "支持的后缀\n\nextension",
+            "description": "extension",
             "in": "query",
             "required": true,
             "type": "string"
           },
           {
             "name": "ttl",
-            "description": "过期时间\n\nttl",
+            "description": "ttl",
             "in": "query",
             "required": true,
             "type": "integer",
@@ -734,7 +742,7 @@
           },
           {
             "name": "part",
-            "description": "分片数量 0=不分\n\npart num",
+            "description": "part num",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -1045,6 +1053,11 @@
           "type": "string",
           "description": "project"
         },
+        "uid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "uid"
+        },
         "module": {
           "type": "string",
           "description": "module"
@@ -1056,18 +1069,17 @@
         "ttl": {
           "type": "integer",
           "format": "int64",
-          "description": "ttl",
-          "title": "过期时间"
+          "description": "ttl"
         },
         "count": {
           "type": "integer",
           "format": "int64",
-          "description": "count",
-          "title": "下载次数"
+          "description": "count"
         }
       },
       "required": [
         "project",
+        "uid",
         "module",
         "name",
         "ttl",
@@ -1090,21 +1102,24 @@
           "type": "string",
           "description": "module"
         },
+        "uploadId": {
+          "type": "string",
+          "description": "multipart upload id"
+        },
         "name": {
           "type": "string",
-          "description": "name"
+          "description": "file name"
         },
         "url": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "url",
+          "description": "upload url",
           "title": "如果分片会返回多个 所以是多个"
         }
       },
       "required": [
-        "module",
         "name"
       ]
     },
@@ -1124,6 +1139,11 @@
           "type": "string",
           "description": "project"
         },
+        "uid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "uid"
+        },
         "module": {
           "type": "string",
           "description": "module"
@@ -1137,22 +1157,24 @@
           "items": {
             "type": "string"
           },
-          "description": "names",
-          "title": "多个文件可以同时确认，会进行增删更新"
+          "description": "names"
         }
       },
       "required": [
-        "project"
+        "project",
+        "uid"
       ]
     },
     "v1ConfirmResponse": {
       "type": "object",
       "properties": {
         "success": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "success or failed"
         },
         "error": {
-          "type": "string"
+          "type": "string",
+          "description": "failed message"
         }
       }
     },
@@ -1222,6 +1244,10 @@
         "module": {
           "type": "string",
           "description": "模块"
+        },
+        "uid": {
+          "type": "string",
+          "description": "user id"
         },
         "name": {
           "type": "string",

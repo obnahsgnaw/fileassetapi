@@ -38,35 +38,42 @@ message FetchUrlRequest{
       description: "project";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
-  ]; // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
-  string module = 2[
+  ];
+  uint32 uid = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["uid"];
+      description: "uid";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+  string module = 3[// 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["module"];
       description: "module";
     },
     (validate.rules).string = {ignore_empty: false, max_len:100}
-  ]; // 模块标识 对应 bucket, 比如 uav-vendor， uav-model, user-avatar ...
-  string name = 3[
+  ];
+  string name = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["name"];
       description: "name";
     },
     (validate.rules).string = {ignore_empty: false, min_len:30,max_len:50}
   ];
-  uint32 ttl = 4[
+  uint32 ttl = 5[// 过期时间
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["ttl"];
       description: "ttl";
     },
     (validate.rules).uint32 = {ignore_empty: false, gt:0, lt:604800}
-  ];    // 过期时间
-  uint32 count = 5[
+  ];
+  uint32 count = 6[// 下载次数
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["count"];
       description: "count";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0}
-  ];  // 下载次数
+  ];
 }
 message FetchUrlResponse{
   string url = 1[
