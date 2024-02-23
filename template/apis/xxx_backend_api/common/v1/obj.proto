@@ -1,6 +1,6 @@
 syntax = "proto3";
-package framework_backend_api.common.v1;
-option go_package = "framework_backend_api/common/v1";
+package xxx_backend_api.common.v1;
+option go_package = "xxx_backend_api/common/v1";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";

@@ -119,3 +119,16 @@ wss-socket:
 .PHONY: package
 package:
 	@go run cmd/gen.go
+
+.PHONY: tpl-test
+tpl-test:
+	@echo "Generate tpl pb file..."
+	@cd template && buf lint apis --error-format=json && buf generate apis --template buf.gen.yaml
+	@protoc -I ./template/apis \
+    -I ./frontend/vendors \
+    --openapiv2_out=logtostderr=true,allow_merge=true,disable_default_errors=true,merge_file_name=frontend:./template/doc \
+    ./template/apis/*/*/v*/*.proto
+	@echo "Done"
+	@rm -rf ./template/doc/*
+	@rm -rf ./template/gen
+	@echo "Cleared"

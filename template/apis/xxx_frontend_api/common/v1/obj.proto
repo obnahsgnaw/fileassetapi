@@ -1,6 +1,6 @@
 syntax = "proto3";
-package framework_backend_api.common.v1;
-option go_package = "framework_backend_api/common/v1";
+package xxx_frontend_api.common.v1;
+option go_package = "xxx_frontend_api/common/v1";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "validate/validate.proto";
@@ -131,20 +131,6 @@ message PaginateMeta {
   }];
   uint32 limit = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Current page size"
-  }];
-  PaginateConfig config = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "列表配置, page=1时有配置，也可能为nil"
-  }];
-}
-message PaginateConfig{
-  repeated StringOption keyword_options = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "关键字类型选项，如果为空则只有关键字搜索"
-  }];
-  map<string,string> sort_columns = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "可排序列,key=列，value=参数key"
-  }];
-  map<string,string> option_columns = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "可过滤选项列, key=列，value=option选项列表的key"
   }];
 }
 // 分页查询请求
@@ -316,90 +302,28 @@ message IntOptionResponse{
   option (validate.ignored) = true; // 忽略验证
   repeated IntOption list = 2;
 }
-// 属性配置请求
-message AttrConfigPaginateAllRequest{
-  uint32 target_id = 1[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "target id";
-    },
-    (validate.rules).uint32 = {ignore_empty: false, gte:0}
-  ];
-  bool all = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "All resource records, no paginate if support";
-  }];
-  uint32 page = 3[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "Page number, default=1";
-    },
-    (validate.rules).uint32 = {ignore_empty: false, gte:0}
-  ];
-  uint32 limit = 4[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "Page size, default=10";
-    },
-    (validate.rules).uint32 = {ignore_empty: false, gte:0}
-  ];
-  string keyword = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "Keyword search, like:keyword=xx，keyword=id=1|name=xxx";
-  }];
-  string sort = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    description: "Sort list, like: sort=+a,-b,+c,-d";
-  }];
-}
-// 属性配置响应
-message AttrConfigPaginateResponse{
-  option (validate.ignored) = true;
-  common.v1.PaginateMeta meta = 1;
-  repeated AttrConfigData list = 2;
-}
 // 属性配置数据
 message AttrConfigRequest{
   uint32 target_id = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required: ["target_id"];
       description: "target id";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0}
   ];
-  AttrConfig config = 2[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "config item";
-    },
-    (validate.rules).message = {required: true}
-  ];
 }
-message AttrConfigIdRequest{
-  uint32 target_id = 1[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required: ["target_id"];
-      description: "target id";
-    },
-    (validate.rules).uint32 = {ignore_empty: false, gte:0}
-  ];
-  string attr = 2[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required: ["key"];
-      title: "attr";
-    },
-    (validate.rules).string = {ignore_empty: false, min_len: 1, max_len: 40}
-  ];
-}
-// 属性配置数据
-message AttrConfigData{
+message AttrConfigsResponse{
   option (validate.ignored) = true;
-  AttrConfig config = 1[
+  repeated AttrConfig attrs = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description:"属性配置"
     }
   ];
-  common.v1.EnableState enabled = 2;
-  common.v1.OperateInfo operate_info = 3;
 }
-// 属性配置
 message AttrConfig{
+  option (validate.ignored) = true;
   string attr = 1[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description:"attr"
+      description:"属性key"
     },
     (validate.rules).string = {ignore_empty:false, max_len:100}
   ];
@@ -430,7 +354,7 @@ message AttrConfig{
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description:"默认值"
     },
-    (validate.rules).string = {ignore_empty:true, max_len:100}
+    (validate.rules).string = {ignore_empty:false, max_len:100}
   ];
   repeated string options = 5[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
@@ -438,10 +362,6 @@ message AttrConfig{
     },
     (validate.rules).repeated = {ignore_empty:true, unique:true}
   ];
-  common.v1.Conflict conflict = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-    required:["conflict"]
-    description: "更新冲突检测数据 更新数据时必须";
-  }];
 }
 // 文件
 // 提交时

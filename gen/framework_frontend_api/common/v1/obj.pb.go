@@ -1538,6 +1538,174 @@ func (x *AttrConfig) GetOptions() []string {
 	return nil
 }
 
+// 文件
+// 提交时
+type FileItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SessionId string `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	UploadId  string `protobuf:"bytes,2,opt,name=upload_id,json=uploadId,proto3" json:"upload_id,omitempty"`
+	Name      string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *FileItem) Reset() {
+	*x = FileItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_framework_frontend_api_common_v1_obj_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FileItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileItem) ProtoMessage() {}
+
+func (x *FileItem) ProtoReflect() protoreflect.Message {
+	mi := &file_framework_frontend_api_common_v1_obj_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileItem.ProtoReflect.Descriptor instead.
+func (*FileItem) Descriptor() ([]byte, []int) {
+	return file_framework_frontend_api_common_v1_obj_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *FileItem) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *FileItem) GetUploadId() string {
+	if x != nil {
+		return x.UploadId
+	}
+	return ""
+}
+
+func (x *FileItem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type FileItems struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Items []*FileItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (x *FileItems) Reset() {
+	*x = FileItems{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_framework_frontend_api_common_v1_obj_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FileItems) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileItems) ProtoMessage() {}
+
+func (x *FileItems) ProtoReflect() protoreflect.Message {
+	mi := &file_framework_frontend_api_common_v1_obj_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileItems.ProtoReflect.Descriptor instead.
+func (*FileItems) Descriptor() ([]byte, []int) {
+	return file_framework_frontend_api_common_v1_obj_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *FileItems) GetItems() []*FileItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+// 响应时
+type File struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name    string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	ViewUrl string `protobuf:"bytes,2,opt,name=view_url,json=viewUrl,proto3" json:"view_url,omitempty"`
+}
+
+func (x *File) Reset() {
+	*x = File{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_framework_frontend_api_common_v1_obj_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *File) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*File) ProtoMessage() {}
+
+func (x *File) ProtoReflect() protoreflect.Message {
+	mi := &file_framework_frontend_api_common_v1_obj_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use File.ProtoReflect.Descriptor instead.
+func (*File) Descriptor() ([]byte, []int) {
+	return file_framework_frontend_api_common_v1_obj_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *File) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *File) GetViewUrl() string {
+	if x != nil {
+		return x.ViewUrl
+	}
+	return ""
+}
+
 var File_framework_frontend_api_common_v1_obj_proto protoreflect.FileDescriptor
 
 var file_framework_frontend_api_common_v1_obj_proto_rawDesc = []byte{
@@ -1810,7 +1978,32 @@ var file_framework_frontend_api_common_v1_obj_proto_rawDesc = []byte{
 	0x61, 0x74, 0x65, 0x74, 0x69, 0x6d, 0x65, 0x10, 0x06, 0x12, 0x13, 0x0a, 0x0f, 0x45, 0x78, 0x74,
 	0x41, 0x74, 0x74, 0x72, 0x4b, 0x69, 0x6e, 0x64, 0x44, 0x61, 0x74, 0x65, 0x10, 0x07, 0x12, 0x13,
 	0x0a, 0x0f, 0x45, 0x78, 0x74, 0x41, 0x74, 0x74, 0x72, 0x4b, 0x69, 0x6e, 0x64, 0x54, 0x69, 0x6d,
-	0x65, 0x10, 0x08, 0x3a, 0x03, 0x80, 0x43, 0x01, 0x2a, 0x3e, 0x0a, 0x0b, 0x45, 0x6e, 0x61, 0x62,
+	0x65, 0x10, 0x08, 0x3a, 0x03, 0x80, 0x43, 0x01, 0x22, 0xb8, 0x01, 0x0a, 0x08, 0x46, 0x69, 0x6c,
+	0x65, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x45, 0x0a, 0x0a, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x26, 0x92, 0x41, 0x19, 0x32, 0x0a,
+	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0xd2, 0x01, 0x0a, 0x73, 0x65, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0xfa, 0x42, 0x07, 0x72, 0x05, 0x18, 0x1e, 0xd0, 0x01,
+	0x00, 0x52, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x09,
+	0x75, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42,
+	0x18, 0x92, 0x41, 0x0b, 0x32, 0x09, 0x75, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x69, 0x64, 0xfa,
+	0x42, 0x07, 0x72, 0x05, 0x18, 0x32, 0xd0, 0x01, 0x00, 0x52, 0x08, 0x75, 0x70, 0x6c, 0x6f, 0x61,
+	0x64, 0x49, 0x64, 0x12, 0x2e, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x42, 0x1a, 0x92, 0x41, 0x0d, 0x32, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0xd2, 0x01, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0xfa, 0x42, 0x07, 0x72, 0x05, 0x18, 0x64, 0xd0, 0x01, 0x00, 0x52, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x22, 0x61, 0x0a, 0x09, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x73,
+	0x12, 0x54, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x2a, 0x2e, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x77, 0x6f, 0x72, 0x6b, 0x5f, 0x66, 0x72, 0x6f, 0x6e,
+	0x74, 0x65, 0x6e, 0x64, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e,
+	0x76, 0x31, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x42, 0x12, 0x92, 0x41, 0x07,
+	0x32, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0xfa, 0x42, 0x05, 0x92, 0x01, 0x02, 0x28, 0x00, 0x52,
+	0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x70, 0x0a, 0x04, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x2d,
+	0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x19, 0x92, 0x41,
+	0x16, 0x32, 0x14, 0x6e, 0x61, 0x6d, 0x65, 0x2c, 0x20, 0x75, 0x73, 0x65, 0x20, 0x66, 0x6f, 0x72,
+	0x20, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x39, 0x0a,
+	0x08, 0x76, 0x69, 0x65, 0x77, 0x5f, 0x75, 0x72, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42,
+	0x1e, 0x92, 0x41, 0x1b, 0x32, 0x19, 0x76, 0x69, 0x65, 0x77, 0x5f, 0x75, 0x72, 0x6c, 0x2c, 0x20,
+	0x75, 0x73, 0x65, 0x20, 0x66, 0x6f, 0x72, 0x20, 0x64, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x52,
+	0x07, 0x76, 0x69, 0x65, 0x77, 0x55, 0x72, 0x6c, 0x2a, 0x3e, 0x0a, 0x0b, 0x45, 0x6e, 0x61, 0x62,
 	0x6c, 0x65, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x0c, 0x0a, 0x08, 0x44, 0x69, 0x73, 0x61, 0x62,
 	0x6c, 0x65, 0x64, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x45, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64,
 	0x10, 0x01, 0x12, 0x14, 0x0a, 0x07, 0x44, 0x65, 0x66, 0x61, 0x75, 0x6c, 0x74, 0x10, 0xff, 0xff,
@@ -1848,7 +2041,7 @@ func file_framework_frontend_api_common_v1_obj_proto_rawDescGZIP() []byte {
 }
 
 var file_framework_frontend_api_common_v1_obj_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_framework_frontend_api_common_v1_obj_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_framework_frontend_api_common_v1_obj_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_framework_frontend_api_common_v1_obj_proto_goTypes = []interface{}{
 	(EnableState)(0),                     // 0: framework_frontend_api.common.v1.EnableState
 	(AttrConfig_Kind)(0),                 // 1: framework_frontend_api.common.v1.AttrConfig.Kind
@@ -1876,18 +2069,21 @@ var file_framework_frontend_api_common_v1_obj_proto_goTypes = []interface{}{
 	(*AttrConfigRequest)(nil),            // 23: framework_frontend_api.common.v1.AttrConfigRequest
 	(*AttrConfigsResponse)(nil),          // 24: framework_frontend_api.common.v1.AttrConfigsResponse
 	(*AttrConfig)(nil),                   // 25: framework_frontend_api.common.v1.AttrConfig
-	(*timestamppb.Timestamp)(nil),        // 26: google.protobuf.Timestamp
+	(*FileItem)(nil),                     // 26: framework_frontend_api.common.v1.FileItem
+	(*FileItems)(nil),                    // 27: framework_frontend_api.common.v1.FileItems
+	(*File)(nil),                         // 28: framework_frontend_api.common.v1.File
+	(*timestamppb.Timestamp)(nil),        // 29: google.protobuf.Timestamp
 }
 var file_framework_frontend_api_common_v1_obj_proto_depIdxs = []int32{
 	2,  // 0: framework_frontend_api.common.v1.ErrorsObject.errors:type_name -> framework_frontend_api.common.v1.ErrorObject
 	8,  // 1: framework_frontend_api.common.v1.IntIdOperateRequest.data:type_name -> framework_frontend_api.common.v1.ConflictData
 	8,  // 2: framework_frontend_api.common.v1.StringIdOperateRequest.data:type_name -> framework_frontend_api.common.v1.ConflictData
 	9,  // 3: framework_frontend_api.common.v1.ConflictData.conflict:type_name -> framework_frontend_api.common.v1.Conflict
-	26, // 4: framework_frontend_api.common.v1.OperateInfo.created_at:type_name -> google.protobuf.Timestamp
-	26, // 5: framework_frontend_api.common.v1.OperateInfo.updated_at:type_name -> google.protobuf.Timestamp
-	26, // 6: framework_frontend_api.common.v1.OperateInfo.deleted_at:type_name -> google.protobuf.Timestamp
-	26, // 7: framework_frontend_api.common.v1.CuOperateInfo.created_at:type_name -> google.protobuf.Timestamp
-	26, // 8: framework_frontend_api.common.v1.CuOperateInfo.updated_at:type_name -> google.protobuf.Timestamp
+	29, // 4: framework_frontend_api.common.v1.OperateInfo.created_at:type_name -> google.protobuf.Timestamp
+	29, // 5: framework_frontend_api.common.v1.OperateInfo.updated_at:type_name -> google.protobuf.Timestamp
+	29, // 6: framework_frontend_api.common.v1.OperateInfo.deleted_at:type_name -> google.protobuf.Timestamp
+	29, // 7: framework_frontend_api.common.v1.CuOperateInfo.created_at:type_name -> google.protobuf.Timestamp
+	29, // 8: framework_frontend_api.common.v1.CuOperateInfo.updated_at:type_name -> google.protobuf.Timestamp
 	10, // 9: framework_frontend_api.common.v1.PaginateStringOptionResponse.meta:type_name -> framework_frontend_api.common.v1.PaginateMeta
 	13, // 10: framework_frontend_api.common.v1.PaginateStringOptionResponse.list:type_name -> framework_frontend_api.common.v1.StringOption
 	10, // 11: framework_frontend_api.common.v1.PaginateIntOptionResponse.meta:type_name -> framework_frontend_api.common.v1.PaginateMeta
@@ -1896,11 +2092,12 @@ var file_framework_frontend_api_common_v1_obj_proto_depIdxs = []int32{
 	14, // 14: framework_frontend_api.common.v1.IntOptionResponse.list:type_name -> framework_frontend_api.common.v1.IntOption
 	25, // 15: framework_frontend_api.common.v1.AttrConfigsResponse.attrs:type_name -> framework_frontend_api.common.v1.AttrConfig
 	1,  // 16: framework_frontend_api.common.v1.AttrConfig.kind:type_name -> framework_frontend_api.common.v1.AttrConfig.Kind
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	26, // 17: framework_frontend_api.common.v1.FileItems.items:type_name -> framework_frontend_api.common.v1.FileItem
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_framework_frontend_api_common_v1_obj_proto_init() }
@@ -2197,6 +2394,42 @@ func file_framework_frontend_api_common_v1_obj_proto_init() {
 				return nil
 			}
 		}
+		file_framework_frontend_api_common_v1_obj_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FileItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_framework_frontend_api_common_v1_obj_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FileItems); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_framework_frontend_api_common_v1_obj_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*File); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2204,7 +2437,7 @@ func file_framework_frontend_api_common_v1_obj_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_framework_frontend_api_common_v1_obj_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   24,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

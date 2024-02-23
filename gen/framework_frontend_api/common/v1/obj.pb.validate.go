@@ -1455,3 +1455,370 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AttrConfigRequestValidationError{}
+
+// Validate checks the field values on FileItem with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *FileItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FileItem with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FileItemMultiError, or nil
+// if none found.
+func (m *FileItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FileItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetSessionId()) > 30 {
+		err := FileItemValidationError{
+			field:  "SessionId",
+			reason: "value length must be at most 30 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetUploadId()) > 50 {
+		err := FileItemValidationError{
+			field:  "UploadId",
+			reason: "value length must be at most 50 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetName()) > 100 {
+		err := FileItemValidationError{
+			field:  "Name",
+			reason: "value length must be at most 100 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return FileItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// FileItemMultiError is an error wrapping multiple validation errors returned
+// by FileItem.ValidateAll() if the designated constraints aren't met.
+type FileItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FileItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FileItemMultiError) AllErrors() []error { return m }
+
+// FileItemValidationError is the validation error returned by
+// FileItem.Validate if the designated constraints aren't met.
+type FileItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FileItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FileItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FileItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FileItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FileItemValidationError) ErrorName() string { return "FileItemValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FileItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFileItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FileItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FileItemValidationError{}
+
+// Validate checks the field values on FileItems with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *FileItems) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FileItems with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FileItemsMultiError, or nil
+// if none found.
+func (m *FileItems) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FileItems) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, FileItemsValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, FileItemsValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return FileItemsValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return FileItemsMultiError(errors)
+	}
+
+	return nil
+}
+
+// FileItemsMultiError is an error wrapping multiple validation errors returned
+// by FileItems.ValidateAll() if the designated constraints aren't met.
+type FileItemsMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FileItemsMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FileItemsMultiError) AllErrors() []error { return m }
+
+// FileItemsValidationError is the validation error returned by
+// FileItems.Validate if the designated constraints aren't met.
+type FileItemsValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FileItemsValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FileItemsValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FileItemsValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FileItemsValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FileItemsValidationError) ErrorName() string { return "FileItemsValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FileItemsValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFileItems.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FileItemsValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FileItemsValidationError{}
+
+// Validate checks the field values on File with the rules defined in the proto
+// definition for this message. If any rules are violated, the first error
+// encountered is returned, or nil if there are no violations.
+func (m *File) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on File with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in FileMultiError, or nil if none found.
+func (m *File) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *File) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Name
+
+	// no validation rules for ViewUrl
+
+	if len(errors) > 0 {
+		return FileMultiError(errors)
+	}
+
+	return nil
+}
+
+// FileMultiError is an error wrapping multiple validation errors returned by
+// File.ValidateAll() if the designated constraints aren't met.
+type FileMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FileMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FileMultiError) AllErrors() []error { return m }
+
+// FileValidationError is the validation error returned by File.Validate if the
+// designated constraints aren't met.
+type FileValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FileValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FileValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FileValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FileValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FileValidationError) ErrorName() string { return "FileValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FileValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFile.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FileValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FileValidationError{}

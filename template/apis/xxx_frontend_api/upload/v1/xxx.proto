@@ -1,0 +1,144 @@
+syntax = "proto3";
+package xxx_frontend_api.upload.v1;
+option go_package = "xxx_frontend_api/upload/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+// 1. 获取上传配置，来提示和现在上传的文件大小、类型
+// 2. 选择文件后，验证文件类型等、并获取文件类型和扩展，请求上传地址进行上传
+// 3. 提交上传后的文件名
+service XXXUploadService{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "XXX上传服务";
+  };
+  rpc Config(ConfigRequest) returns (ConfigResponse){
+    option(google.api.http) = {
+      get: "/v1/xxx-upload-config";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取xxx上传配置";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+      extensions:{
+        key: "x-order";
+        value: {
+          number_value: 1
+        }
+      }
+    };
+  }
+  rpc Url(UrlRequest) returns (UrlResponse){
+    option(google.api.http) = {
+      get: "/v1/xxx-upload-url";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取xxx上传地址， put方式上传，request的Content-Type为文件的Content-Type";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+      extensions:{
+        key: "x-order";
+        value: {
+          number_value: 2
+        }
+      }
+    };
+  }
+}
+
+message ConfigRequest{}
+message ConfigResponse{
+  string session_id = 1[// 会话id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "session_id";
+    }
+  ];
+  uint32 max_size = 2[// 文件最大字节
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "size";
+    }
+  ];
+  repeated string content_types = 3[// 支持的类型
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "content_types";
+    }
+  ];
+  repeated string extensions = 4[// 支持的后缀
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "extensions";
+    }
+  ];
+  uint32 ttl = 5[// 过期时间
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "ttl";
+    }
+  ];
+  bool multipart = 6[// 是否支持分片
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "part num";
+    }
+  ];
+  uint32 max_count = 7[// 文件最大数量
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "max_count";
+    }
+  ];
+}
+message UrlRequest{
+  string session_id = 1[// 会话id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["session_id"];
+      description: "session_id";
+    }
+  ];
+  string content_type = 2[// 文件类型
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["content_type"];
+      description: "content_type";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1,max_len:50}
+  ];
+  string extension = 3[// 支持的后缀
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["extension"];
+      description: "extension";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:50}
+  ];
+  uint32 part_num = 4[// 分片数量
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "part num";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+}
+message UrlResponse{
+  string upload_id = 1[ // 切片上传id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "upload_id";
+    }
+  ];
+  string name = 2[ // 提交时用
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["name"];
+      description: "name";
+    }
+  ];
+  repeated string urls = 3[ // 如果分片会返回多个 所以是多个
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "urls";
+    }
+  ];
+}
