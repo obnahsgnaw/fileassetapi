@@ -22,7 +22,7 @@ message FileAsset{
       description: "模块";
     }
   ];
-  string uid = 4[
+  uint32 uid = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "user id";
     }

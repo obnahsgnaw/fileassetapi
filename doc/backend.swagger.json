@@ -1266,7 +1266,8 @@
           "description": "模块"
         },
         "uid": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "user id"
         },
         "name": {
