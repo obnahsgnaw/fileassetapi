@@ -115,14 +115,9 @@ message FetchUrlRequest{
   ];
   uint32 max_count = 10[// 最大数量
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "part num";
+      description: "max num";
     },
-    (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:9999}
-  ];
-  bool update = 11[// 是否是更新
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "update upload";
-    }
+    (validate.rules).uint32 = {ignore_empty: false, gt:0, lte:9999}
   ];
 }
 message FetchUrlResponse{
@@ -131,15 +126,15 @@ message FetchUrlResponse{
       description: "module";
     }
   ];
-  string upload_id = 2[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "multipart upload id";
-    }
-  ];
-  string name = 3[
+  string name = 2[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["name"];
       description: "file name";
+    }
+  ];
+  string upload_id = 3[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "multipart upload id";
     }
   ];
   repeated string url = 4[

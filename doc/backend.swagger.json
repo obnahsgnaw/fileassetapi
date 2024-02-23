@@ -757,18 +757,11 @@
           },
           {
             "name": "maxCount",
-            "description": "part num",
+            "description": "max num",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int64"
-          },
-          {
-            "name": "update",
-            "description": "update upload",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
           }
         ],
         "tags": [
@@ -1124,13 +1117,13 @@
           "type": "string",
           "description": "module"
         },
-        "uploadId": {
-          "type": "string",
-          "description": "multipart upload id"
-        },
         "name": {
           "type": "string",
           "description": "file name"
+        },
+        "uploadId": {
+          "type": "string",
+          "description": "multipart upload id"
         },
         "url": {
           "type": "array",
