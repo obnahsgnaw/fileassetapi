@@ -8,7 +8,15 @@ import "validate/validate.proto";
 // 2. 选择文件后，验证文件类型等、并获取文件类型和扩展，请求上传地址进行上传
 // 3. 提交上传后的文件名
 
-message ConfigRequest{}
+message ConfigRequest{
+  string req_id = 1[// 请求id， 会根据请求id生成一个会话id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["req_id"];
+      description: "request id, 每次上传会话随机生成即可，对应一个session_id";
+    },
+    (validate.rules).string = {ignore_empty: false, len:15}
+  ];
+}
 message ConfigResponse{
   string session_id = 1[// 会话id
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
