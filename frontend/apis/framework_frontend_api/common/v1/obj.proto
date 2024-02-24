@@ -379,20 +379,12 @@ message FileItem{
     },
     (validate.rules).string = {ignore_empty: false, max_len:50}
   ];
-  string name = 3[ // 提交时用
+  repeated string names = 3[ // 提交时用
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required:["name"];
-      description: "name";
+      required:["names"];
+      description: "names";
     },
-    (validate.rules).string = {ignore_empty: false, max_len:100}
-  ];
-}
-message FileItems{
-  repeated FileItem items = 1[
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "items";
-    },
-    (validate.rules).repeated = {ignore_empty: false}
+    (validate.rules).repeated = {ignore_empty: false, unique:true}
   ];
 }
 // 响应时
