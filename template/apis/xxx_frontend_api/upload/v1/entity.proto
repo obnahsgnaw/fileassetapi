@@ -14,7 +14,7 @@ message ConfigRequest{
       required:["req_id"];
       description: "request id, 每次上传会话随机生成即可，对应一个session_id";
     },
-    (validate.rules).string = {ignore_empty: false, len:15}
+    (validate.rules).string = {ignore_empty: false, len:10}
   ];
 }
 message ConfigResponse{
