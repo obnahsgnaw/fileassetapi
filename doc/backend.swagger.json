@@ -1171,12 +1171,13 @@
           "type": "string",
           "description": "target"
         },
-        "names": {
+        "items": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "object",
+            "$ref": "#/definitions/v1FileItem"
           },
-          "description": "names"
+          "description": "items"
         }
       },
       "required": [
@@ -1293,6 +1294,19 @@
         }
       },
       "title": "文件资源"
+    },
+    "v1FileItem": {
+      "type": "object",
+      "properties": {
+        "uploadId": {
+          "type": "string",
+          "description": "multipart upload id"
+        },
+        "name": {
+          "type": "string",
+          "description": "name"
+        }
+      }
     },
     "v1IntOption": {
       "type": "object",
