@@ -1456,6 +1456,154 @@ var _ interface {
 	ErrorName() string
 } = AttrConfigRequestValidationError{}
 
+// Validate checks the field values on FileForm with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *FileForm) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FileForm with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FileFormMultiError, or nil
+// if none found.
+func (m *FileForm) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FileForm) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetSessionId()) > 30 {
+		err := FileFormValidationError{
+			field:  "SessionId",
+			reason: "value length must be at most 30 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetItems()) > 0 {
+
+		for idx, item := range m.GetItems() {
+			_, _ = idx, item
+
+			if all {
+				switch v := interface{}(item).(type) {
+				case interface{ ValidateAll() error }:
+					if err := v.ValidateAll(); err != nil {
+						errors = append(errors, FileFormValidationError{
+							field:  fmt.Sprintf("Items[%v]", idx),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				case interface{ Validate() error }:
+					if err := v.Validate(); err != nil {
+						errors = append(errors, FileFormValidationError{
+							field:  fmt.Sprintf("Items[%v]", idx),
+							reason: "embedded message failed validation",
+							cause:  err,
+						})
+					}
+				}
+			} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+				if err := v.Validate(); err != nil {
+					return FileFormValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					}
+				}
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return FileFormMultiError(errors)
+	}
+
+	return nil
+}
+
+// FileFormMultiError is an error wrapping multiple validation errors returned
+// by FileForm.ValidateAll() if the designated constraints aren't met.
+type FileFormMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FileFormMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FileFormMultiError) AllErrors() []error { return m }
+
+// FileFormValidationError is the validation error returned by
+// FileForm.Validate if the designated constraints aren't met.
+type FileFormValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FileFormValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FileFormValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FileFormValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FileFormValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FileFormValidationError) ErrorName() string { return "FileFormValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FileFormValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFileForm.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FileFormValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FileFormValidationError{}
+
 // Validate checks the field values on FileItem with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1478,17 +1626,6 @@ func (m *FileItem) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetSessionId()) > 30 {
-		err := FileItemValidationError{
-			field:  "SessionId",
-			reason: "value length must be at most 30 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	if utf8.RuneCountInString(m.GetUploadId()) > 50 {
 		err := FileItemValidationError{
 			field:  "UploadId",
@@ -1498,27 +1635,6 @@ func (m *FileItem) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
-	}
-
-	_FileItem_Names_Unique := make(map[string]struct{}, len(m.GetNames()))
-
-	for idx, item := range m.GetNames() {
-		_, _ = idx, item
-
-		if _, exists := _FileItem_Names_Unique[item]; exists {
-			err := FileItemValidationError{
-				field:  fmt.Sprintf("Names[%v]", idx),
-				reason: "repeated value must contain unique items",
-			}
-			if !all {
-				return err
-			}
-			errors = append(errors, err)
-		} else {
-			_FileItem_Names_Unique[item] = struct{}{}
-		}
-
-		// no validation rules for Names[idx]
 	}
 
 	if len(errors) > 0 {

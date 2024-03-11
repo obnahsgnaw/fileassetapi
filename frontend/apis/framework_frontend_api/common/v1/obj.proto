@@ -365,7 +365,7 @@ message AttrConfig{
 }
 // 文件
 // 提交时
-message FileItem{
+message FileForm{
   string session_id = 1[// 会话id
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       required:["session_id"];
@@ -373,18 +373,27 @@ message FileItem{
     },
     (validate.rules).string = {ignore_empty: false, max_len:30}
   ];
-  string upload_id = 2[ // 切片上传id
+  repeated FileItem items = 2[
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["items"];
+      description: "items";
+    },
+    (validate.rules).repeated = {ignore_empty: true}
+  ];
+}
+message FileItem{
+  string upload_id = 1[ // 切片上传id
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "upload_id";
     },
     (validate.rules).string = {ignore_empty: false, max_len:50}
   ];
-  repeated string names = 3[ // 提交时用
+  string name = 2[ // 提交时用
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      required:["names"];
-      description: "names";
+      required:["name"];
+      description: "name";
     },
-    (validate.rules).repeated = {ignore_empty: false, unique:true}
+    (validate.rules).string = {ignore_empty: false}
   ];
 }
 // 响应时
