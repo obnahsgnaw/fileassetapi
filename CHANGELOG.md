@@ -1,10 +1,62 @@
 
-<a name="v0.4.6"></a>
-## [v0.4.6](https://8.140.161.172/wangsb/wgateway/compare/v0.4.5...v0.4.6) (2024-03-11)
+<a name="v0.4.7"></a>
+## [v0.4.7](https://8.140.161.172/wangsb/wgateway/compare/v0.4.6...v0.4.7) (2024-03-11)
 
 ### Bug Fixes
 
+* **common upload:** x
+* **upload:** fix upload
+* **x:** x
+* **x:** x
+* **x:** x
+* **x:** x
+
+### Features
+
+* **template:** added template for proto
+
+
+<a name="v0.4.6"></a>
+## [v0.4.6](https://8.140.161.172/wangsb/wgateway/compare/v0.2.8...v0.4.6) (2024-03-11)
+
+### Bug Fixes
+
+* **all:** fix api
 * **upload.proto:** fix confirm
+* **x:** x
+* **x:** x
+* **x:** x
+* **x:** x
+* **x:** x
+
+### Features
+
+* **all:** change api and logic
+* **apis:** added api proto
+
+
+<a name="v0.2.8"></a>
+## [v0.2.8](https://8.140.161.172/wangsb/wgateway/compare/v0.2.7...v0.2.8) (2024-03-11)
+
+### Bug Fixes
+
+* **common upload:** x
+
+
+<a name="v0.2.7"></a>
+## [v0.2.7](https://8.140.161.172/wangsb/wgateway/compare/v0.4.5...v0.2.7) (2024-02-24)
+
+### Bug Fixes
+
+* **upload:** fix upload
+* **x:** x
+* **x:** x
+* **x:** x
+* **x:** x
+
+### Features
+
+* **template:** added template for proto
 
 
 <a name="v0.4.5"></a>
