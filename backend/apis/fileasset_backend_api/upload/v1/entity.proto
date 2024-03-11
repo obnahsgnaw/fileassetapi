@@ -1,0 +1,102 @@
+syntax = "proto3";
+package fileasset_backend_api.upload.v1;
+option go_package = "fileasset_backend_api/upload/v1";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+// 1. 获取上传配置，来提示和现在上传的文件大小、类型
+// 2. 选择文件后，验证文件类型等、并获取文件类型和扩展，请求上传地址进行上传
+// 3. 提交上传后的文件名
+
+message ConfigRequest{
+  string req_id = 1[// 请求id， 会根据请求id生成一个会话id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["req_id"];
+      description: "request id, 每次上传会话随机生成即可，对应一个session_id";
+    },
+    (validate.rules).string = {ignore_empty: false, len:10}
+  ];
+}
+message ConfigResponse{
+  string session_id = 1[// 会话id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "session_id";
+    }
+  ];
+  uint32 max_size = 2[// 文件最大字节
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "size";
+    }
+  ];
+  repeated string content_types = 3[// 支持的类型
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "content_types";
+    }
+  ];
+  repeated string extensions = 4[// 支持的后缀
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "extensions";
+    }
+  ];
+  uint32 ttl = 5[// 过期时间
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "ttl";
+    }
+  ];
+  bool multipart = 6[// 是否支持分片
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "part num";
+    }
+  ];
+  uint32 max_count = 7[// 文件最大数量
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "max_count";
+    }
+  ];
+}
+message UrlRequest{
+  string session_id = 1[// 会话id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["session_id"];
+      description: "session_id";
+    },
+    (validate.rules).string = {ignore_empty: false, len:30}
+  ];
+  string content_type = 2[// 文件类型
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["content_type"];
+      description: "file content-type";
+    },
+    (validate.rules).string = {ignore_empty: false, min_len:1,max_len:50}
+  ];
+  string extension = 3[// 支持的后缀
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      required:["extension"];
+      description: "file extension";
+    },
+    (validate.rules).string = {ignore_empty: false, max_len:50}
+  ];
+  uint32 part_num = 4[// 分片数量
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "part num if multipart upload";
+    },
+    (validate.rules).uint32 = {ignore_empty: false, gte:0}
+  ];
+}
+message UrlResponse{
+  string upload_id = 1[ // 切片上传id
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "upload id, if multipart upload";
+    }
+  ];
+  string name = 2[ // 提交时用
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "file object name, submit when uploaded";
+    }
+  ];
+  repeated string urls = 3[ // 如果分片会返回多个 所以是多个
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "upload url";
+    }
+  ];
+}

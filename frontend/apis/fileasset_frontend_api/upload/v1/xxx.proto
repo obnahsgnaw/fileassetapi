@@ -1,0 +1,58 @@
+syntax = "proto3";
+package fileasset_frontend_api.upload.v1;
+option go_package = "fileasset_frontend_api/upload/v1";
+//import "fileasset_frontend_api/upload/v1/entity.proto";
+//import "protoc-gen-openapiv2/options/annotations.proto";
+//import "google/api/annotations.proto";
+/*
+service XXXUploadService{
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {
+    description: "XXX上传服务";
+  };
+  rpc Config(ConfigRequest) returns (ConfigResponse){
+    option(google.api.http) = {
+      get: "/v1/xxx-upload-config";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取上传配置";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+      extensions:{
+        key: "x-order";
+        value: {
+          number_value: 1
+        }
+      }
+    };
+  }
+  rpc Url(UrlRequest) returns (UrlResponse){
+    option(google.api.http) = {
+      get: "/v1/xxx-upload-url";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "获取上传地址";
+      description:"put方式上传，request的Content-Type为文件的Content-Type";
+      security:{
+        security_requirement:{
+          key:"AppId"
+        }
+        security_requirement:{
+          key:"BearerToken"
+        }
+      }
+      extensions:{
+        key: "x-order";
+        value: {
+          number_value: 2
+        }
+      }
+    };
+  }
+}
+*/

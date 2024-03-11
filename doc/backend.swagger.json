@@ -1138,6 +1138,19 @@
         "name"
       ]
     },
+    "fileasset_backend_apiuploadv1FileItem": {
+      "type": "object",
+      "properties": {
+        "uploadId": {
+          "type": "string",
+          "description": "multipart upload id"
+        },
+        "name": {
+          "type": "string",
+          "description": "name"
+        }
+      }
+    },
     "v1Config": {
       "type": "object",
       "properties": {
@@ -1175,7 +1188,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1FileItem"
+            "$ref": "#/definitions/fileasset_backend_apiuploadv1FileItem"
           },
           "description": "items"
         }
@@ -1294,19 +1307,6 @@
         }
       },
       "title": "文件资源"
-    },
-    "v1FileItem": {
-      "type": "object",
-      "properties": {
-        "uploadId": {
-          "type": "string",
-          "description": "multipart upload id"
-        },
-        "name": {
-          "type": "string",
-          "description": "name"
-        }
-      }
     },
     "v1IntOption": {
       "type": "object",
