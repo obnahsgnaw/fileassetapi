@@ -1,7 +1,7 @@
 # 文件资源
 CREATE TABLE `f_assets`
 (
-    `id`         int(11) unsigned NOT NULL auto_increment COMMENT 'ID',
+    `id`         int(11) NOT NULL auto_increment COMMENT 'ID',
     `project`    varchar(100)     NOT NULL COMMENT '服务项目',
     `uid`        int(11)          NOT NULL COMMENT 'uid',
     `session_id` varchar(30)      NOT NULL COMMENT '会话id，标记一次上传会话',
