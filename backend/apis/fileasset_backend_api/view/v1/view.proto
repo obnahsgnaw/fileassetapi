@@ -65,7 +65,7 @@ message ViewUrlRequest{
       required:["name"];
       description: "name";
     },
-    (validate.rules).string = {ignore_empty: false, min_len:30, max_len:50}
+    (validate.rules).string = {ignore_empty: false, min_len:1, max_len:50}
   ];
   uint32 ttl = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {

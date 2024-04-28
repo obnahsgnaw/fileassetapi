@@ -79,10 +79,10 @@ func (m *ViewUrlRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if l := utf8.RuneCountInString(m.GetName()); l < 30 || l > 50 {
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 50 {
 		err := ViewUrlRequestValidationError{
 			field:  "Name",
-			reason: "value length must be between 30 and 50 runes, inclusive",
+			reason: "value length must be between 1 and 50 runes, inclusive",
 		}
 		if !all {
 			return err
