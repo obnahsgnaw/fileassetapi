@@ -92,10 +92,10 @@ asset:
 api: backend-api frontend-api asset
 
 .PHONY: socket
-socket:tcp-socket wss-socket asset
+socket:tcp-socket wss-socket queue-socket asset
 
 .PHONY: all
-all: backend-api frontend-api tcp-socket wss-socket asset
+all: backend-api frontend-api tcp-socket wss-socket queue-socket asset
 
 .PHONY: tcp-socket
 tcp-socket:
@@ -114,6 +114,11 @@ wss-socket:
     -I ./websocket/vendors \
     --doc_out=./doc --doc_opt=html,wss.html \
     ./websocket/apis/*/*/v*/*.proto
+	@echo "Done"
+.PHONY: queue-socket
+queue-socket:
+	@echo "Generate frontend queue socket file..."
+	@cd queue && buf lint apis --error-format=json && buf generate apis --template buf.gen.yaml
 	@echo "Done"
 
 .PHONY: package
