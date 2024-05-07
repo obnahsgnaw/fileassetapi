@@ -6,10 +6,10 @@ option go_package = "framework_queue_api/queue/v1";
 
 enum ActionId {
   None = 0;
-  ConnectReq = 91; // 客户端连接
-  ConnectRsp = 92; // 服务端回放
+  ProcessorConnectReq = 91; // 客户端连接
+  ProcessorConnectRsp = 92; // 服务端回放
   TaskReq = 93;    // 服务端下发任务
   TaskRsp = 94;    // 客户端回复收到任务
-  Progress = 95;   // 客户端上报任务进度
-  Result = 96;     // 客户端上报任务结果
+  TaskProgressReq = 95;   // 客户端上报任务进度
+  TaskResultReq = 96;     // 客户端上报任务结果
 }
