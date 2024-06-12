@@ -156,10 +156,10 @@ func (m *FetchUrlRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if val := m.GetMaxCount(); val <= 0 || val > 9999 {
+	if val := m.GetMaxCount(); val <= 0 || val > 99999 {
 		err := FetchUrlRequestValidationError{
 			field:  "MaxCount",
-			reason: "value must be inside range (0, 9999]",
+			reason: "value must be inside range (0, 99999]",
 		}
 		if !all {
 			return err
@@ -463,8 +463,6 @@ func (m *ConfirmRequest) validate(all bool) error {
 		}
 
 	}
-
-	// no validation rules for Group
 
 	if len(errors) > 0 {
 		return ConfirmRequestMultiError(errors)

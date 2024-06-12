@@ -109,7 +109,7 @@ message FetchUrlRequest{
   ];
   uint32 part = 9[// 分片数量 0=不分
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "part num";
+      description: "分片上传时分片数量，或者组上传时生成的上传地址的数量";
     },
     (validate.rules).uint32 = {ignore_empty: false, gte:0, lte:9999}
   ];
@@ -117,11 +117,11 @@ message FetchUrlRequest{
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "max num";
     },
-    (validate.rules).uint32 = {ignore_empty: false, gt:0, lte:9999}
+    (validate.rules).uint32 = {ignore_empty: false, gt:0, lte:99999}
   ];
   bool group = 11[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "组上传，即同时会传输大量文件资源，而不想一张一张的申请地址，主要用于内部上传，组上传时不返回切片id";
+      description: "组上传，即同时会传输大量文件资源，而不想一张一张的申请地址，主要用于内部上传，组上传时不分片，part为组数量";
     }
   ];
 }
@@ -144,7 +144,7 @@ message FetchUrlResponse{
   ];
   repeated string url = 4[
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "upload url，组上传时 name位置会被替换为{NAME},需要上传端替换为自定义的name";
+      description: "upload url，分片上传时为分片上传地址，组上传时为一组上传地址";
     }
   ]; // 如果分片会返回多个 所以是多个
 }
@@ -185,11 +185,6 @@ message ConfirmRequest{
   repeated FileItem items = 6[// 多个文件可以同时确认，会进行增删更新
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       description: "items";
-    }
-  ];
-  bool group = 7 [
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      description: "组上传，则会创建该名称的记录";
     }
   ];
 }
