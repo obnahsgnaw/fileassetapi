@@ -48,6 +48,10 @@ func main() {
 		println("rename websocket api failed,", err.Error())
 		os.Exit(7)
 	}
+	if err = renameApi(currentDir, pkg, project, "queue", "queue"); err != nil {
+		println("rename queue api failed,", err.Error())
+		os.Exit(7)
+	}
 	if dirEt, err1 := os.ReadDir(filepath.Join(currentDir, "gen")); err1 != nil {
 		println("read gen dir failed,", err1.Error())
 		os.Exit(8)

@@ -1,0 +1,48 @@
+syntax = "proto3";
+package fileasset_queue_api.queue.v1;
+option go_package = "fileasset_queue_api/queue/v1";
+
+// 连接
+message ConnectRequest {
+  string id = 1; // 编号
+}
+
+// 连接的响应
+message ConnectResponse {
+  string id = 1; // 编号
+  enum Status{
+    Success = 0;
+    IdNotFound = 1; // id不存在
+    IdInUsed = 2;   // id已连接
+    QueueError = 3;   // id已连接
+  }
+  Status status = 2;
+}
+
+// 任务派发
+message TaskRequest{
+  string task_id = 1; // 任务标识 如: 航线id
+  string content = 2; // 任务内容 具体业务而定， 如：航线则是航线计算的参数
+}
+
+// 任务派发
+message TaskResponse{
+  string task_id = 1; // 任务标识 如: 航线id
+  enum Status{
+    Success = 0;
+  }
+  Status status = 2;
+}
+
+// 任务进度上报
+message TaskProgress{
+  string task_id = 1; // 任务（航线）id
+  int64 progress = 2; // 进度
+}
+
+// 任务结果上报
+message TaskResult{
+  string task_id = 1; // 任务标识
+  string error = 2; // 错误信息，无则为空
+  string content = 3; // 结果数据
+}

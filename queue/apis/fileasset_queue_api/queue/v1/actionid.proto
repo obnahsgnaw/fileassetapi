@@ -1,0 +1,15 @@
+syntax = "proto3";
+package fileasset_queue_api.queue.v1;
+option go_package = "fileasset_queue_api/queue/v1";
+
+// action id
+
+enum ActionId {
+  None = 0;
+  HandlerConnectReq = 91; // 客户端连接
+  HandlerConnectRsp = 92; // 服务端回放
+  TaskReq = 93;    // 服务端下发任务
+  TaskRsp = 94;    // 客户端回复收到任务
+  TaskProgressReq = 95;   // 客户端上报任务进度
+  TaskResultReq = 96;     // 客户端上报任务结果
+}
