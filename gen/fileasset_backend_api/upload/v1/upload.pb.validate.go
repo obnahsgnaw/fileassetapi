@@ -167,6 +167,8 @@ func (m *FetchUrlRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	// no validation rules for Group
+
 	if len(errors) > 0 {
 		return FetchUrlRequestMultiError(errors)
 	}
@@ -461,6 +463,8 @@ func (m *ConfirmRequest) validate(all bool) error {
 		}
 
 	}
+
+	// no validation rules for Group
 
 	if len(errors) > 0 {
 		return ConfirmRequestMultiError(errors)

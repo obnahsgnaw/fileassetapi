@@ -705,7 +705,7 @@
           },
           {
             "name": "sessionId",
-            "description": "session_id",
+            "description": "自定义 session_id, 主要用于分发一次上传会话周期，便于对上一个session_id的数据进行清理",
             "in": "query",
             "required": true,
             "type": "string"
@@ -762,6 +762,13 @@
             "required": false,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "group",
+            "description": "组上传，即同时会传输大量文件资源，而不想一张一张的申请地址，主要用于内部上传，组上传时不返回切片id",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1130,7 +1137,7 @@
           "items": {
             "type": "string"
           },
-          "description": "upload url",
+          "description": "upload url，组上传时 name位置会被替换为{NAME},需要上传端替换为自定义的name",
           "title": "如果分片会返回多个 所以是多个"
         }
       },
@@ -1191,6 +1198,10 @@
             "$ref": "#/definitions/fileasset_backend_apiuploadv1FileItem"
           },
           "description": "items"
+        },
+        "group": {
+          "type": "boolean",
+          "description": "组上传，则会创建该名称的记录"
         }
       },
       "required": [
